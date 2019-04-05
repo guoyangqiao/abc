@@ -30,7 +30,7 @@ http.createServer((request, response) => {
                     break;
                 case 'MESSAGE':
                     let messageQueue = botContext.messageQueue;
-                    console.log("获取到消息队列", messageQueue);
+                    console.log("server-获取消息列表", messageQueue);
                     respBody.message = messageQueue;
                     break;
                 default:
