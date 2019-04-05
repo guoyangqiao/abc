@@ -31,14 +31,20 @@ http.createServer((request, response) => {
             }
             response.end(JSON.stringify(respBody));
         } else {
+            let code = 200;
             let readStream;
             if (url === '/') {
-                readStream = fs.createReadStream('index.html', 'UTF-8');
+                readStream = fs.readFileSync('index.html', 'UTF-8');
             } else {
-                readStream = fs.createReadStream(url.toString().substr(1), 'UTF-8');
+                let path = url.toString().substr(1);
+                if (fs.existsSync(path)) {
+                    readStream = fs.readFileSync(path, 'UTF-8');
+                } else {
+                    code = 404;
+                }
             }
-            response.writeHead(200, {'Content-Type': 'text/html'});
-            readStream.pipe(response);
+            response.writeHead(code, {'Content-Type': 'text/html'});
+            response.end(readStream);
         }
     });
 }).listen(3000);
