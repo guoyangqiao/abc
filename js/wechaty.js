@@ -1,5 +1,5 @@
 const {Wechaty} = require('wechaty');
-const wechaty = new Wechaty();
+const wechaty = Wechaty.instance({profile: 'autoLogin'});
 const botContext = {qrCode: '', messageQueue: []};
 
 function onScan(qrcode, status) {

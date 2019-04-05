@@ -16,20 +16,24 @@
 
         constructor(props) {
             super(props);
-            this.state = {};
+            this.state = {
+                qrCode: '',
+                msg: []
+            };
             superagent.get('/lifecycle/scan').then(resp => {
                 let qrCode = resp.body.qrCode;
-                this.mergeState({qrCode});
+                this.setState({
+                    qrCode: qrCode
+                });
             }).catch(console.error);
         }
 
         componentDidMount() {
             this.fecth = setInterval(() => {
                 superagent.get('/lifecycle/message').then(resp => {
-                    let msg = resp.body.message;
-                    console.log(typeof msg, msg);
-                    if (msg !== null) {
-                        this.mergeState({msg});
+                    let newMsg = resp.body.message;
+                    if (newMsg !== undefined && newMsg !== null) {
+                        this.state.msg.push(newMsg);
                     }
                 }).catch(console.error)
             }, 3000);
@@ -37,12 +41,6 @@
 
         componentWillUnmount() {
             clearInterval(this.fecth);
-        }
-
-        mergeState(cc) {
-            let state = Object.assign(cc, this.state);
-            console.log(state);
-            this.setState(state);
         }
 
         render() {
