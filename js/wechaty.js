@@ -18,7 +18,6 @@ function onLogout(user) {
 
 function onMessage(message) {
     botContext.messageQueue.push(message.text());
-    console.log("12312", botContext);
 }
 
 wechaty.on('scan', onScan);
