@@ -29,9 +29,9 @@ http.createServer((request, response) => {
                     }
                     break;
                 case 'MESSAGE':
-                    let message = botContext.messageQueue.pop();
-                    console.log(message);
-                    respBody.message = message;
+                    let messageQueue = botContext.messageQueue;
+                    console.log("获取到消息队列", messageQueue);
+                    respBody.message = messageQueue;
                     break;
                 default:
             }

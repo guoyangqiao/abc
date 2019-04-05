@@ -26,8 +26,9 @@
         componentDidMount() {
             this.fecth = setInterval(() => {
                 superagent.get('/lifecycle/message').then(resp => {
-                    let message = resp.body.message;
-                    this.mergeState({message});
+                    console.log("请求消息列表返回:", resp);
+                    let msg = resp.body.message;
+                    this.mergeState({msg});
                 }).catch(console.error)
             }, 3000);
         }
@@ -45,7 +46,7 @@
         render() {
             return <div>
                 <div id={'qrCode'}><img src={this.state.qrCode} alt={"sss"}/></div>
-                <div id={'message'}/>
+                <div id={'message'}>{this.state.msg}</div>
             </div>
         }
     }

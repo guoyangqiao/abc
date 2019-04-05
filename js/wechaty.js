@@ -3,7 +3,9 @@ const wechaty = new Wechaty();
 const botContext = {qrCode: '', messageQueue: []};
 
 function onScan(qrcode, status) {
-    botContext.qrCode = ['http://api.qrserver.com/v1/create-qr-code/?data=', encodeURIComponent(qrcode),].join('');
+    let qrCode = ['http://api.qrserver.com/v1/create-qr-code/?data=', encodeURIComponent(qrcode),].join('');
+    console.log(qrCode);
+    botContext.qrCode = qrCode;
 }
 
 function onLogin(user) {
@@ -15,8 +17,8 @@ function onLogout(user) {
 }
 
 function onMessage(message) {
-    console.log(`收到消息${message}`);
-    botContext.messageQueue.push(message);
+    botContext.messageQueue.push(message.text());
+    console.log("12312", botContext);
 }
 
 wechaty.on('scan', onScan);
