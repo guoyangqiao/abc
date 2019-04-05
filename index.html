@@ -22,10 +22,12 @@
             };
             superagent.get('/lifecycle/scan').then(resp => {
                 let qrCode = resp.body.qrCode;
-                console.log("获取到登录二维码:" + qrCode);
-                this.setState({
-                    qrCode: qrCode
-                });
+                if (qrCode !== '') {
+                    console.log("获取到登录二维码:" + qrCode);
+                    this.setState({
+                        qrCode: qrCode
+                    });
+                }
             }).catch(console.error);
         }
 
@@ -36,7 +38,6 @@
                     if (newMsg !== undefined && newMsg !== null) {
                         this.state.msg.push(newMsg);
                         this.setState({msg: this.state.msg});
-                        console.log(this.state.msg);
                     }
                 }).catch(console.error)
             }, 3000);
@@ -47,16 +48,19 @@
         }
 
         render() {
+            console.log("做一次render");
             let codeInst;
             if (this.state.qrCode !== '') {
                 codeInst = <img src={this.state.qrCode} alt={"sss"}/>;
             }
             let rows = [];
             if (this.state.msg.length > 0) {
+                console.log("渲染消息列表");
                 for (let i = 0; i < this.state.msg; i++) {
                     rows.push(<span>{this.state.msg[i]}</span>);
                 }
             }
+            console.log("林倩" + rows);
             return <div>
                 <div id={'qrCode'}>{codeInst}</div>
                 <div id={'message'}>{rows}</div>
