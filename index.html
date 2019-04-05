@@ -54,10 +54,11 @@
                 codeInst = <img src={this.state.qrCode} alt={"sss"}/>;
             }
             let rows = [];
-            if (this.state.msg.length > 0) {
+            let msgRef = this.state.msg;
+            if (msgRef.length > 0) {
                 console.log("渲染消息列表");
-                for (let i = 0; i < this.state.msg; i++) {
-                    rows.push(<span>{this.state.msg[i]}</span>);
+                for (let i = 0; i < msgRef.length; i++) {
+                    rows.push(<span>{msgRef[i]}</span>);
                 }
             }
             console.log("林倩" + rows);
