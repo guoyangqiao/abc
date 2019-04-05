@@ -1,6 +1,6 @@
 const {Wechaty} = require('wechaty');
 const wechaty = Wechaty.instance({profile: 'autoLogin'});
-const botContext = {qrCode: '', messageQueue: []};
+const botContext = {qrCode: ''};
 
 function onScan(qrcode, status) {
     let qrCode = ['http://api.qrserver.com/v1/create-qr-code/?data=', encodeURIComponent(qrcode),].join('');
@@ -16,14 +16,9 @@ function onLogout(user) {
     console.log(`${user} logout`)
 }
 
-function onMessage(message) {
-    botContext.messageQueue.push(message.text());
-}
-
 wechaty.on('scan', onScan);
 wechaty.on('login', onLogin);
 wechaty.on('logout', onLogout);
-// wechaty.on('message', onMessage);
 
 wechaty.start()
     .then(() => console.log('Starter Bot Started.'))

@@ -16,39 +16,19 @@
 
         constructor(props) {
             super(props);
-            this.state = {
-                qrCode: '',
-                msg: []
-            };
+            this.state = {};
             superagent.get('/lifecycle/scan').then(resp => {
                 let qrCode = resp.body.qrCode;
                 if (qrCode !== '') {
-                    console.log("获取到登录二维码:" + qrCode);
-                    this.setState({
-                        qrCode: qrCode
-                    });
+                    this.setState({qrCode: qrCode});
                 }
             }).catch(console.error);
         }
 
         componentDidMount() {
-            // this.fecth = this.onMessage();
-        }
-
-        onMessage() {
-            return setInterval(() => {
-                superagent.get('/lifecycle/message').then(resp => {
-                    let newMsg = resp.body.message;
-                    if (newMsg !== undefined && newMsg !== null) {
-                        this.state.msg.push(newMsg);
-                        this.setState({msg: this.state.msg});
-                    }
-                }).catch(console.error)
-            }, 3000);
         }
 
         componentWillUnmount() {
-            // clearInterval(this.fecth);
         }
 
         render() {
@@ -56,16 +36,9 @@
             if (this.state.qrCode !== '') {
                 codeInst = <img src={this.state.qrCode} alt={"sss"}/>;
             }
-            let rows = [];
-            let msgRef = this.state.msg;
-            if (msgRef.length > 0) {
-                for (let i = 0; i < msgRef.length; i++) {
-                    rows.push(<div key={i}>{msgRef[i]}</div>);
-                }
-            }
             return <div>
                 <div id={'qrCode'}>{codeInst}</div>
-                <div id={'message'}>{rows}</div>
+                <div id={'sayInput'}></div>
             </div>
         }
     }

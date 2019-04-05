@@ -28,10 +28,6 @@ http.createServer((request, response) => {
                         respBody.qrCode = '';
                     }
                     break;
-                case 'MESSAGE':
-                    let messageQueue = botContext.messageQueue;
-                    respBody.message = messageQueue.pop();
-                    break;
                 default:
             }
             let chunk = JSON.stringify(respBody);
