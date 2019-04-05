@@ -1,5 +1,5 @@
-let scan = axios.get('/lifecycle/scan', () => {
-
+axios.get('/lifecycle/scan', (response) => {
+    let qrCode = response.qrCode;
+    console.log(response);
+    ReactDOM.render(qrCode, document.getElementById('qrCode'));
 });
-console.log(scan);
-ReactDOM.render('hello', document.getElementById('root'));
