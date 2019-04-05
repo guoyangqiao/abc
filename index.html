@@ -9,7 +9,7 @@
     <script src="https://cdn.staticfile.org/superagent/4.1.0/superagent.js"></script>
 </head>
 <body>
-<div id="root"></div>
+<div align="" id="root"></div>
 </body>
 <script type="text/jsx">
     class Abs extends React.Component {
@@ -32,7 +32,11 @@
         }
 
         componentDidMount() {
-            this.fecth = setInterval(() => {
+            // this.fecth = this.onMessage();
+        }
+
+        onMessage() {
+            return setInterval(() => {
                 superagent.get('/lifecycle/message').then(resp => {
                     let newMsg = resp.body.message;
                     if (newMsg !== undefined && newMsg !== null) {
@@ -44,11 +48,10 @@
         }
 
         componentWillUnmount() {
-            clearInterval(this.fecth);
+            // clearInterval(this.fecth);
         }
 
         render() {
-            console.log("做一次render");
             let codeInst;
             if (this.state.qrCode !== '') {
                 codeInst = <img src={this.state.qrCode} alt={"sss"}/>;
@@ -56,12 +59,10 @@
             let rows = [];
             let msgRef = this.state.msg;
             if (msgRef.length > 0) {
-                console.log("渲染消息列表");
                 for (let i = 0; i < msgRef.length; i++) {
-                    rows.push(<span>{msgRef[i]}</span>);
+                    rows.push(<div key={i}>{msgRef[i]}</div>);
                 }
             }
-            console.log("林倩" + rows);
             return <div>
                 <div id={'qrCode'}>{codeInst}</div>
                 <div id={'message'}>{rows}</div>
