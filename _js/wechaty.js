@@ -1,5 +1,5 @@
 const {Wechaty} = require('wechaty');
-const bot = new Wechaty();
+const wechaty = new Wechaty();
 const botContext = {};
 
 function onScan(qrcode, status) {
@@ -14,16 +14,16 @@ function onLogout(user) {
     console.log(`${user} logout`)
 }
 
-bot.on('scan', onScan);
-bot.on('login', onLogin);
-bot.on('logout', onLogout);
+wechaty.on('scan', onScan);
+wechaty.on('login', onLogin);
+wechaty.on('logout', onLogout);
 
-bot.start()
+wechaty.start()
     .then(() => console.log('Starter Bot Started.'))
     .catch(e => console.error(e));
 
 
 module.exports = {
-    wechatyBot: bot,
+    wechatyBot: wechaty,
     botContext: botContext
 };

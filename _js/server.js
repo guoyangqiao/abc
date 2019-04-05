@@ -1,5 +1,5 @@
-const bot = require('./bot').wechatyBot;
-const botContext = require('./bot').botContext;
+const bot = require('./wechaty').wechatyBot;
+const botContext = require('./wechaty').botContext;
 const http = require('http');
 const fs = require('fs');
 http.createServer((request, response) => {
