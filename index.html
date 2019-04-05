@@ -9,9 +9,15 @@
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.js"></script>
 </head>
 <body>
-<div id="root">
-    <div id="qrCode"></div>
-</div>
-<script src="js/app.js"></script>
+<div id="root"></div>
+<script type="text/babel">
+    axios.get('/lifecycle/scan', (response) => {
+        let qrCode = response.qrCode;
+        console.log(response);
+        console.log(response.qrCode);
+        ReactDOM.render(<div>qrCode</div>, document.getElementById('root'));
+    });
+    ReactDOM.render("qrCode", document.getElementById('root'));
+</script>
 </body>
 </html>
