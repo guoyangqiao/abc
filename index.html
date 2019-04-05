@@ -6,37 +6,10 @@
     <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
     <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
     <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
-    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.js"></script>
+    <script src="https://cdn.staticfile.org/superagent/4.1.0/superagent.js"></script>
 </head>
 <body>
 <div id="root"></div>
-<script type="text/babel">
-    class Abs extends React.Component {
-
-        constructor(props) {
-            super(props);
-            this.state = {date: new Date()};
-        }
-
-        componentDidMount() {
-
-        }
-
-        componentWillUnmount() {
-
-        }
-
-        render() {
-            axios.get('/lifecycle/scan', (response) => {
-                let qrCode = response.qrCode;
-                console.log("789");
-                cc = <div>{qrCode}</div>
-            });
-            return <div>{this.state.date.toLocaleTimeString()}</div>
-        }
-    }
-
-    ReactDOM.render(<Abs/>, document.getElementById('root'));
-</script>
 </body>
+<script type="text/jsx" src="js/app.js"></script>
 </html>

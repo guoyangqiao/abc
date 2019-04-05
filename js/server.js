@@ -2,6 +2,7 @@ const bot = require('./wechaty').wechatyBot;
 const botContext = require('./wechaty').botContext;
 const http = require('http');
 const fs = require('fs');
+
 http.createServer((request, response) => {
     const {headers, method, url} = request;
     let requestBody = [];
