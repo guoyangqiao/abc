@@ -31,8 +31,13 @@ http.createServer((request, response) => {
             }
             response.end(JSON.stringify(respBody));
         } else {
+            let readStream;
+            if (url === '/') {
+                readStream = fs.createReadStream('index.html', 'UTF-8');
+            } else {
+                readStream = fs.createReadStream(url.toString().substr(1), 'UTF-8');
+            }
             response.writeHead(200, {'Content-Type': 'text/html'});
-            let readStream = fs.createReadStream("_page/" + "index.html", "UTF-8");
             readStream.pipe(response);
         }
     });
