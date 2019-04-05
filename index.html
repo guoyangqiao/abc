@@ -11,5 +11,34 @@
 <body>
 <div id="root"></div>
 </body>
-<script type="text/jsx" src="js/app.js"></script>
+<script type="text/jsx">
+    class Abs extends React.Component {
+
+        constructor(props) {
+            super(props);
+            this.state = {qrCode: ''};
+            superagent.get('/lifecycle/scan').then(resp => {
+                let qrCode = resp.body.qrCode;
+                console.log(qrCode);
+                this.setState({qrCode: qrCode});
+            }).catch(console.error);
+        }
+
+        componentDidMount() {
+
+        }
+
+        componentWillUnmount() {
+        }
+
+        foo() {
+        }
+
+        render() {
+            return <div id="qrCode"><img src={this.state.qrCode} alt={"sss"}/></div>
+        }
+    }
+
+    ReactDOM.render(<Abs/>, document.getElementById('root'));
+</script>
 </html>

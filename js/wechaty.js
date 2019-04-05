@@ -3,7 +3,7 @@ const wechaty = new Wechaty();
 const botContext = {};
 
 function onScan(qrcode, status) {
-    botContext.qrCode = ['https://api.qrserver.com/v1/create-qr-code/?data=', encodeURIComponent(qrcode),].join('');
+    botContext.qrCode = ['http://api.qrserver.com/v1/create-qr-code/?data=', encodeURIComponent(qrcode),].join('');
 }
 
 function onLogin(user) {
