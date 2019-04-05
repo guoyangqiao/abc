@@ -22,6 +22,7 @@
             };
             superagent.get('/lifecycle/scan').then(resp => {
                 let qrCode = resp.body.qrCode;
+                console.log("获取到登录二维码:" + qrCode);
                 this.setState({
                     qrCode: qrCode
                 });
@@ -34,6 +35,8 @@
                     let newMsg = resp.body.message;
                     if (newMsg !== undefined && newMsg !== null) {
                         this.state.msg.push(newMsg);
+                        this.setState({msg: this.state.msg});
+                        console.log(this.state.msg);
                     }
                 }).catch(console.error)
             }, 3000);
@@ -44,9 +47,19 @@
         }
 
         render() {
+            let codeInst;
+            if (this.state.qrCode !== '') {
+                codeInst = <img src={this.state.qrCode} alt={"sss"}/>;
+            }
+            let rows = [];
+            if (this.state.msg.length > 0) {
+                for (let i = 0; i < this.state.msg; i++) {
+                    rows.push(<span>{this.state.msg[i]}</span>);
+                }
+            }
             return <div>
-                <div id={'qrCode'}><img src={this.state.qrCode} alt={"sss"}/></div>
-                <div id={'message'}>{this.state.msg}</div>
+                <div id={'qrCode'}>{codeInst}</div>
+                <div id={'message'}>{rows}</div>
             </div>
         }
     }
