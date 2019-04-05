@@ -11,13 +11,32 @@
 <body>
 <div id="root"></div>
 <script type="text/babel">
-    axios.get('/lifecycle/scan', (response) => {
-        let qrCode = response.qrCode;
-        console.log(response);
-        console.log(response.qrCode);
-        ReactDOM.render(<div>qrCode</div>, document.getElementById('root'));
-    });
-    ReactDOM.render("qrCode", document.getElementById('root'));
+    class Abs extends React.Component {
+
+        constructor(props) {
+            super(props);
+            this.state = {date: new Date()};
+        }
+
+        componentDidMount() {
+
+        }
+
+        componentWillUnmount() {
+
+        }
+
+        render() {
+            axios.get('/lifecycle/scan', (response) => {
+                let qrCode = response.qrCode;
+                console.log("789");
+                cc = <div>{qrCode}</div>
+            });
+            return <div>{this.state.date.toLocaleTimeString()}</div>
+        }
+    }
+
+    ReactDOM.render(<Abs/>, document.getElementById('root'));
 </script>
 </body>
 </html>
