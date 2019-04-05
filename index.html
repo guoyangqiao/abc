@@ -26,9 +26,11 @@
         componentDidMount() {
             this.fecth = setInterval(() => {
                 superagent.get('/lifecycle/message').then(resp => {
-                    console.log("请求消息列表返回:", resp);
                     let msg = resp.body.message;
-                    this.mergeState({msg});
+                    console.log(typeof msg, msg);
+                    if (msg !== null) {
+                        this.mergeState({msg});
+                    }
                 }).catch(console.error)
             }, 3000);
         }

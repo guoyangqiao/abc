@@ -30,12 +30,12 @@ http.createServer((request, response) => {
                     break;
                 case 'MESSAGE':
                     let messageQueue = botContext.messageQueue;
-                    console.log("server-获取消息列表", messageQueue);
-                    respBody.message = messageQueue;
+                    respBody.message = messageQueue.pop();
                     break;
                 default:
             }
-            response.end(JSON.stringify(respBody));
+            let chunk = JSON.stringify(respBody);
+            response.end(chunk);
         } else {
             let code = 200;
             let readStream;
