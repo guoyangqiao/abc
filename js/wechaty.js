@@ -23,9 +23,7 @@ function onMessage(message) {
 wechaty.on('scan', onScan);
 wechaty.on('login', onLogin);
 wechaty.on('logout', onLogout);
-
-
-wechaty.on('message', onMessage);
+// wechaty.on('message', onMessage);
 
 wechaty.start()
     .then(() => console.log('Starter Bot Started.'))
