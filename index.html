@@ -108,6 +108,9 @@
         constructor(props) {
             super(props);
             this.state = {contactList: []};
+        }
+
+        componentDidMount() {
             this.loadContact();
         }
 
@@ -126,7 +129,7 @@
         }
 
         render() {
-            console.log("对列表做一次渲染");
+            // console.log("对列表做一次渲染");
             let ctl = this.state.contactList;
             let contactList = ctl.map((c) => {
                 return <tr key={c.idx}>
@@ -151,7 +154,7 @@
                 </tr>
             });
             return <div>
-                <button type="button" onClick={() => this.loadContact()}>重新联系人</button>
+                <button type="button" onClick={() => this.loadContact()}>重新加载联系人</button>
                 <div>
                     <table>
                         <tbody>
