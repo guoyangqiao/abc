@@ -154,7 +154,7 @@
                 <button type="button" onClick={() => {
                     let selected = this.state.contactList.filter(x => x.selected === 1);
                     if (selected.length > 0) {
-                        let confirm = window.confirm("重新加载联系人会清空所有选择, 点击\<确认重新加载\>加载联系人");
+                        let confirm = window.confirm("重新加载联系人会清空所有选择, 点击\<OK\>确认加载联系人");
                         if (confirm === false) {
                             return;
                         }
