@@ -111,8 +111,8 @@
         }
 
         loadContact() {
-            this.setState({contactList: []});
             superagent.get('/lifecycle/logon/contact').then(resp => {
+                this.setState({contactList: []});
                 let idxed_resp = resp.body.map(
                     (c, idx) => {
                         c.idx = idx;
