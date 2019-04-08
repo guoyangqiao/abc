@@ -116,19 +116,36 @@
     }
 
     class MainPanel extends React.Component {
+
+
+        constructor() {
+            super();
+            this.state = {inputType: null}
+        }
+
+        fileSelected() {
+            this.setState({inputType: <label><textarea id='writeArea'/></label>});
+        }
+
+        wordsSelected() {
+            this.setState({inputType: <label><textarea id='writeArea'/></label>});
+        }
+
         render() {
             return <div id="mainPanel">
                 <div id="controlPanel">
                     <div className="section">输入</div>
                     <div id='inputSection' className="section">
                         <div className="floatable">
-                            <label><select id="inputType">
+                            <label><select id="inputType" onChange={(event) => {
+                                this.setState({inputType: event.target.validationMessage});
+                            }}>
                                 <option value="file">Excel</option>
                                 <option value="words">圣旨</option>
                             </select>
                             </label>
                         </div>
-                        <div><label><textarea id='writeArea'/></label>
+                        <div>{this.state.inputType}
                         </div>
                     </div>
                     <div className="section">
