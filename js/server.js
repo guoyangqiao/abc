@@ -15,9 +15,7 @@ function codeContactList(response) {
         for (let c of clist) {
             if (c.type() === bot.Contact.Type.Personal && c.friend() === true) {
                 aliasPromise.push(c.alias().then(r => {
-                    let newVar = {alias: r, name: c.name()};
-                    console.log(newVar);
-                    return newVar;
+                    return {alias: r, name: c.name()};
                 }));
             }
         }
@@ -56,9 +54,7 @@ http.createServer((request, response) => {
                 case "LOGON":
                     let act = area[3];
                     if ('CONTACT' === act.toUpperCase()) {
-                        console.log("contact start");
                         codeContactList(response);
-                        console.log("contact end");
                     }
                     break;
                 default:
