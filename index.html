@@ -111,29 +111,33 @@
 
         loadContact() {
             superagent.get('/lifecycle/logon/contact').then(resp => {
-                console.log("加载到联系人", resp.body);
                 let idxed_resp = resp.body.map(
                     (c, idx) => {
                         c.idx = idx;
                         c.selected = 0;
+                        return c;
                     }
                 );
+                console.log("加载到联系人", idxed_resp);
                 this.setState({contactList: idxed_resp});
             }).catch(console.error);
         }
 
         render() {
+            console.log("对列表做一次渲染");
             let ctl = this.state.contactList;
-            console.log(ctl);
             let contactList = ctl.map((c) => {
-                return <tr>
-                    <td><input key={c.idx} balise={c.alias} bname={c.name} type="checkbox" defaultChecked={() => {
-                        return this.state.contactList[c.idx].selected === 1;
+                return <tr key={c.idx}>
+                    <td><input key={c.idx} balise={c.alias} bname={c.name} defaultChecked={() => {
+                        let b = this.state.contactList[c.idx].selected === 1;
+                        console.log("是否选中?", b);
+                        return b;
                     }
-                    } onChange={() => {
+                    } type="checkbox" onChange={() => {
                         let nlist = this.state.contactList.slice();
                         let nlistElement = nlist[c.idx];
                         nlistElement.selected = (nlistElement.selected + 1) % 2;
+                        console.log("做了一次点击,", nlistElement.selected);
                         this.setState({
                             contactList: nlist
                         });
