@@ -6,6 +6,7 @@
     <style>
         table, td, th {
             border: 1px solid black;
+            font-size: 12px;
         }
 
         td {
@@ -110,6 +111,7 @@
         }
 
         loadContact() {
+            this.setState({contactList: []});
             superagent.get('/lifecycle/logon/contact').then(resp => {
                 let idxed_resp = resp.body.map(
                     (c, idx) => {
@@ -132,6 +134,12 @@
                         let nlistElement = nlist[c.idx];
                         nlistElement.selected = (nlistElement.selected + 1) % 2;
                         console.log("做了一次点击,", nlistElement.selected);
+                        let filter = nlist.filter(x => {
+                            return x.selected;
+                        }).map(x => {
+                            return x.name;
+                        });
+                        console.log("已选中的人有", filter);
                         this.setState({
                             contactList: nlist
                         });
