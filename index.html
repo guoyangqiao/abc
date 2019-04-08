@@ -3,7 +3,30 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Hello React!</title>
-    <link type="text/css" href="css/common.css">
+    <style>
+
+        #mainFrame {
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        #mainPanel {
+            display: flex;
+            justify-content: center;
+        }
+
+        .div-a {
+            float: left;
+            width: 60%;
+            border: 1px solid #F00
+        }
+
+        .div-b {
+            float: left;
+            width: 20%;
+            border: 1px solid #000
+        }
+    </style>
     <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
     <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
     <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
@@ -37,14 +60,16 @@
             if (this.state.qrCode !== '') {
                 codeInst = <img src={this.state.qrCode} alt={"sss"}/>;
             }
-            return <div>
+            return <div id="mainFrame">
                 <div id={'qrCode'}>{codeInst}</div>
-                <div>
-                    <div className="main">
-                        <div>发送页面</div>
-                        <div id={'sayInput'}/>
+                <div id="mainPanel">
+                    <div className="div-a">
+                        <div className="left">
+                            <div>发送页面</div>
+                            <div id={'sayInput'}/>
+                        </div>
                     </div>
-                    <div className="contact">
+                    <div className="div-b">
                         <div>联系人列表</div>
                         <div>
                             <div>张三</div>
