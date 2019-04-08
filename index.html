@@ -33,21 +33,22 @@
             width: 20%;
         }
 
+        .section {
+            border: 1px solid sandybrown;
+        }
+
         #inputSection {
             height: 200px;
-            border: 1px solid sandybrown;
         }
 
         #logSection {
             height: 600px;
             overflow-y: auto;
-            border: 1px solid sandybrown;
         }
 
         #contactSection {
             height: 800px;
             overflow-y: auto;
-            border: 1px solid sandybrown;
         }
     </style>
     <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
@@ -107,13 +108,13 @@
             return <div id="mainPanel">
                 <div id="controlPanel">
                     <div>
-                        <div id='inputSection'>
-                            <div>输入</div>
+                        <div id='inputSection' className="section">
+                            <div className="section">输入</div>
                             <div> 说点什么吧</div>
                         </div>
-                        <div id='logSection'>
-                            <div>日志</div>
-                            <div>实际日志内容</div>
+                        <div id='logSection' className="section">
+                            <div className="section">日志</div>
+                            <div id='logOutput'>实际日志内容</div>
                         </div>
                     </div>
                 </div>
