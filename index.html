@@ -108,6 +108,7 @@
         constructor(props) {
             super(props);
             this.state = {contactList: []};
+            this.loadContact();
         }
 
         loadContact() {
@@ -150,7 +151,7 @@
                 </tr>
             });
             return <div>
-                <button type="button" onClick={() => this.loadContact()}>加载联系人</button>
+                <button type="button" onClick={() => this.loadContact()}>重新联系人</button>
                 <div>
                     <table>
                         <tbody>
