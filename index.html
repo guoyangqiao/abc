@@ -117,18 +117,22 @@
 
     class MainPanel extends React.Component {
 
-
         constructor() {
             super();
-            this.state = {inputType: null}
+            this.state = {inputType: 'file'}
         }
 
-        fileSelected() {
-            this.setState({inputType: <label><textarea id='writeArea'/></label>});
-        }
-
-        wordsSelected() {
-            this.setState({inputType: <label><textarea id='writeArea'/></label>});
+        renderSelectedInputArea() {
+            let type = this.state.inputType;
+            if (type === 'words') {
+                return <label><textarea id='writeArea'/></label>;
+            }
+            if (type === 'file') {
+                return <input type="file" id="files" onChange={(e) => {
+                    console.log(e.target);
+                }
+                }/>;
+            }
         }
 
         render() {
@@ -138,14 +142,14 @@
                     <div id='inputSection' className="section">
                         <div className="floatable">
                             <label><select id="inputType" onChange={(event) => {
-                                this.setState({inputType: event.target.validationMessage});
+                                this.setState({inputType: event.target.value});
                             }}>
                                 <option value="file">Excel</option>
                                 <option value="words">圣旨</option>
                             </select>
                             </label>
                         </div>
-                        <div>{this.state.inputType}
+                        <div>{this.renderSelectedInputArea()}
                         </div>
                     </div>
                     <div className="section">
@@ -173,6 +177,8 @@
                 </div>
             </div>
         }
+
+
     }
 
     class ContactPanel extends React.Component {
