@@ -104,15 +104,39 @@
     }
 
     class ContactPanel extends React.Component {
-        loadContact() {
 
+
+        constructor(props) {
+            super(props);
+            this.state = {};
+        }
+
+        loadContact() {
+            console.log("加载联系人");
+            superagent.get('/lifecycle/logon/contact').then(resp => {
+                this.setState({contactList: resp.body.contactList});
+            }).catch(console.error);
         }
 
         render() {
+            let ctl = this.state.contactList;
+            console.log(ctl);
+            let contactList = ctl.map(c => {
+                return <tr>
+                    <td>{c.alias}</td>
+                    <td>{c.name}</td>
+                </tr>
+            });
             return <div>
                 <button type="button" onClick={() => this.loadContact()}>加载联系人</button>
                 <div>
-
+                    <table>
+                        <tr>
+                            <th>备注名</th>
+                            <th>微信名</th>
+                        </tr>
+                        {contactList}
+                    </table>
                 </div>
             </div>
         }

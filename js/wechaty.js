@@ -9,7 +9,8 @@ function onScan(qrcode, status) {
 }
 
 function onLogin(user) {
-    console.log(`${user} login`)
+    console.log(`${user} login`);
+    console.log(`登录成功, 加载联系人列表`);
 }
 
 function onLogout(user) {

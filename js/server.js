@@ -28,6 +28,12 @@ http.createServer((request, response) => {
                         respBody.qrCode = '';
                     }
                     break;
+                case "LOGON":
+                    let act = area[3];
+                    if ('CONTACT' === act.toUpperCase()) {
+
+                    }
+                    break;
                 default:
             }
             let chunk = JSON.stringify(respBody);
