@@ -62,6 +62,7 @@ http.createServer((request, response) => {
                     }
                     break;
                 default:
+                    console.log("未实现的请求", url);
             }
         } else {
             let code = 200;
