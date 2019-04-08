@@ -72,6 +72,7 @@
         }
     }
 
+
     class QrCode extends React.Component {
 
         constructor(props) {
@@ -96,11 +97,22 @@
                     </div>
                 </div>
                 <div id="contactPanel">
-                    <div>联系人列表</div>
-                    <div>
-                        <div>张三</div>
-                        <div>李四</div>
-                    </div>
+                    <ContactPanel/>
+                </div>
+            </div>
+        }
+    }
+
+    class ContactPanel extends React.Component {
+        loadContact() {
+
+        }
+
+        render() {
+            return <div>
+                <button type="button" onClick={() => this.loadContact()}>加载联系人</button>
+                <div>
+
                 </div>
             </div>
         }
