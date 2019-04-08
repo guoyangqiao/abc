@@ -9,7 +9,11 @@
             text-align: left;
         }
 
-        table, td, th {
+        td, th {
+            border: 1px solid sandybrown;
+        }
+
+        .section {
             border: 1px solid sandybrown;
         }
 
@@ -24,26 +28,23 @@
         }
 
         #controlPanel {
+            height: 800px;
             float: left;
             width: 30%;
+        }
+
+        #inputSection {
+            height: 20%;
+        }
+
+        #logOutput {
+            overflow-y: auto;
+            height: 75%;
         }
 
         #contactPanel {
             float: left;
             width: 20%;
-        }
-
-        .section {
-            border: 1px solid sandybrown;
-        }
-
-        #inputSection {
-            height: 200px;
-        }
-
-        #logSection {
-            height: 600px;
-            overflow-y: auto;
         }
 
         #contactSection {
@@ -107,15 +108,19 @@
         render() {
             return <div id="mainPanel">
                 <div id="controlPanel">
-                    <div>
-                        <div id='inputSection' className="section">
-                            <div className="section">输入</div>
-                            <div> 说点什么吧</div>
-                        </div>
-                        <div id='logSection' className="section">
-                            <div className="section">日志</div>
-                            <div id='logOutput'>实际日志内容</div>
-                        </div>
+                    <div className="section">输入</div>
+                    <div id='inputSection' className="section"> 说点什么吧</div>
+                    <div className="section">日志</div>
+                    <div id='logOutput' className="section">经过和千帆的商议，决定成立一个后援团。
+                        商议的过程中取了几个名字，最后选定【帆布】作为后援团的最终名字，我立刻毫不犹豫地换了一个新号。
+                        【帆布】既是后援团的名字，同时也是所有喜欢千帆小说的读者的统一称呼。 虽然后援团已经成立，但是目前成员极少，希望正版读者踊跃参加其中。
+                        想必大家也知道后援团不同于其他，打个比方说，这个就像群中盟主群和普通群的差别一样，后援团则是千帆的小说的核心力量。
+                        后援团的付出自然要比其他读者要多出很多，同样需要忙的事相对而言也是比较多。 所以希望有能力的书友能够加入这一个集体，在此南北朝谢过大家。 除后援团事，接下来和大家说的：
+                        那就是见面年会的事，很高兴千帆能从百忙中抽出时间举办这次的活动。 千帆第一次举办这样的活动，我和他都希望能够圆满成功。
+                        知道大家有些人不喜欢加群，所以我来到书评区发来此贴，目的不言而喻。 招兵买马。
+                        时间暂定于明年一月份左右，地点同样是暂定-千帆所在地【安徽】，因为担心有什么突发事件，所以基本上现在的流程都还属于暂定中，要最终决定的话需要和大家共同商议。
+                        而且需要一位大方活泼的美眉来当主持，相信书友里面不缺少美眉，希望不要害羞大胆的报名。 临时建立了一个群，广大正版读者可以加进去一起协商这两件事，群号【 318920346 】。
+                        要见千帆的别错过这次机会！！！
                     </div>
                 </div>
                 <div id="contactPanel">
