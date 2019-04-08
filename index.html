@@ -50,7 +50,7 @@
                     let qrCode = resp.body.qrCode;
                     this.setState({qrCode: qrCode});
                 }).catch(console.error);
-            }, 5000);
+            }, 2000);
         }
 
         componentWillUnmount() {
@@ -59,24 +59,49 @@
 
         render() {
             let codeInst;
+            let mainPanel;
             if (this.state.qrCode !== '') {
-                codeInst = <img src={this.state.qrCode} alt={"sss"}/>;
+                codeInst = <QrCode url={this.state.qrCode}/>;
+                mainPanel = <div/>;
+            } else {
+                mainPanel = <MainPanel/>;
+                codeInst = <div/>;
             }
             return <div id="mainFrame">
-                <div id="qrCode">{codeInst}</div>
-                <div id="mainPanel">
-                    <div id="controlPanel">
-                        <div className="left">
-                            <div>发送页面</div>
-                            <div id={'sayInput'}/>
-                        </div>
+                <div>{codeInst}</div>
+                <div>{mainPanel}</div>
+            </div>
+        }
+    }
+
+    class QrCode extends React.Component {
+
+        constructor(props) {
+            super(props);
+        }
+
+        render() {
+            return <div>
+                <div>扫码登录</div>
+                <img src={this.props.url} alt={"loginCode"}/>
+            </div>;
+        }
+    }
+
+    class MainPanel extends React.Component {
+        render() {
+            return <div id="mainPanel">
+                <div id="controlPanel">
+                    <div className="left">
+                        <div>发送页面</div>
+                        <div id={'sayInput'}/>
                     </div>
-                    <div id="contactPanel">
-                        <div>联系人列表</div>
-                        <div>
-                            <div>张三</div>
-                            <div>李四</div>
-                        </div>
+                </div>
+                <div id="contactPanel">
+                    <div>联系人列表</div>
+                    <div>
+                        <div>张三</div>
+                        <div>李四</div>
                     </div>
                 </div>
             </div>
