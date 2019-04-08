@@ -133,22 +133,24 @@
             let ctl = this.state.contactList;
             let contactList = ctl.map((c) => {
                 return <tr key={c.idx}>
-                    <td><input key={c.idx} balise={c.alias} bname={c.name} type="checkbox" onChange={() => {
-                        let nlist = this.state.contactList.slice();
-                        let nlistElement = nlist[c.idx];
-                        nlistElement.selected = (nlistElement.selected + 1) % 2;
-                        console.log("做了一次点击,", nlistElement.selected);
-                        let filter = nlist.filter(x => {
-                            return x.selected;
-                        }).map(x => {
-                            return x.name;
-                        });
-                        console.log("已选中的人有", filter);
-                        this.setState({
-                            contactList: nlist
-                        });
-                    }
-                    }/></td>
+                    <td><label><input key={c.idx} balise={c.alias} bname={c.name} type="checkbox"
+                                      checked={this.state.contactList[c.idx].selected === 1}
+                                      onChange={() => {
+                                          let nlist = this.state.contactList.slice();
+                                          let nlistElement = nlist[c.idx];
+                                          nlistElement.selected = this.revertSelected(nlistElement);
+                                          console.log("做了一次点击,", nlistElement.selected);
+                                          let filter = nlist.filter(x => {
+                                              return x.selected;
+                                          }).map(x => {
+                                              return x.name;
+                                          });
+                                          console.log("已选中的人有", filter);
+                                          this.setState({
+                                              contactList: nlist
+                                          });
+                                      }
+                                      }/></label></td>
                     <td>{c.alias}</td>
                     <td>{c.name}</td>
                 </tr>
@@ -161,7 +163,11 @@
                         <tr>
                             <th>
                                 <button onClick={() => {
-                                    console.log("反选点中");
+                                    let nList = this.state.contactList.slice();
+                                    nList.forEach(x => {
+                                        x.selected = this.revertSelected(x);
+                                    });
+                                    this.setState({contactList: nList});
                                 }}>反选ta
                                 </button>
                             </th>
@@ -173,6 +179,10 @@
                     </table>
                 </div>
             </div>
+        }
+
+        revertSelected(nlistElement) {
+            return (nlistElement.selected + 1) % 2;
         }
     }
 
