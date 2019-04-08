@@ -140,12 +140,7 @@
                                           let nlistElement = nlist[c.idx];
                                           nlistElement.selected = this.revertSelected(nlistElement);
                                           console.log("做了一次点击,", nlistElement.selected);
-                                          let filter = nlist.filter(x => {
-                                              return x.selected;
-                                          }).map(x => {
-                                              return x.name;
-                                          });
-                                          console.log("已选中的人有", filter);
+                                          this.logSelected(nlist);
                                           this.setState({
                                               contactList: nlist
                                           });
@@ -163,11 +158,12 @@
                         <tr>
                             <th>
                                 <button onClick={() => {
-                                    let nList = this.state.contactList.slice();
-                                    nList.forEach(x => {
+                                    let nlist = this.state.contactList.slice();
+                                    nlist.forEach(x => {
                                         x.selected = this.revertSelected(x);
                                     });
-                                    this.setState({contactList: nList});
+                                    this.logSelected(nlist);
+                                    this.setState({contactList: nlist});
                                 }}>反选ta
                                 </button>
                             </th>
@@ -179,6 +175,15 @@
                     </table>
                 </div>
             </div>
+        }
+
+        logSelected(nlist) {
+            let filter = nlist.filter(x => {
+                return x.selected;
+            }).map(x => {
+                return x.name;
+            });
+            console.log("已选中的人有", filter);
         }
 
         revertSelected(nlistElement) {
