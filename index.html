@@ -50,8 +50,7 @@
 
         #writeArea {
             float: left;
-            width: 80%;
-            height: 90%;
+            width: 85%;
         }
 
         .floatable {
@@ -69,7 +68,7 @@
     <script src="https://cdn.staticfile.org/superagent/4.1.0/superagent.js"></script>
 </head>
 <body>
-<div align="" id="root"></div>
+<div id="root"></div>
 </body>
 <script type="text/jsx">
     class Abs extends React.Component {
@@ -122,11 +121,14 @@
                     <div className="section">输入</div>
                     <div id='inputSection' className="section">
                         <div className="floatable">
-                            <select id="inputType">
+                            <label><select id="inputType">
                                 <option value="file">Excel</option>
                                 <option value="words">圣旨</option>
-                            </select></div>
-                        <textarea id='writeArea' className="section"/>
+                            </select>
+                            </label>
+                        </div>
+                        <div><label><textarea id='writeArea'/></label>
+                        </div>
                     </div>
                     <div className="section">
                         <button onClick={() => {
