@@ -48,6 +48,16 @@
             width: 20%;
         }
 
+        #writeArea {
+            float: left;
+            width: 80%;
+            height: 90%;
+        }
+
+        .floatable {
+            float: left;
+        }
+
         #contactSection {
             height: 800px;
             overflow-y: auto;
@@ -110,7 +120,14 @@
             return <div id="mainPanel">
                 <div id="controlPanel">
                     <div className="section">输入</div>
-                    <div id='inputSection' className="section">说点什么吧</div>
+                    <div id='inputSection' className="section">
+                        <div className="floatable">
+                            <select id="inputType">
+                                <option value="file">Excel</option>
+                                <option value="words">圣旨</option>
+                            </select></div>
+                        <textarea id='writeArea' className="section"/>
+                    </div>
                     <div className="section">
                         <button onClick={() => {
                             window.confirm(`即将发送<类型><内容>,点击<OK>确认发送.\n<接收人列表>`);
