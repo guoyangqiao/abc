@@ -151,7 +151,17 @@
                 </tr>
             });
             return <div>
-                <button type="button" onClick={() => this.loadContact()}>重新加载联系人</button>
+                <button type="button" onClick={() => {
+                    let selected = this.state.contactList.filter(x => x.selected === 1);
+                    if (selected.length > 0) {
+                        let confirm = window.confirm("重新加载联系人会清空所有选择, 点击\<确认重新加载\>加载联系人");
+                        if (confirm === false) {
+                            return;
+                        }
+                    }
+                    this.loadContact();
+                }}>重新加载联系人
+                </button>
                 <div>
                     <table>
                         <tbody>
@@ -177,7 +187,8 @@
             </div>
         }
 
-        logSelected(nlist) {
+        logSelected
+        (nlist) {
             let filter = nlist.filter(x => {
                 return x.selected;
             }).map(x => {
