@@ -15,13 +15,13 @@
             justify-content: center;
         }
 
-        .div-a {
+        #controlPanel {
             float: left;
             width: 60%;
             border: 1px solid #F00
         }
 
-        .div-b {
+        #contactPanel {
             float: left;
             width: 20%;
             border: 1px solid #000
@@ -41,18 +41,20 @@
         constructor(props) {
             super(props);
             this.state = {};
-            superagent.get('/lifecycle/scan').then(resp => {
-                let qrCode = resp.body.qrCode;
-                if (qrCode !== '') {
-                    this.setState({qrCode: qrCode});
-                }
-            }).catch(console.error);
+
         }
 
         componentDidMount() {
+            this.scan = setInterval(() => {
+                superagent.get('/lifecycle/scan').then(resp => {
+                    let qrCode = resp.body.qrCode;
+                    this.setState({qrCode: qrCode});
+                }).catch(console.error);
+            }, 5000);
         }
 
         componentWillUnmount() {
+            clearInterval(this.scan);
         }
 
         render() {
@@ -63,13 +65,13 @@
             return <div id="mainFrame">
                 <div id={'qrCode'}>{codeInst}</div>
                 <div id="mainPanel">
-                    <div className="div-a">
+                    <div id="controlPanel">
                         <div className="left">
                             <div>发送页面</div>
                             <div id={'sayInput'}/>
                         </div>
                     </div>
-                    <div className="div-b">
+                    <div id="contactPanel">
                         <div>联系人列表</div>
                         <div>
                             <div>张三</div>
