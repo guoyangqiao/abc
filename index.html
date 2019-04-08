@@ -127,12 +127,7 @@
             let ctl = this.state.contactList;
             let contactList = ctl.map((c) => {
                 return <tr key={c.idx}>
-                    <td><input key={c.idx} balise={c.alias} bname={c.name} defaultChecked={() => {
-                        let b = this.state.contactList[c.idx].selected === 1;
-                        console.log("是否选中?", b);
-                        return b;
-                    }
-                    } type="checkbox" onChange={() => {
+                    <td><input key={c.idx} balise={c.alias} bname={c.name} type="checkbox" onChange={() => {
                         let nlist = this.state.contactList.slice();
                         let nlistElement = nlist[c.idx];
                         nlistElement.selected = (nlistElement.selected + 1) % 2;
