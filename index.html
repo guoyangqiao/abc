@@ -40,7 +40,7 @@
 
         #logOutput {
             overflow-y: auto;
-            height: 72.5%;
+            height: 74.5%;
         }
 
         #contactPanel {
@@ -186,19 +186,19 @@
                 </tr>
             });
             return <div>
-                <div id='contactSection'>
-                    <button
-                        onClick={() => {
-                            let selected = this.state.contactList.filter(x => x.selected === 1);
-                            if (selected.length > 0) {
-                                let confirm = window.confirm("重新加载联系人会清空所有选择, 点击\<OK\>确认加载联系人");
-                                if (confirm === false) {
-                                    return;
-                                }
+                <button
+                    onClick={() => {
+                        let selected = this.state.contactList.filter(x => x.selected === 1);
+                        if (selected.length > 0) {
+                            let confirm = window.confirm("重新加载联系人会清空所有选择, 点击\<OK\>确认加载联系人");
+                            if (confirm === false) {
+                                return;
                             }
-                            this.loadContact();
-                        }}>重新加载联系人
-                    </button>
+                        }
+                        this.loadContact();
+                    }}>重新加载联系人
+                </button>
+                <div id='contactSection'>
                     <table>
                         <tbody>
                         <tr>
