@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Hello React!</title>
+    <link type="text/css" href="css/common.css">
     <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
     <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
     <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
@@ -38,7 +39,19 @@
             }
             return <div>
                 <div id={'qrCode'}>{codeInst}</div>
-                <div id={'sayInput'}></div>
+                <div>
+                    <div className="main">
+                        <div>发送页面</div>
+                        <div id={'sayInput'}/>
+                    </div>
+                    <div className="contact">
+                        <div>联系人列表</div>
+                        <div>
+                            <div>张三</div>
+                            <div>李四</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
     }
