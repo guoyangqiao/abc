@@ -40,19 +40,10 @@
         constructor(props) {
             super(props);
             this.state = {};
-        }
-
-        componentDidMount() {
-            this.scan = setInterval(() => {
-                superagent.get('/lifecycle/scan').then(resp => {
-                    let qrCode = resp.body.qrCode;
-                    this.setState({qrCode: qrCode});
-                }).catch(console.error);
-            }, 2000);
-        }
-
-        componentWillUnmount() {
-            clearInterval(this.scan);
+            superagent.get('/lifecycle/scan').then(resp => {
+                let qrCode = resp.body.qrCode;
+                this.setState({qrCode: qrCode});
+            }).catch(console.error);
         }
 
         render() {
@@ -81,7 +72,7 @@
 
         render() {
             return <div>
-                <div>扫码登录</div>
+                <div>扫码登录, 手机扫码登录完成后刷新页面</div>
                 <img src={this.props.url} alt={"loginCode"}/>
             </div>;
         }
@@ -105,16 +96,15 @@
 
     class ContactPanel extends React.Component {
 
-
         constructor(props) {
             super(props);
-            this.state = {};
+            this.state = {contactList: []};
         }
 
         loadContact() {
-            console.log("加载联系人");
             superagent.get('/lifecycle/logon/contact').then(resp => {
-                this.setState({contactList: resp.body.contactList});
+                console.log("加载到联系人", resp.body);
+                // this.setState({contactList: resp.body.contactList});
             }).catch(console.error);
         }
 
@@ -131,11 +121,13 @@
                 <button type="button" onClick={() => this.loadContact()}>加载联系人</button>
                 <div>
                     <table>
+                        <tbody>
                         <tr>
                             <th>备注名</th>
                             <th>微信名</th>
                         </tr>
                         {contactList}
+                        </tbody>
                     </table>
                 </div>
             </div>

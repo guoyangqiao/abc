@@ -2,6 +2,30 @@ const bot = require('./wechaty').wechatyBot;
 const botContext = require('./wechaty').botContext;
 const http = require('http');
 const fs = require('fs');
+let async = require('async');
+
+function writeResponse(respBody, response) {
+    let chunk = JSON.stringify(respBody);
+    response.end(chunk);
+}
+
+function codeContactList(response) {
+    let aliasPromise = [];
+    bot.Contact.findAll().then((clist) => {
+        for (let c of clist) {
+            if (c.type() === bot.Contact.Type.Personal && c.friend() === true) {
+                aliasPromise.push(c.alias().then(r => {
+                    let newVar = {alias: r, name: c.name()};
+                    console.log(newVar);
+                    return newVar;
+                }));
+            }
+        }
+        Promise.all(aliasPromise).then(result => {
+            writeResponse(result, response);
+        });
+    });
+}
 
 http.createServer((request, response) => {
     const {headers, method, url} = request;
@@ -27,17 +51,18 @@ http.createServer((request, response) => {
                     } else {
                         respBody.qrCode = '';
                     }
+                    writeResponse(respBody, response);
                     break;
                 case "LOGON":
                     let act = area[3];
                     if ('CONTACT' === act.toUpperCase()) {
-
+                        console.log("contact start");
+                        codeContactList(response);
+                        console.log("contact end");
                     }
                     break;
                 default:
             }
-            let chunk = JSON.stringify(respBody);
-            response.end(chunk);
         } else {
             let code = 200;
             let readStream;
