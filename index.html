@@ -10,7 +10,7 @@
         }
 
         table, td, th {
-            border: 1px solid black;
+            border: 1px solid sandybrown;
         }
 
         #mainFrame {
@@ -34,14 +34,20 @@
         }
 
         #inputSection {
+            border: 1px solid sandybrown;
             height: 200px;
-            border: 1px solid black;
         }
 
         #logSection {
             height: 600px;
             overflow-y: auto;
-            border: 1px solid black;
+            border: 1px solid sandybrown;
+        }
+
+        #contactSection {
+            height: 800px;
+            overflow-y: auto;
+            border: 1px solid sandybrown;
         }
     </style>
     <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
@@ -100,12 +106,14 @@
         render() {
             return <div id="mainPanel">
                 <div id="controlPanel">
-                    <div className="left">
-                        <div>输入</div>
-                        <div id='inputSection'>说点什么吧</div>
-                        <div>日志</div>
+                    <div>
+                        <div id='inputSection'>
+                            <div>输入</div>
+                            <div> 说点什么吧</div>
+                        </div>
                         <div id='logSection'>
-
+                            <div>日志</div>
+                            <div>实际日志内容</div>
                         </div>
                     </div>
                 </div>
@@ -164,18 +172,19 @@
                 </tr>
             });
             return <div>
-                <button type="button" onClick={() => {
-                    let selected = this.state.contactList.filter(x => x.selected === 1);
-                    if (selected.length > 0) {
-                        let confirm = window.confirm("重新加载联系人会清空所有选择, 点击\<OK\>确认加载联系人");
-                        if (confirm === false) {
-                            return;
-                        }
-                    }
-                    this.loadContact();
-                }}>重新加载联系人
-                </button>
-                <div>
+                <div id='contactSection'>
+                    <button
+                        onClick={() => {
+                            let selected = this.state.contactList.filter(x => x.selected === 1);
+                            if (selected.length > 0) {
+                                let confirm = window.confirm("重新加载联系人会清空所有选择, 点击\<OK\>确认加载联系人");
+                                if (confirm === false) {
+                                    return;
+                                }
+                            }
+                            this.loadContact();
+                        }}>重新加载联系人
+                    </button>
                     <table>
                         <tbody>
                         <tr>
@@ -197,6 +206,7 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
         }
 
