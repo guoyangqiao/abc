@@ -111,6 +111,13 @@
                 <div id="controlPanel">
                     <div className="section">输入</div>
                     <div id='inputSection' className="section">说点什么吧</div>
+                    <div className="section">
+                        <button onClick={() => {
+                            window.confirm("即将发送<类型><内容>到联系人<联系人列表>,确认发送点击<OK>");
+                        }
+                        }>发送
+                        </button>
+                    </div>
                     <div className="section">日志</div>
                     <div id='logOutput' className="section">经过和千帆的商议，决定成立一个后援团。
                         商议的过程中取了几个名字，最后选定【帆布】作为后援团的最终名字，我立刻毫不犹豫地换了一个新号。
