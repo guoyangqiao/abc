@@ -128,13 +128,12 @@
                 return <label><textarea id='writeArea'/></label>;
             }
             if (type === 'file') {
-                return <input type="file" id="files" enctype="multipart/form-data" accept="*/*" onChange={(e) => {
+                return <input type="file" id="files" encType="multipart/form-data" accept="*/*" onChange={(e) => {
                     console.log("触发选择文件操作");
                     const formData = new FormData();
                     let file = e.target.files[0];
                     let fname = file.name;
                     superagent.put('/lifecycle/logon/message/send/file?fileName=' + fname)
-                        .set("Authorization", window.user.get("AuthToken"))
                         .send(formData)
                         .end(function (err, response) {
                             console.log(err, response);

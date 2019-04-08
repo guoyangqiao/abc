@@ -42,6 +42,7 @@ http.createServer((request, response) => {
             let respBody = {};
             response.writeHead(200, {'Content-Type': 'application/json'});
             let event = area[2];
+            console.log("获取到数据请求,", url);
             switch (event.toUpperCase()) {
                 case 'SCAN':
                     if (!bot.logonoff()) {
@@ -56,9 +57,14 @@ http.createServer((request, response) => {
                     if ('CONTACT' === act.toUpperCase()) {
                         codeContactList(response);
                     }
+                    if ('FILE' === act.toUpperCase()) {
+                        console.log("上传文件todo");
+                        respBody = "还没做";
+                        writeResponse(respBody, response);
+                    }
                     break;
                 default:
-                    console.log("未实现的请求", url);
+
             }
         } else {
             let code = 200;
