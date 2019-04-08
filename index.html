@@ -138,9 +138,9 @@
                                       onChange={() => {
                                           let nlist = this.state.contactList.slice();
                                           let nlistElement = nlist[c.idx];
-                                          nlistElement.selected = this.revertSelected(nlistElement);
+                                          nlistElement.selected = ContactPanel.revertSelected(nlistElement);
                                           console.log("做了一次点击,", nlistElement.selected);
-                                          this.logSelected(nlist);
+                                          ContactPanel.logSelected(nlist);
                                           this.setState({
                                               contactList: nlist
                                           });
@@ -170,9 +170,9 @@
                                 <button onClick={() => {
                                     let nlist = this.state.contactList.slice();
                                     nlist.forEach(x => {
-                                        x.selected = this.revertSelected(x);
+                                        x.selected = ContactPanel.revertSelected(x);
                                     });
-                                    this.logSelected(nlist);
+                                    ContactPanel.logSelected(nlist);
                                     this.setState({contactList: nlist});
                                 }}>反选ta
                                 </button>
@@ -187,8 +187,7 @@
             </div>
         }
 
-        logSelected
-        (nlist) {
+        static logSelected(nlist) {
             let filter = nlist.filter(x => {
                 return x.selected;
             }).map(x => {
@@ -197,7 +196,7 @@
             console.log("已选中的人有", filter);
         }
 
-        revertSelected(nlistElement) {
+        static revertSelected(nlistElement) {
             return (nlistElement.selected + 1) % 2;
         }
     }
