@@ -53,6 +53,7 @@ http.createServer((request, response) => {
                     writeResponse(respBody, response);
                     break;
                 case "LOGON":
+                    console.log("获取到登录后的操作", area[3]);
                     let act = area[3];
                     if ('CONTACT' === act.toUpperCase()) {
                         codeContactList(response);

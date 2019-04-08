@@ -133,7 +133,7 @@
                     const formData = new FormData();
                     let file = e.target.files[0];
                     let fname = file.name;
-                    superagent.put('/lifecycle/logon/file?fileName=' + fname)
+                    superagent.put('/lifecycle/logon/file/' + fname)
                         .send(formData)
                         .end(function (err, response) {
                             console.log(err, response);
