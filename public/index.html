@@ -122,25 +122,25 @@
             this.state = {inputType: 'file'}
         }
 
+        uploadFile(e) {
+            const formData = new FormData();
+            let file = e.target.files[0];
+            formData.append('recfile', file);
+            console.log(formData);
+            superagent.post('/lifecycle/logon/message/file')
+                .send(formData)
+                .end((err, response) => {
+                    console.log(err, response);
+                })
+        }
+
         renderSelectedInputArea() {
             let type = this.state.inputType;
             if (type === 'words') {
                 return <label><textarea id='writeArea'/></label>;
             }
             if (type === 'file') {
-                return <input type="file" id="files" onChange={(e) => {
-                    console.log("触发选择文件操作");
-                    const formData = new FormData();
-                    let file = e.target.files[0];
-                    formData.append('recfile', file);
-                    console.log(formData);
-                    superagent.post('/lifecycle/logon/message/file')
-                        .send(formData)
-                        .end((err, response) => {
-                            console.log(err, response);
-                        })
-                }
-                }/>;
+                return <input type="file" id="files"/>;
             }
         }
 
@@ -166,7 +166,10 @@
                             let confirmed = window.confirm(`即将发送<类型><内容>,点击<OK>确认发送.\n<接收人列表>`);
                             if (confirmed) {
 
+
                             }
+
+
                         }
                         }>发送
                         </button>
