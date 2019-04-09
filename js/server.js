@@ -2,7 +2,8 @@ const bot = require('./wechaty').wechatyBot;
 const botContext = require('./wechaty').botContext;
 const http = require('http');
 const fs = require('fs');
-let async = require('async');
+var express = require('express');
+
 
 function writeResponse(respBody, response) {
     let chunk = JSON.stringify(respBody);
