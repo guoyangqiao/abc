@@ -3,6 +3,8 @@ const botContext = require('./wechaty').botContext;
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+import {FileBox} from 'file-box'
+
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
@@ -48,9 +50,19 @@ app.post('/lifecycle/logon/message/file', upload.single('recfile'), (req, respon
 
 app.post('/lifecycle/logon/message/publish', (req, resp) => {
     // type: inputType, content: content, contacts: contacts
-    console.log(req.body.type);
-    console.log(req.body.content);
-    console.log(req.body.contacts.filter(x => x.selected === 1));
+    let type = req.body.type;
+    let content = req.body.content;
+    let okContacts = req.body.contacts.filter(x => x.selected === 1);
+    let sayContent = null;
+    if (type === 'file') {
+        //TODO
+    }
+    if (type === 'words') {
+        const fileBox = FileBox.fromUrl('https://chatie.io/wechaty/images/bot-qr-code.png')
+    }
+    for (let i = 0; i < okContacts.length; i++) {
+        fb.
+    }
     resp.status(200).end();
 });
 app.listen(3000);
