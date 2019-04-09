@@ -23,6 +23,7 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+
 app.get('/lifecycle/scan', (req, response) => {
     console.log("加载二维码");
     response.set('Content-Type', 'application/json').send({qrCode: !bot.logonoff() ? botContext.qrCode : null});
@@ -81,4 +82,5 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
     resp.status(200).end();
 });
 app.listen(3000);
+
 
