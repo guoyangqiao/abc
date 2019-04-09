@@ -101,6 +101,12 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
-function log() {
-    fs.appendFileSync(path.resolve(`./send_history.log`), 'data to append');
+const stream = fs.createWriteStream(path.resolve(`./send_history.log`), {flags: 'a'});
+
+/**
+ * 记录日志
+ * @param log
+ */
+function log(log) {
+    stream.write(log);
 }
