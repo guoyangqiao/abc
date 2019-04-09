@@ -259,11 +259,12 @@
         }
 
         componentDidMount() {
-            this.pendingLog = setInterval(this.fetchLog, 1500000);
+            this.fetchLog();
+            // this.pendingLog = setInterval(this.fetchLog, 1500000);
         }
 
         componentWillUnmount() {
-            clearInterval(this.pendingLog);
+            // clearInterval(this.pendingLog);
         }
 
         render() {
