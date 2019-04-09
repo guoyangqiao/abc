@@ -62,8 +62,10 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
         let okContact = okContacts[i];
         let alias = okContact.alias;
         let name = okContact.name;
-        let contact = await bot.Contact.find({alias: alias});
-        if (contact === null) {
+        let contact;
+        if (alias !== null) {
+            contact = await bot.Contact.find({alias: alias});
+        } else {
             contact = await bot.Contact.find({name: name});
         }
         let result = '';
