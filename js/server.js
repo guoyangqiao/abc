@@ -13,11 +13,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/lifecycle/scan', (req, response) => {
-    response.writeHead(200, {'Content-Type': 'application/json'});
     if (!bot.logonoff()) {
-        response.send(botContext.qrCode);
+        response.set('Content-Type', 'application/json').send({qrCode: botContext.qrCode});
     } else {
-        response.send('');
+        response.set('Content-Type', 'application/json').send({qrCode: null});
     }
 });
 app.get('/lifecycle/logon/contact', (req, response) => {
