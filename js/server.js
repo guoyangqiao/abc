@@ -13,10 +13,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/lifecycle/scan', (req, response) => {
+    console.log("加载二维码");
     response.set('Content-Type', 'application/json').send({qrCode: !bot.logonoff() ? botContext.qrCode : null});
 });
 
 app.get('/lifecycle/logon/contact', (req, response) => {
+    console.log("加载联系人列表");
     bot.Contact.findAll().then((clist) => {
         Promise.all(clist
             .filter(c => c.type() === bot.Contact.Type.Personal)
@@ -29,7 +31,8 @@ app.get('/lifecycle/logon/contact', (req, response) => {
     });
 });
 
-app.post('/lifecycle/logon/message/:logonAction', upload.array(), (req, response) => {
+app.post('/lifecycle/logon/message/file', upload.array(), (req, response) => {
+    console.log("上传文件");
     let logonAction = req.params.logonAction;
     if ('FILE' === logonAction.toUpperCase()) {
         console.log("上传文件todo");
