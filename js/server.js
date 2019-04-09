@@ -90,12 +90,8 @@ app.listen(3000);
  * @returns {Promise<*>}
  */
 async function snooze() {
-    let sleepPeriod = getRandomInt(1000) + 200;
+    let sleepPeriod = Math.floor(Math.random() * Math.floor(1000)) + 200;
     return new Promise(resolve => setTimeout(resolve, sleepPeriod));
-}
-
-function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
 }
 
 const stream = fs.createWriteStream(path.resolve(`./send_history.log`), {flags: 'a'});
