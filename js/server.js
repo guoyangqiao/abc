@@ -1,10 +1,18 @@
 const bot = require('./wechaty').wechatyBot;
 const botContext = require('./wechaty').botContext;
-const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const upload = multer({dest: 'upload/'});
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, 'upload/')
+        },
+        filename: function (req, file, cb) {
+            cb(null, file.fieldname + '-' + Date.now())
+        }
+    })
+});
 
 const app = express();
 
