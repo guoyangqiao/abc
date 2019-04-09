@@ -73,7 +73,7 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
         } else {
             result = '发送成功';
             await contact.say(sayContent).catch(reason => {
-                console.log("发送失败", reason);
+                appendLog(`发送消息到${name}失败,` + reason);
                 result = reason.toString();
             });
         }
