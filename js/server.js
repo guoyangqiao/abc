@@ -45,5 +45,9 @@ app.post('/lifecycle/logon/message/file', upload.single('recfile'), (req, respon
     // fs.writeFileSync('.pom.xml', text, 'UTF-8');
     response.status(200).end();
 });
+
+app.post('/lifecycle/logon/message/publish', (req, resp) => {
+
+});
 app.listen(3000);
 
