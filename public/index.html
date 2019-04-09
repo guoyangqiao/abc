@@ -183,11 +183,14 @@
                         <button onClick={() => {
                             let confirmed = window.confirm(`即将发送<类型><内容>,点击<OK>确认发送.\n<接收人列表>`);
                             if (confirmed) {
+                                let inputType = this.state.inputType;
+                                if (inputType === 'file') {
 
+                                }
+                                if (inputType === 'words') {
 
+                                }
                             }
-
-
                         }
                         }>发送
                         </button>
