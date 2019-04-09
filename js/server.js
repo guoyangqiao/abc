@@ -47,7 +47,11 @@ app.post('/lifecycle/logon/message/file', upload.single('recfile'), (req, respon
 });
 
 app.post('/lifecycle/logon/message/publish', (req, resp) => {
-
+    // type: inputType, content: content, contacts: contacts
+    console.log(req.body.type);
+    console.log(req.body.content);
+    console.log(req.body.contacts);
+    resp.status(200).end();
 });
 app.listen(3000);
 
