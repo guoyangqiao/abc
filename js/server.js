@@ -68,17 +68,16 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
         } else {
             contact = await bot.Contact.find({name: name});
         }
-        let result = `发送${content}到${name}结果-`;
+        let result;
         if (contact === null || contact.friend() === false) {
-            result += `联系人不存在或不是你的好友`;
+            result = `联系人不存在或不是你的好友`;
         } else {
-            let sendResult = '成功';
+            result = '成功';
             await contact.say(sayContent).catch(reason => {
-                sendResult = "异常," + reason.toString();
+                result = "异常," + reason.toString();
             });
-            result += sendResult;
         }
-        appendLog(result);
+        appendLog(`发送<${content}>到<${name}>结果<${result}>`);
         sendStatistic.push({name: name, alias: alias, result: result});
         await snooze();
     }
