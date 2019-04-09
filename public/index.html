@@ -185,19 +185,19 @@
                             let inputType = this.state.inputType;
                             let content = this.state.content;
                             if (this.state.inputType !== '' && this.state.content !== '') {
+                                let confirmed = window.confirm(`即将发送 ${inputType} :  ${content} ,点击 OK 确认发送.\n<接收人列表>`);
+                                if (confirmed) {
+                                    let body = {type: inputType, content: content};
+                                    superagent.post('/lifecycle/logon/message/publish')
+                                        .set('Content-Type', 'application/json')
+                                        .send(body)
+                                        .then(cb => {
+                                            console.log("发送结束", inputType, cb);
+                                        });
+                                    ;
+                                }
+                            } else {
                                 alert("没有填写可发送的内容");
-                                return;
-                            }
-                            let confirmed = window.confirm(`即将发送 ${inputType} :  ${content} ,点击 OK 确认发送.\n<接收人列表>`);
-                            if (confirmed) {
-                                let body = {type: inputType, content: content};
-                                superagent.post('/lifecycle/logon/message/publish')
-                                    .set('Content-Type', 'application/json')
-                                    .send(body)
-                                    .then(cb => {
-                                        console.log("发送结束", inputType, cb);
-                                    });
-                                ;
                             }
                         }
                         }>发送
