@@ -193,38 +193,40 @@
                         </div>
                     </div>
                     <div className="section">
-                        <button onClick={() => {
-                            let inputType = this.state.inputType;
-                            let content;
-                            let contacts = this.child.current.getSelected();
-                            if (inputType === 'file') {
-                                content = this.state.fileContent
-                            }
-                            if (inputType === 'words') {
-                                content = this.state.textContent
-                            }
-                            if (this.state.inputType !== '' && content !== '' && contacts.length > 0) {
-                                let confirmed = window.confirm(`即将发送 ${inputType} :  ${content} ,点击 OK 确认发送. 联系人列表:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name
-                                ).join('\n')}`);
-                                if (confirmed) {
-                                    this.setState(Object.assign({}, this.state, {onSending: true}));
-                                    let body = {type: inputType, content: content, contacts: contacts};
-                                    superagent.post('/lifecycle/logon/message/publish')
-                                        .set('Content-Type', 'application/json')
-                                        .send(body)
-                                        .then(cb => {
-                                            console.log("发送结束", inputType, cb);
-                                            this.setState(Object.assign({}, this.state, {onSending: false}));
-                                        }, ecb => {
-                                            console.log("发送异常", inputType, ecb);
-                                            this.setState(Object.assign({}, this.state, {onSending: false}));
-                                        });
+                        <button
+                            disabled={this.state.onSending}
+                            onClick={() => {
+                                let inputType = this.state.inputType;
+                                let content;
+                                let contacts = this.child.current.getSelected();
+                                if (inputType === 'file') {
+                                    content = this.state.fileContent
                                 }
-                            } else {
-                                alert("缺少发送内容或接收人");
+                                if (inputType === 'words') {
+                                    content = this.state.textContent
+                                }
+                                if (this.state.inputType !== '' && content !== '' && contacts.length > 0) {
+                                    let confirmed = window.confirm(`即将发送 ${inputType} :  ${content} ,点击 OK 确认发送. 联系人列表:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name
+                                    ).join('\n')}`);
+                                    if (confirmed) {
+                                        this.setState(Object.assign({}, this.state, {onSending: true}));
+                                        let body = {type: inputType, content: content, contacts: contacts};
+                                        superagent.post('/lifecycle/logon/message/publish')
+                                            .set('Content-Type', 'application/json')
+                                            .send(body)
+                                            .then(cb => {
+                                                console.log("发送结束", inputType, cb);
+                                                this.setState(Object.assign({}, this.state, {onSending: false}));
+                                            }, ecb => {
+                                                console.log("发送异常", inputType, ecb);
+                                                this.setState(Object.assign({}, this.state, {onSending: false}));
+                                            });
+                                    }
+                                } else {
+                                    alert("缺少发送内容或接收人");
+                                }
                             }
-                        }
-                        }>{this.state.onSending ?
+                            }>{this.state.onSending ?
                             <div style={{color: "#ff0000"}}>正在发送</div> :
                             <div style={{color: "#0bbb00"}}>点击发送</div>}
                         </button>
