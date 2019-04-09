@@ -70,12 +70,13 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
         }
         let result = `发送${content}到${name}结果-`;
         if (contact === null || contact.friend() === false) {
-            result = `联系人不存在或不是你的好友`;
+            result += `联系人不存在或不是你的好友`;
         } else {
-            result = '发送成功';
+            let sendResult = '成功';
             await contact.say(sayContent).catch(reason => {
-                result = reason.toString();
+                sendResult = "异常," + reason.toString();
             });
+            result += sendResult;
         }
         appendLog(result);
         sendStatistic.push({name: name, alias: alias, result: result});
