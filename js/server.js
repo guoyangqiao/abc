@@ -52,7 +52,7 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
     let okContacts = req.body.contacts.filter(x => x.selected === 1);
     let sayContent;
     if (type === 'file') {
-        sayContent = FileBox.fromFile('upload/' + "ccc.file");
+        sayContent = FileBox.fromFile('upload/' + content);
     }
     if (type === 'words') {
         sayContent = content;
