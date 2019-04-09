@@ -68,8 +68,8 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
         sayContent = FileBox.fromFile('upload/' + content);
     }
     if (type === 'words') {
-        sayContent = content;
-        // console.log(`发送内容$${sayContent}$`);
+        sayContent = escape(content);
+        console.log(`发送内容$${sayContent}$`);
     }
     let sendStatistic = [];
     for (let i = 0; i < okContacts.length; i++) {
@@ -118,4 +118,15 @@ function appendLog(log) {
     let chunk = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') + " " + log;
     console.log(chunk);
     stream.write(chunk + endOfLine);
+}
+
+function escape(str) {
+    str = str.replace(/&/g, '&amp;')
+    str = str.replace(/</g, '&lt;')
+    str = str.replace(/>/g, '&gt;')
+    str = str.replace(/"/g, '&quto;')
+    str = str.replace(/'/g, '&#39;')
+    str = str.replace(/`/g, '&#96;')
+    str = str.replace(/\//g, '&#x2F;')
+    return str
 }
