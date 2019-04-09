@@ -34,7 +34,7 @@ app.get('/lifecycle/logon/contact', (req, response) => {
 app.post('/lifecycle/logon/message/file', upload.single('recfile'), (req, response) => {
     console.log("上传文件");
     // fs.writeFileSync('.pom.xml', text, 'UTF-8');
-    // response.status(200).end();
+    response.status(200).end();
 });
 app.listen(3000);
 
