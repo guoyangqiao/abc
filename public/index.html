@@ -126,7 +126,6 @@
             const formData = new FormData();
             let file = e.target.files[0];
             formData.append('recfile', file);
-            console.log(formData);
             superagent.post('/lifecycle/logon/message/file')
                 .send(formData)
                 .end((err, response) => {
@@ -151,7 +150,13 @@
                             e.target.value = null;
                         }
                         }/>
-                        <div>选中文件: {this.state.fname}</div>
+                        <div>{(() => {
+                            let fnmae = this.state.fname;
+                            if (fnmae)
+                                return `选中文件:${fnmae}`;
+                            else return ``;
+                        })()
+                        }</div>
                     </div>
                 </div>;
             }
