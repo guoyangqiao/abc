@@ -141,16 +141,18 @@
             }
             if (type === 'file') {
                 return <div>
-                    <input type="file" id="files" onChange={(e) => {
-                        this.uploadFile(e);
-                        let file = e.target.files[0];
-                        let name = file.name;
-                        let assign = Object.assign({}, this.state, {fname: name});
-                        this.setState(assign);
-                        e.target.value = null;
-                    }
-                    }/>
-                    <div>{this.state.fname}</div>
+                    <div className="floatable">
+                        <input type="file" id="files" onChange={(e) => {
+                            this.uploadFile(e);
+                            let file = e.target.files[0];
+                            let name = file.name;
+                            let assign = Object.assign({}, this.state, {fname: name});
+                            this.setState(assign);
+                            e.target.value = null;
+                        }
+                        }/>
+                        <div>选中文件: {this.state.fname}</div>
+                    </div>
                 </div>;
             }
         }
