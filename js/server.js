@@ -75,6 +75,7 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
         } else {
             result = '发送成功';
             await contact.say(sayContent).catch(reason => {
+                console.log("发送信息失败", reason);
                 result = reason.toString();
             });
         }
