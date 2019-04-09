@@ -211,6 +211,7 @@
                                     if (confirmed) {
                                         this.setState(Object.assign({}, this.state, {onSending: true}));
                                         let body = {type: inputType, content: content, contacts: contacts};
+                                        this.pendingLog = setInterval(this.fetchLog, 2000);
                                         superagent.post('/lifecycle/logon/message/publish')
                                             .set('Content-Type', 'application/json')
                                             .send(body)
@@ -219,6 +220,7 @@
                                             }, (err) => {
                                                 console.log("发送消息异常", err);
                                             }).finally(() => {
+                                                clearInterval(this.pendingLog);
                                                 this.setState(Object.assign({}, this.state, {onSending: false}));
                                                 this.logChild.current.fetchLog();
                                             }
@@ -260,11 +262,9 @@
 
         componentDidMount() {
             this.fetchLog();
-            // this.pendingLog = setInterval(this.fetchLog, 1500000);
         }
 
         componentWillUnmount() {
-            // clearInterval(this.pendingLog);
         }
 
         render() {
