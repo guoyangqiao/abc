@@ -173,6 +173,7 @@
         }
 
         render() {
+            let contactPanel = <ContactPanel/>;
             return <div id="mainPanel">
                 <div id="controlPanel">
                     <div className="section">输入</div>
@@ -232,7 +233,7 @@
                     </div>
                 </div>
                 <div id="contactPanel">
-                    <ContactPanel/>
+                    {contactPanel}
                 </div>
             </div>
         }
@@ -276,7 +277,7 @@
                             nlist.forEach(x => {
                                 x.selected = ContactPanel.revertSelected(x);
                             });
-                            ContactPanel.logSelected(nlist);
+                            console.log("已选中的人有", ContactPanel.getSelected(nlist));
                             this.setState({contactList: nlist});
                         }}>反选ta
                         </button>
@@ -327,13 +328,12 @@
             </div>
         }
 
-        static logSelected(nlist) {
-            let filter = nlist.filter(x => {
+        static getSelected(nlist) {
+            return nlist.filter(x => {
                 return x.selected;
             }).map(x => {
                 return x.name;
             });
-            console.log("已选中的人有", filter);
         }
 
         static revertSelected(nlistElement) {
