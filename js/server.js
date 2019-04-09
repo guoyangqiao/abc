@@ -3,8 +3,9 @@ const botContext = require('./wechaty').botContext;
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-import {FileBox} from 'file-box'
+const {FileBox} = require('file-box');
 
+console.log(fileBox);
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
@@ -55,13 +56,22 @@ app.post('/lifecycle/logon/message/publish', (req, resp) => {
     let okContacts = req.body.contacts.filter(x => x.selected === 1);
     let sayContent = null;
     if (type === 'file') {
-        //TODO
+        sayContent = FileBox.fromFile('upload/' + content);
     }
     if (type === 'words') {
-        const fileBox = FileBox.fromUrl('https://chatie.io/wechaty/images/bot-qr-code.png')
+        sayContent = content;
     }
     for (let i = 0; i < okContacts.length; i++) {
-        fb.
+        let okContact = okContacts[i];
+        let alias = okContact.alias;
+        let name = okContact.name;
+        bot.Contact.find({alias: alias}).then(c => {
+            if (c === null) {
+                Promise.all([bot.Contact.find({name: name})])
+            }
+        });
+        console.log(`向联系人${okContact.name}发送消息${content}`);
+
     }
     resp.status(200).end();
 });
