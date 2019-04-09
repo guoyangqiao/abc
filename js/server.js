@@ -107,6 +107,6 @@ const stream = fs.createWriteStream(path.resolve(`./send_history.log`), {flags: 
  * 记录日志
  * @param log
  */
-function log(log) {
-    stream.write(log);
+function appendLog(log) {
+    stream.write(new Date().toISOString() + ": " + log);
 }
