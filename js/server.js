@@ -78,12 +78,21 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
         }
         console.log(`${name}${result}`);
         sendStatistic.push({name: name, alias: alias, result: result})
-        await snooze(500);
+        await snooze();
     }
     resp.status(200).end();
 });
 app.listen(3000);
 
-async function snooze(t) {
-    return new Promise(resolve => setTimeout(resolve, t));
+/**
+ * 在发送时休眠随意一段时间
+ * @returns {Promise<*>}
+ */
+async function snooze() {
+    let sleepPeriod = getRandomInt(1000) + 500;
+    return new Promise(resolve => setTimeout(resolve, sleepPeriod));
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
 }
