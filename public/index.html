@@ -215,6 +215,9 @@
                                         .then(cb => {
                                             console.log("发送结束", inputType, cb);
                                             this.setState(Object.assign({}, this.state, {onSending: false}));
+                                        }, ecb => {
+                                            console.log("发送异常", inputType, ecb);
+                                            this.setState(Object.assign({}, this.state, {onSending: false}));
                                         });
                                 }
                             } else {
