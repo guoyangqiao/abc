@@ -17,18 +17,15 @@ app.get('/lifecycle/scan', (req, response) => {
 });
 
 app.get('/lifecycle/logon/contact', (req, response) => {
-    let aliasPromise = [];
     bot.Contact.findAll().then((clist) => {
-        for (let c of clist) {
-            if (c.type() === bot.Contact.Type.Personal && c.friend() === true) {
-                aliasPromise.push(c.alias().then(r => {
+        Promise.all(clist
+            .filter(c => c.type() === bot.Contact.Type.Personal)
+            .filter(c => c.friend() === true)
+            .map(c => c.alias().then(r => {
                     return {alias: r, name: c.name()};
-                }));
-            }
-        }
-        Promise.all(aliasPromise).then(result => {
-            response.status(200).json(result);
-        });
+                })
+            ))
+            .then(result => response.status(200).json(result));
     });
 });
 
