@@ -264,7 +264,9 @@
         }
 
         render() {
-            return this.state.pendingLog.map(c => `<p>${c}<p>`).join();
+            return this.state.pendingLog.map(x => {
+                return (<p align="left">{x}</p>)
+            });
         }
     }
 
