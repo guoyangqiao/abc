@@ -86,7 +86,7 @@
         render() {
             let codeInst;
             let mainPanel;
-            if (this.state.qrCode !== '') {
+            if (this.state.qrCode !== null) {
                 codeInst = <QrCode url={this.state.qrCode}/>;
                 mainPanel = <div/>;
             } else {
