@@ -121,7 +121,8 @@
         constructor() {
             super();
             this.state = {inputType: 'words', textContent: '', fileContent: ''};
-            this.child = React.createRef();
+            this.contactChild = React.createRef();
+            this.logChild = React.createRef();
         }
 
         uploadFile(e) {
@@ -199,7 +200,7 @@
                             onClick={() => {
                                 let inputType = this.state.inputType;
                                 let content;
-                                let contacts = this.child.current.getSelected();
+                                let contacts = this.contactChild.current.getSelected();
                                 if (inputType === 'file') {
                                     content = this.state.fileContent
                                 }
@@ -218,6 +219,7 @@
                                             .then(cb => {
                                                 console.log("发送结束", inputType, cb);
                                                 this.setState(Object.assign({}, this.state, {onSending: false}));
+                                                this.logChild.current.//TODO
                                             }, ecb => {
                                                 console.log("发送异常", inputType, ecb);
                                                 this.setState(Object.assign({}, this.state, {onSending: false}));
@@ -234,11 +236,11 @@
                     </div>
                     <div className="section">日志</div>
                     <div id='logOutput' className="section">
-                        <LogPanel/>
+                        <LogPanel ref={this.logChild}/>
                     </div>
                 </div>
                 <div id="contactPanel">
-                    <ContactPanel ref={this.child}/>
+                    <ContactPanel ref={this.contactChild}/>
                 </div>
             </div>
         }
@@ -251,12 +253,14 @@
             this.state = {pendingLog: []};
         }
 
+        fetchLog() {
+            superagent.get('/lifecycle/logon/log?rows=300').then(res => {
+                this.setState({pendingLog: res.body});
+            });
+        }
+
         componentDidMount() {
-            this.pendingLog = setInterval(() => {
-                superagent.get('/lifecycle/logon/log?rows=300').then(res => {
-                    this.setState({pendingLog: res.body});
-                });
-            }, 3000);
+            this.pendingLog = setInterval(this.fetchLog, 15000);
         }
 
         componentWillUnmount() {
