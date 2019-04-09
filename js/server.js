@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const {FileBox} = require('file-box');
 
-console.log(fileBox);
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
