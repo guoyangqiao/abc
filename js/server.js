@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const {FileBox} = require('file-box');
+const {fs} = require('fs');
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -98,4 +99,8 @@ async function snooze() {
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
+}
+
+function log() {
+    fs.appendFileSync(path.resolve(`./send_history.log`), 'data to append');
 }
