@@ -119,7 +119,7 @@
 
         constructor() {
             super();
-            this.state = {inputType: 'file', content: ''}
+            this.state = {inputType: '', content: ''}
         }
 
         uploadFile(e) {
@@ -184,7 +184,7 @@
                         <button onClick={() => {
                             let inputType = this.state.inputType;
                             let content = this.state.content;
-                            if (this.state.content === '') {
+                            if (this.state.inputType !== '' && this.state.content !== '') {
                                 alert("没有填写可发送的内容");
                                 return;
                             }
