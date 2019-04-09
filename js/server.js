@@ -9,7 +9,7 @@ const upload = multer({
             cb(null, 'upload/')
         },
         filename: function (req, file, cb) {
-            cb(null, file.fieldname + '-' + Date.now())
+            cb(null, file.fieldname)
         }
     })
 });
