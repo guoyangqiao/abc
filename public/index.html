@@ -119,7 +119,7 @@
 
         constructor() {
             super();
-            this.state = {inputType: 'file', content: ''}
+            this.state = {inputType: 'file', content: '', textContent: '', fileContent: ''}
         }
 
         uploadFile(e) {
@@ -136,8 +136,17 @@
         renderSelectedInputArea() {
             let type = this.state.inputType;
             if (type === 'words') {
-                return <label><textarea style={{resize: "none"}} id='writeArea'
-                                        value={this.state.content}/></label>;
+                return <label><textarea style={{resize: "none"}}
+                                        id='writeArea'
+                                        value={this.state.textContent}
+                                        onChange={(e) => {
+                                            let textContent = e.target.value;
+                                            Object.assign({}, this.state, {
+                                                textContent: textContent,
+                                                content: textContent
+                                            });
+                                        }}/>
+                </label>;
             }
             if (type === 'file') {
                 return <div>
@@ -146,13 +155,13 @@
                             this.uploadFile(e);
                             let file = e.target.files[0];
                             let name = file.name;
-                            let assign = Object.assign({}, this.state, {content: name});
+                            let assign = Object.assign({}, this.state, {fileContent: name, content: name});
                             this.setState(assign);
                             e.target.value = null;
                         }
                         }/>
                         <div>{(() => {
-                            let fnmae = this.state.content;
+                            let fnmae = this.state.fileContent;
                             if (fnmae)
                                 return `选中文件:${fnmae}`;
                             else return ``;
