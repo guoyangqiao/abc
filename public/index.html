@@ -193,13 +193,14 @@
                         <button onClick={() => {
                             let inputType = this.state.inputType;
                             let content;
+                            let contacts = [];
                             if (inputType === 'file') {
                                 content = this.state.fileContent
                             }
                             if (inputType === 'words') {
                                 content = this.state.textContent
                             }
-                            if (this.state.inputType !== '' && content !== '') {
+                            if (this.state.inputType !== '' && content !== '' && contacts.length > 0) {
                                 let confirmed = window.confirm(`即将发送 ${inputType} :  ${content} ,点击 OK 确认发送.\n<接收人列表>`);
                                 if (confirmed) {
                                     let body = {type: inputType, content: content};
@@ -209,7 +210,6 @@
                                         .then(cb => {
                                             console.log("发送结束", inputType, cb);
                                         });
-                                    ;
                                 }
                             } else {
                                 alert("没有填写可发送的内容");
