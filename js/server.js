@@ -73,7 +73,7 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
             await contact.say(sayContent);
             result = '发送成功';
         }
-        console.log(`${name}${s}`);
+        console.log(`${name}${result}`);
         sendStatistic.push({name: name, alias: alias, result: result})
     }
     resp.status(200).end();
