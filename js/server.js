@@ -4,7 +4,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const {FileBox} = require('file-box');
-const {fs} = require('fs');
+const fs = require('fs');
+const path = require('path');
 
 const upload = multer({
     storage: multer.diskStorage({
