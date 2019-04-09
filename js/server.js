@@ -31,17 +31,10 @@ app.get('/lifecycle/logon/contact', (req, response) => {
     });
 });
 
-app.post('/lifecycle/logon/message/file', upload.array(), (req, response) => {
+app.post('/lifecycle/logon/message/file', upload.single(), (req, response) => {
     console.log("上传文件");
-    let logonAction = req.params.logonAction;
-    if ('FILE' === logonAction.toUpperCase()) {
-        console.log("上传文件todo");
-        fs.writeFileSync('.pom.xml', req.botContext.content, 'UTF-8');
-        response.status(200).end();
-    }
-    if ('words' === logonAction.toUpperCase()) {
-        console.log("发布圣旨");
-    }
+    fs.writeFileSync('.pom.xml', text, 'UTF-8');
+    response.status(200).end();
 });
 app.listen(3000);
 
