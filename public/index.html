@@ -206,12 +206,14 @@
                                 let confirmed = window.confirm(`即将发送 ${inputType} :  ${content} ,点击 OK 确认发送. 联系人列表:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name
                                 ).join('\n')}`);
                                 if (confirmed) {
+                                    Object.assign({}, this.state, {onSending: true});
                                     let body = {type: inputType, content: content, contacts: contacts};
                                     superagent.post('/lifecycle/logon/message/publish')
                                         .set('Content-Type', 'application/json')
                                         .send(body)
                                         .then(cb => {
                                             console.log("发送结束", inputType, cb);
+                                            Object.assign({}, this.state, {onSending: false});
                                         });
                                 }
                             } else {
@@ -220,6 +222,7 @@
                         }
                         }>发送
                         </button>
+                        <div id='onSending' style={{color: "#ff0000"}}>{this.state.onSending ? "正在发送" : ""}</div>
                     </div>
                     <div className="section">日志</div>
                     <div id='logOutput' className="section">经过和千帆的商议，决定成立一个后援团。
