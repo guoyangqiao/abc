@@ -119,7 +119,7 @@
 
         constructor() {
             super();
-            this.state = {inputType: 'file'}
+            this.state = {inputType: 'file', textAreaValue: ''}
         }
 
         uploadFile(e) {
@@ -136,7 +136,8 @@
         renderSelectedInputArea() {
             let type = this.state.inputType;
             if (type === 'words') {
-                return <label><textarea style={{resize: "none"}} id='writeArea'/></label>;
+                return <label><textarea style={{resize: "none"}} id='writeArea'
+                                        value={this.state.textAreaValue}/></label>;
             }
             if (type === 'file') {
                 return <div>
@@ -184,13 +185,17 @@
                             let confirmed = window.confirm(`即将发送<类型><内容>,点击<OK>确认发送.\n<接收人列表>`);
                             if (confirmed) {
                                 let inputType = this.state.inputType;
-                                superagent.post('/lifecycle/logon/message/publish');
+                                document.getElementById('writeArea').val();
                                 if (inputType === 'file') {
 
                                 }
                                 if (inputType === 'words') {
 
                                 }
+                                superagent.post('/lifecycle/logon/message/publish')
+                                    .set('Content-Type', 'application/json')
+                                    .send({type: inputType, content:})
+                                ;
                             }
                         }
                         }>发送
