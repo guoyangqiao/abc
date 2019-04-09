@@ -103,7 +103,7 @@ const stream = fs.createWriteStream(path.resolve(`./send_history.log`), {flags: 
  * @param log
  */
 function appendLog(log) {
-    let chunk = dataformat(new Date(),'yyyy-mm-dd HH:MM:ss') + ": " + log;
+    let chunk = dataformat(new Date(),'yyyy-mm-dd HH:MM:ss') + " " + log;
     console.log(chunk);
     stream.write(chunk + endOfLine);
 }
