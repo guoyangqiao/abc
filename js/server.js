@@ -29,7 +29,7 @@ app.get('/lifecycle/logon/contact', (req, response) => {
     });
 });
 
-app.put('/lifecycle/logon/message/:logonAction', upload.array(), (req, response) => {
+app.post('/lifecycle/logon/message/:logonAction', upload.array(), (req, response) => {
     let logonAction = req.params.logonAction;
     if ('FILE' === logonAction.toUpperCase()) {
         console.log("上传文件todo");

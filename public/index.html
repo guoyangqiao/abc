@@ -134,9 +134,9 @@
                     let file = e.target.files[0];
                     let fname = file.name;
                     formData.append(fname, file);
-                    superagent.put('/lifecycle/message/file/' + fname)
+                    superagent.post('/lifecycle/message/file/' + fname)
                         .send(formData)
-                        .end(function (err, response) {
+                        .end((err, response) => {
                             console.log(err, response);
                         })
                 }
