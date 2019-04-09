@@ -220,7 +220,9 @@
                                 alert("缺少发送内容或接收人");
                             }
                         }
-                        }>发送 <div id='onSending' style={{color: "#ff0000"}}>{this.state.onSending ? "正在发送" : ""}</div>
+                        }>
+                            <div id='onSending'
+                                 style={{color: "#ff0000"}}>{this.state.onSending ? "正在发送" : "点击发送"}</div>
                         </button>
                     </div>
                     <div className="section">日志</div>
