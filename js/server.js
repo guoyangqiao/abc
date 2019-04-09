@@ -13,12 +13,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/lifecycle/scan', (req, response) => {
-    if (!bot.logonoff()) {
-        response.set('Content-Type', 'application/json').send({qrCode: botContext.qrCode});
-    } else {
-        response.set('Content-Type', 'application/json').send({qrCode: null});
-    }
+    response.set('Content-Type', 'application/json').send({qrCode: !bot.logonoff() ? botContext.qrCode : null});
 });
+
 app.get('/lifecycle/logon/contact', (req, response) => {
     let aliasPromise = [];
     bot.Contact.findAll().then((clist) => {
