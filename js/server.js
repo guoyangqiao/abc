@@ -53,7 +53,7 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
     let okContacts = req.body.contacts.filter(x => x.selected === 1);
     let sayContent;
     if (type === 'file') {
-        sayContent = FileBox.fromFile('upload/' + content);
+        sayContent = FileBox.fromFile('upload/' + "ccc.file");
     }
     if (type === 'words') {
         sayContent = content;
@@ -83,7 +83,7 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
         sendStatistic.push({name: name, alias: alias, result: result});
         await snooze();
     }
-    resp.status(200).end();
+    resp.status(200).send(sendStatistic);
 });
 app.listen(3000);
 
