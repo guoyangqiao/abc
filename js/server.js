@@ -49,7 +49,7 @@ app.post('/lifecycle/logon/message/file', upload.single('recfile'), (req, respon
     response.status(200).end();
 });
 
-app.post('/lifecycle/logon/message/publish', (req, resp) => {
+app.post('/lifecycle/logon/message/publish', async (req, resp) => {
     // type: inputType, content: content, contacts: contacts
     let type = req.body.type;
     let content = req.body.content;
@@ -61,17 +61,24 @@ app.post('/lifecycle/logon/message/publish', (req, resp) => {
     if (type === 'words') {
         sayContent = content;
     }
+    let sendStatistic = [];
     for (let i = 0; i < okContacts.length; i++) {
         let okContact = okContacts[i];
         let alias = okContact.alias;
         let name = okContact.name;
-        bot.Contact.find({alias: alias}).then(c => {
-            if (c === null) {
-                Promise.all([bot.Contact.find({name: name})])
-            }
-        });
-        console.log(`向联系人${okContact.name}发送消息${content}`);
-
+        let contact = await bot.Contact.find({alias: alias});
+        if (contact === null) {
+            contact = await bot.Contact.find({name: name});
+        }
+        let result = '';
+        if (contact === null || contact.friend() === false) {
+            result = `联系人不存在或不是你的好友`;
+        } else {
+            await contact.say(sayContent);
+            result = '发送成功';
+        }
+        console.log(`${name}${s}`);
+        sendStatistic.push({name: name, alias: alias, result: result})
     }
     resp.status(200).end();
 });
