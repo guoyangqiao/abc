@@ -1,6 +1,5 @@
 const bot = require('./wechaty').wechatyBot;
 const botContext = require('./wechaty').botContext;
-const http = require('http');
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -37,7 +36,7 @@ app.get('/lifecycle/logon/contact', (req, response) => {
     });
 });
 
-app.put('/lifecycle/logon/message/:logonAction', (req, response) => {
+app.put('/lifecycle/logon/message/:logonAction', upload.array(), (req, response) => {
     let logonAction = req.params.logonAction;
     if ('FILE' === logonAction.toUpperCase()) {
         console.log("上传文件todo");
