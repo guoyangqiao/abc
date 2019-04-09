@@ -103,7 +103,7 @@ app.listen(3000);
  * @returns {Promise<*>}
  */
 async function snooze() {
-    let sleepPeriod = Math.floor(Math.random() * Math.floor(1000)) + 20000;
+    let sleepPeriod = Math.floor(Math.random() * Math.floor(1000)) + 200;
     return new Promise(resolve => setTimeout(resolve, sleepPeriod));
 }
 
