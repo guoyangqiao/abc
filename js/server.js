@@ -69,6 +69,7 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
     }
     if (type === 'words') {
         sayContent = content;
+        // console.log(`发送内容$${sayContent}$`);
     }
     let sendStatistic = [];
     for (let i = 0; i < okContacts.length; i++) {
