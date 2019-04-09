@@ -115,7 +115,7 @@ const stream = fs.createWriteStream(logFilePath, {flags: 'a'});
  */
 function appendLog(log) {
     let chunk = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') + " " + log;
-    console.log(chunk);
+    console.log("==" + chunk + "====");
     stream.write(chunk + endOfLine);
 }
 
