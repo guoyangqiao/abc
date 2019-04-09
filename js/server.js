@@ -50,7 +50,7 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
     let type = req.body.type;
     let content = req.body.content;
     let okContacts = req.body.contacts.filter(x => x.selected === 1);
-    let sayContent = null;
+    let sayContent;
     if (type === 'file') {
         sayContent = FileBox.fromFile('upload/' + content);
     }
