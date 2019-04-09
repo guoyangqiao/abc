@@ -26,6 +26,18 @@ function codeContactList(response) {
     });
 }
 
+let app = express();
+
+const options = {
+    dotfiles: 'ignore',
+    etag: false,
+    extensions: ['htm', 'html'],
+    index: false,
+    maxAge: '1d',
+};
+
+app.use(express.static('public', options));
+
 http.createServer((request, response) => {
     const {headers, method, url} = request;
     let requestBody = [];
