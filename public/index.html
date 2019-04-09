@@ -163,7 +163,10 @@
                     </div>
                     <div className="section">
                         <button onClick={() => {
-                            window.confirm(`即将发送<类型><内容>,点击<OK>确认发送.\n<接收人列表>`);
+                            let confirmed = window.confirm(`即将发送<类型><内容>,点击<OK>确认发送.\n<接收人列表>`);
+                            if (confirmed) {
+
+                            }
                         }
                         }>发送
                         </button>
