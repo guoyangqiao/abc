@@ -142,6 +142,7 @@
             if (type === 'file') {
                 return <div>
                     <input type="file" id="files" onChange={(e) => {
+                        this.uploadFile(e);
                         let file = e.target.files[0];
                         let name = file.name;
                         let assign = Object.assign({}, this.state, {fname: name});
