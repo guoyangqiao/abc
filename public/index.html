@@ -119,7 +119,7 @@
 
         constructor() {
             super();
-            this.state = {inputType: 'file', content: '', textContent: '', fileContent: ''}
+            this.state = {inputType: 'file', textContent: '', fileContent: ''}
         }
 
         uploadFile(e) {
@@ -140,11 +140,11 @@
                                         id='writeArea'
                                         value={this.state.textContent}
                                         onChange={(e) => {
+                                            console.log("获得输入", e);
                                             let textContent = e.target.value;
-                                            Object.assign({}, this.state, {
+                                            this.setState(Object.assign({}, this.state, {
                                                 textContent: textContent,
-                                                content: textContent
-                                            });
+                                            }));
                                         }}/>
                 </label>;
             }
@@ -155,7 +155,7 @@
                             this.uploadFile(e);
                             let file = e.target.files[0];
                             let name = file.name;
-                            let assign = Object.assign({}, this.state, {fileContent: name, content: name});
+                            let assign = Object.assign({}, this.state, {fileContent: name});
                             this.setState(assign);
                             e.target.value = null;
                         }
@@ -192,8 +192,14 @@
                     <div className="section">
                         <button onClick={() => {
                             let inputType = this.state.inputType;
-                            let content = this.state.content;
-                            if (this.state.inputType !== '' && this.state.content !== '') {
+                            let content;
+                            if (inputType === 'file') {
+                                content = this.state.fileContent
+                            }
+                            if (inputType === 'words') {
+                                content = this.state.textContent
+                            }
+                            if (this.state.inputType !== '' && content !== '') {
                                 let confirmed = window.confirm(`即将发送 ${inputType} :  ${content} ,点击 OK 确认发送.\n<接收人列表>`);
                                 if (confirmed) {
                                     let body = {type: inputType, content: content};
