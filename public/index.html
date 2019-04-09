@@ -152,7 +152,7 @@
                         }
                         }/>
                         <div>{(() => {
-                            let fnmae = this.state.fname;
+                            let fnmae = this.state.content;
                             if (fnmae)
                                 return `选中文件:${fnmae}`;
                             else return ``;
@@ -194,7 +194,7 @@
                                 }
                                 superagent.post('/lifecycle/logon/message/publish')
                                     .set('Content-Type', 'application/json')
-                                    .send({type: inputType, content:})
+                                    .send({type: inputType, content: this.state.content})
                                 ;
                             }
                         }
