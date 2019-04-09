@@ -44,13 +44,10 @@ app.get('/lifecycle/logon/contact', (req, response) => {
 });
 
 app.post('/lifecycle/logon/message/file', upload.single('recfile'), (req, response) => {
-    console.log("上传文件");
-    // fs.writeFileSync('.pom.xml', text, 'UTF-8');
     response.status(200).end();
 });
 
 app.post('/lifecycle/logon/message/publish', async (req, resp) => {
-    // type: inputType, content: content, contacts: contacts
     let type = req.body.type;
     let content = req.body.content;
     let okContacts = req.body.contacts.filter(x => x.selected === 1);
