@@ -73,8 +73,10 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
         if (contact === null || contact.friend() === false) {
             result = `联系人不存在或不是你的好友`;
         } else {
-            await contact.say(sayContent);
             result = '发送成功';
+            await contact.say(sayContent).catch(reason => {
+                result = reason.toString();
+            });
         }
         console.log(`${name}${result}`);
         sendStatistic.push({name: name, alias: alias, result: result})
