@@ -194,8 +194,7 @@
                         <button onClick={() => {
                             let inputType = this.state.inputType;
                             let content;
-                            let contacts = [];
-                            this.child.current.getSelected();
+                            let contacts = this.child.current.getSelected();
                             if (inputType === 'file') {
                                 content = this.state.fileContent
                             }
@@ -294,8 +293,7 @@
                                               let nlist = this.state.contactList.slice();
                                               let nlistElement = nlist[c.idx];
                                               nlistElement.selected = ContactPanel.revertSelected(nlistElement);
-                                              console.log("做了一次点击,", nlistElement.selected);
-                                              ContactPanel.logSelected(nlist);
+                                              console.log("做了一次点击,", this.getSelected());
                                               this.setState({
                                                   contactList: nlist
                                               });
