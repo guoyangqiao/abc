@@ -137,10 +137,20 @@
         renderSelectedInputArea() {
             let type = this.state.inputType;
             if (type === 'words') {
-                return <label><textarea id='writeArea'/></label>;
+                return <label><textarea style={{resize: "none"}} id='writeArea'/></label>;
             }
             if (type === 'file') {
-                return <input type="file" id="files"/>;
+                return <div>
+                    <input type="file" id="files" onChange={(e) => {
+                        let file = e.target.files[0];
+                        let name = file.name;
+                        let assign = Object.assign({}, this.state, {fname: name});
+                        this.setState(assign);
+                        e.target.value = null;
+                    }
+                    }/>
+                    <div>{this.state.fname}</div>
+                </div>;
             }
         }
 
