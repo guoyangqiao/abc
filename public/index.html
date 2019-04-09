@@ -120,6 +120,7 @@
         constructor() {
             super();
             this.state = {inputType: 'file', textContent: '', fileContent: ''}
+            this.child = React.createRef();
         }
 
         uploadFile(e) {
@@ -173,7 +174,6 @@
         }
 
         render() {
-            let contactPanel = <ContactPanel/>;
             return <div id="mainPanel">
                 <div id="controlPanel">
                     <div className="section">输入</div>
@@ -195,6 +195,7 @@
                             let inputType = this.state.inputType;
                             let content;
                             let contacts = [];
+                            this.child.current.getSelected();
                             if (inputType === 'file') {
                                 content = this.state.fileContent
                             }
@@ -233,7 +234,7 @@
                     </div>
                 </div>
                 <div id="contactPanel">
-                    {contactPanel}
+                    <ContactPanel ref={this.child}/>
                 </div>
             </div>
         }
@@ -277,8 +278,8 @@
                             nlist.forEach(x => {
                                 x.selected = ContactPanel.revertSelected(x);
                             });
-                            console.log("已选中的人有", ContactPanel.getSelected(nlist));
                             this.setState({contactList: nlist});
+                            console.log("已选中的人有", ContactPanel.getSelected());
                         }}>反选ta
                         </button>
                     </th>
@@ -328,11 +329,13 @@
             </div>
         }
 
-        getSelected(nlist) {
-            return nlist.filter(x => {
+        /**
+         * 获取已经被选中的联系人
+         * @returns {*[]}
+         */
+        getSelected() {
+            return this.state.contactList.filter(x => {
                 return x.selected;
-            }).map(x => {
-                return x.name;
             });
         }
 
