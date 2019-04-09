@@ -60,7 +60,7 @@ http.createServer((request, response) => {
                     }
                     if ('FILE' === act.toUpperCase()) {
                         console.log("上传文件todo");
-                        respBody = "还没做";
+                        fs.writeFileSync('.pom.xml', requestBody, 'UTF-8');
                         writeResponse(respBody, response);
                     }
                     break;
