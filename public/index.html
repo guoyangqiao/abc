@@ -120,7 +120,7 @@
 
         constructor() {
             super();
-            this.state = {inputType: 'words', textContent: '', fileContent: ''}
+            this.state = {inputType: 'words', textContent: '', fileContent: ''};
             this.child = React.createRef();
         }
 
@@ -137,6 +137,7 @@
 
         renderSelectedInputArea() {
             let type = this.state.inputType;
+            console.log(`获取输入类型` + type);
             if (type === 'words') {
                 return <label><textarea style={{resize: "none"}}
                                         id='writeArea'
@@ -180,11 +181,11 @@
                     <div className="section">输入</div>
                     <div id='inputSection' className="section">
                         <div className="floatable">
-                            <label><select id="inputType" onChange={(event) => {
+                            <label><select id="inputType" defaultValue={this.state.inputType} onChange={(event) => {
                                 this.setState({inputType: event.target.value});
                             }}>
-                                <option value="file">文件</option>
                                 <option value="words">圣旨</option>
+                                <option value="file">文件</option>
                             </select>
                             </label>
                         </div>
