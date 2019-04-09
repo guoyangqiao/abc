@@ -4,7 +4,7 @@ const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const upload = multer();
+const upload = multer({dest:'upload'});
 
 const app = express();
 
