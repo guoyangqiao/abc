@@ -268,9 +268,14 @@
         }
 
         render() {
-            return this.state.pendingLog.map(x => {
-                return (<p align="left">{x}</p>)
+            let map = this.state.pendingLog.map(x => {
+                return (<tr align="left">
+                    <td>{x}</td>
+                </tr>)
             });
+            return <table>
+                <tbody>{map}</tbody>
+            </table>
         }
     }
 
