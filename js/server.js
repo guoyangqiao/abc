@@ -4,7 +4,7 @@ const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const upload = multer({dest:'upload/'});
+const upload = multer({dest: 'upload/'});
 
 const app = express();
 
@@ -31,10 +31,10 @@ app.get('/lifecycle/logon/contact', (req, response) => {
     });
 });
 
-app.post('/lifecycle/logon/message/file', upload.single(), (req, response) => {
+app.post('/lifecycle/logon/message/file', upload.single('recfile'), (req, response) => {
     console.log("上传文件");
-    fs.writeFileSync('.pom.xml', text, 'UTF-8');
-    response.status(200).end();
+    // fs.writeFileSync('.pom.xml', text, 'UTF-8');
+    // response.status(200).end();
 });
 app.listen(3000);
 
