@@ -7,6 +7,8 @@ const {FileBox} = require('file-box');
 const fs = require('fs');
 const path = require('path');
 
+const endOfLine = require('os').EOL;
+
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
@@ -103,5 +105,5 @@ const stream = fs.createWriteStream(path.resolve(`./send_history.log`), {flags: 
 function appendLog(log) {
     let chunk = new Date().toISOString() + ": " + log;
     console.log(chunk);
-    stream.write(chunk);
+    stream.write(chunk + endOfLine);
 }
