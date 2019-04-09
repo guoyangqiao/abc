@@ -139,13 +139,11 @@
 
         renderSelectedInputArea() {
             let type = this.state.inputType;
-            console.log(`获取输入类型` + type);
             if (type === 'words') {
                 return <label><textarea style={{resize: "none"}}
                                         id='writeArea'
                                         value={this.state.textContent}
                                         onChange={(e) => {
-                                            console.log("获得输入", e);
                                             let textContent = e.target.value;
                                             this.setState(Object.assign({}, this.state, {
                                                 textContent: textContent,
@@ -216,14 +214,15 @@
                                         superagent.post('/lifecycle/logon/message/publish')
                                             .set('Content-Type', 'application/json')
                                             .send(body)
-                                            .then(cb => {
-                                                console.log("发送结束", inputType, cb);
+                                            .then((resp) => {
+                                                console.log("发送消息结束", resp);
+                                            }, (err) => {
+                                                console.log("发送消息异常", err);
+                                            }).finally(() => {
                                                 this.setState(Object.assign({}, this.state, {onSending: false}));
-                                                this.logChild.current.//TODO
-                                            }, ecb => {
-                                                console.log("发送异常", inputType, ecb);
-                                                this.setState(Object.assign({}, this.state, {onSending: false}));
-                                            });
+                                                this.logChild.current.fetchLog();
+                                            }
+                                        );
                                     }
                                 } else {
                                     alert("缺少发送内容或接收人");
@@ -260,7 +259,7 @@
         }
 
         componentDidMount() {
-            this.pendingLog = setInterval(this.fetchLog, 15000);
+            this.pendingLog = setInterval(this.fetchLog, 1500000);
         }
 
         componentWillUnmount() {
