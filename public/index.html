@@ -202,7 +202,7 @@
                                 content = this.state.textContent
                             }
                             if (this.state.inputType !== '' && content !== '' && contacts.length > 0) {
-                                let confirmed = window.confirm(`即将发送 ${inputType} :  ${content} ,点击 OK 确认发送.\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name
+                                let confirmed = window.confirm(`即将发送 ${inputType} :  ${content} ,点击 OK 确认发送. 联系人列表:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name
                                 ).join('\n')}`);
                                 if (confirmed) {
                                     let body = {type: inputType, content: content, contacts: contacts};
