@@ -120,7 +120,7 @@
 
         constructor() {
             super();
-            this.state = {inputType: 'file', textContent: '', fileContent: ''}
+            this.state = {inputType: 'words', textContent: '', fileContent: ''}
             this.child = React.createRef();
         }
 
@@ -220,9 +220,8 @@
                                 alert("缺少发送内容或接收人");
                             }
                         }
-                        }>发送
+                        }>发送 <div id='onSending' style={{color: "#ff0000"}}>{this.state.onSending ? "正在发送" : ""}</div>
                         </button>
-                        <div id='onSending' style={{color: "#ff0000"}}>{this.state.onSending ? "正在发送" : ""}</div>
                     </div>
                     <div className="section">日志</div>
                     <div id='logOutput' className="section">经过和千帆的商议，决定成立一个后援团。
