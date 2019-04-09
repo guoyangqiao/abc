@@ -205,7 +205,7 @@
                                 let confirmed = window.confirm(`即将发送 ${inputType} :  ${content} ,点击 OK 确认发送.\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name
                                 ).join('\n')}`);
                                 if (confirmed) {
-                                    let body = {type: inputType, content: content};
+                                    let body = {type: inputType, content: content, contacts: contacts};
                                     superagent.post('/lifecycle/logon/message/publish')
                                         .set('Content-Type', 'application/json')
                                         .send(body)
