@@ -255,6 +255,7 @@
             this.pendingLog = setInterval(() => {
                 superagent.get('/lifecycle/logon/log?rows=300').then(res => {
                     this.setState({pendingLog: res.body.reverse()});
+
                 });
             }, 3000);
         }
@@ -264,11 +265,7 @@
         }
 
         render() {
-            let pendingLog = this.state.pendingLog.join();
-            for (let i = 0; i < pendingLog.length; i++) {
-                let logElement = pendingLog[i];
-
-            }
+            return this.state.pendingLog.map(c => `<p>${c}<p>`).join();
         }
     }
 

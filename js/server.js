@@ -6,8 +6,10 @@ const multer = require('multer');
 const {FileBox} = require('file-box');
 const fs = require('fs');
 const path = require('path');
-const endOfLine = require('os').EOL;
 const moment = require('moment');
+const readLastLines = require('read-last-lines');
+
+const endOfLine = require('os').EOL;
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -29,6 +31,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/lifecycle/scan', (req, response) => {
     response.set('Content-Type', 'application/json').send({qrCode: !bot.logonoff() ? botContext.qrCode : null});
+});
+
+let logFilePath = path.resolve(`./send_history.log`);
+app.get('/lifecycle/logon/log', async (req, response) => {
+    const rows = req.query.rows;
+    await readLastLines.read(logFilePath, rows).then(cc => {
+        let logs = cc.split(endOfLine).reverse();
+        response.status(200).send(logs);
+    });
 });
 
 app.get('/lifecycle/logon/contact', (req, response) => {
@@ -96,7 +107,7 @@ async function snooze() {
     return new Promise(resolve => setTimeout(resolve, sleepPeriod));
 }
 
-const stream = fs.createWriteStream(path.resolve(`./send_history.log`), {flags: 'a'});
+const stream = fs.createWriteStream(logFilePath, {flags: 'a'});
 
 /**
  * 记录日志
