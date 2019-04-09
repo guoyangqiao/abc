@@ -78,6 +78,7 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
         }
         console.log(`${name}${result}`);
         sendStatistic.push({name: name, alias: alias, result: result})
+        await snooze(1000);
     }
     resp.status(200).end();
 });
