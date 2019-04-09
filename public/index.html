@@ -211,12 +211,12 @@
                                     if (confirmed) {
                                         this.setState(Object.assign({}, this.state, {onSending: true}));
                                         let body = {type: inputType, content: content, contacts: contacts};
-                                        this.pendingLog = setInterval(this.fetchLog, 2000);
+                                        this.pendingLog = setInterval(() => this.logChild.current.fetchLog(), 2000);
                                         superagent.post('/lifecycle/logon/message/publish')
                                             .set('Content-Type', 'application/json')
                                             .send(body)
                                             .then((resp) => {
-                                                console.log("发送消息结束", resp);
+                                                // console.log("发送消息结束", resp);
                                             }, (err) => {
                                                 console.log("发送消息异常", err);
                                             }).finally(() => {
@@ -326,7 +326,7 @@
                                               let nlist = this.state.contactList.slice();
                                               let nlistElement = nlist[c.idx];
                                               nlistElement.selected = ContactPanel.revertSelected(nlistElement);
-                                              console.log("做了一次点击,", this.getSelected());
+                                              // console.log("做了一次点击,", this.getSelected());
                                               this.setState({
                                                   contactList: nlist
                                               });
