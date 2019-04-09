@@ -254,8 +254,7 @@
         componentDidMount() {
             this.pendingLog = setInterval(() => {
                 superagent.get('/lifecycle/logon/log?rows=300').then(res => {
-                    this.setState({pendingLog: res.body.reverse()});
-
+                    this.setState({pendingLog: res.body});
                 });
             }, 3000);
         }
