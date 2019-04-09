@@ -7,7 +7,7 @@ const {FileBox} = require('file-box');
 const fs = require('fs');
 const path = require('path');
 const endOfLine = require('os').EOL;
-var moment = require('moment');
+const moment = require('moment');
 
 const upload = multer({
     storage: multer.diskStorage({
