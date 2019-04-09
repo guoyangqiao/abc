@@ -186,9 +186,13 @@
                             let content = this.state.content;
                             let confirmed = window.confirm(`即将发送<${inputType}>: <${content}>,点击<OK>确认发送.\n<接收人列表>`);
                             if (confirmed) {
+                                let body = {type: inputType, content: content};
                                 superagent.post('/lifecycle/logon/message/publish')
                                     .set('Content-Type', 'application/json')
-                                    .send({type: inputType, content: content})
+                                    .send(body)
+                                    .then(cb => {
+                                        console.log("发送结束", inputType);
+                                    });
                                 ;
                             }
                         }
