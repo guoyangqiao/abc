@@ -9,13 +9,18 @@
             text-align: left;
         }
 
-        td, th {
+        .log {
+            border: none;
+        }
+
+        .contact {
             border: 1px solid sandybrown;
         }
 
         .section {
             border: 1px solid sandybrown;
         }
+
 
         #mainFrame {
             text-align: center;
@@ -268,9 +273,10 @@
         }
 
         render() {
-            let map = this.state.pendingLog.map(x => {
-                return (<tr align="left">
-                    <td>{x}</td>
+            let map = this.state.pendingLog.map((x, id) => {
+                return (<tr align="left" key={id} className="log">
+                    <td>
+                        {x}</td>
                 </tr>)
             });
             return <table>
@@ -309,7 +315,7 @@
             let ctl = this.state.contactList;
             let contactList = <tbody>
                 <tr>
-                    <th>
+                    <td className="contact">
                         <button onClick={() => {
                             let nlist = this.state.contactList.slice();
                             nlist.forEach(x => {
@@ -319,26 +325,26 @@
                             console.log("已选中的人有", ContactPanel.getSelected());
                         }}>反选ta
                         </button>
-                    </th>
-                    <th>备注名</th>
-                    <th>微信名</th>
+                    </td>
+                    <td className="contact">备注名</td>
+                    <td className="contact">微信名</td>
                 </tr>
                 {ctl.map((c) => {
                     return <tr key={c.idx}>
-                        <td><label><input key={c.idx} balise={c.alias} bname={c.name} type="checkbox"
-                                          checked={this.state.contactList[c.idx].selected === 1}
-                                          onChange={() => {
-                                              let nlist = this.state.contactList.slice();
-                                              let nlistElement = nlist[c.idx];
-                                              nlistElement.selected = ContactPanel.revertSelected(nlistElement);
-                                              // console.log("做了一次点击,", this.getSelected());
-                                              this.setState({
-                                                  contactList: nlist
-                                              });
-                                          }
-                                          }/></label></td>
-                        <td>{c.alias}</td>
-                        <td>{c.name}</td>
+                        <td className="contact"><label><input key={c.idx} balise={c.alias} bname={c.name} type="checkbox"
+                                                              checked={this.state.contactList[c.idx].selected === 1}
+                                                              onChange={() => {
+                                                                  let nlist = this.state.contactList.slice();
+                                                                  let nlistElement = nlist[c.idx];
+                                                                  nlistElement.selected = ContactPanel.revertSelected(nlistElement);
+                                                                  // console.log("做了一次点击,", this.getSelected());
+                                                                  this.setState({
+                                                                      contactList: nlist
+                                                                  });
+                                                              }
+                                                              }/></label></td>
+                        <td className="contact">{c.alias}</td>
+                        <td className="contact">{c.name}</td>
                     </tr>
                 })}
                 </tbody>
