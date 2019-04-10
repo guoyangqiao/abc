@@ -45,7 +45,7 @@ app.get('/lifecycle/logon/log', async (req, response) => {
 app.get('/lifecycle/logon/contact', (req, response) => {
     let sync = req.query.sync;
     bot.Contact.findAll().then(async clist => {
-        if (sync) {
+        if (sync === 'true') {
             console.log(`需要同步联系人信息${sync}`);
             for (let c of clist) {
                 await c.sync();
