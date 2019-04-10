@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.get('/lifecycle/scan', (req, response) => {
-    response.set('Content-Type', 'application/json').send({qrCode: !bot.logonoff() ? botContext.qrCode : ''});
+    response.set('Content-Type', 'application/json').send({qrCode: botContext.qrCode});
 });
 
 let logFilePath = path.resolve(`./send_history.log`);

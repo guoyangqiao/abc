@@ -1,13 +1,13 @@
 const {Wechaty} = require('wechaty');
 const wechaty = Wechaty.instance({profile: 'autoLogin'});
-const botContext = {qrCode: ''};
+const botContext = {qrCode: null};
 
 function onScan(qrcode, status) {
     botContext.qrCode = ['http://api.qrserver.com/v1/create-qr-code/?data=', encodeURIComponent(qrcode),].join('');
 }
 
 function onLogin(user) {
-    botContext.qrCode = '';
+    botContext.qrCode = null;
     console.log(`${user}登录成功, 加载联系人列表`);
 }
 
