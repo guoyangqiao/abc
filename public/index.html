@@ -297,20 +297,25 @@
         }
 
         loadContact(sync) {
-            this.setState(Object.assign({}, this.state, {onLoadingContacts: true}));
-            superagent.get('/lifecycle/logon/contact?sync=' + sync).then(resp => {
-                this.setState({contactList: []});
-                let idxed_resp = resp.body.map(
-                    (c, idx) => {
-                        c.idx = idx;
-                        c.selected = 0;
-                        return c;
-                    }
-                );
-                this.setState({contactList: idxed_resp});
-            }).catch(console.error).finally(() => {
-                this.setState(Object.assign({}, this.state, {onLoadingContacts: false}));
-            });
+            if (sync) {
+                this.setState(Object.assign({}, this.state, {onLoadingContacts: true}));
+            }
+            superagent.get('/lifecycle/logon/contact?sync=' + sync)
+                .then(resp => {
+                    this.setState({contactList: []});
+                    let idxed_resp = resp.body.map(
+                        (c, idx) => {
+                            c.idx = idx;
+                            c.selected = 0;
+                            return c;
+                        }
+                    );
+                    this.setState({contactList: idxed_resp});
+                })
+                .catch(console.error)
+                .finally(() => {
+                    this.setState(Object.assign({}, this.state, {onLoadingContacts: false}));
+                });
         }
 
         render() {
