@@ -384,12 +384,12 @@
                 </tr>
                 {ctl.map((c) => {
                     return <tr key={c.idx}>
-                        <td className="contact"><label><input key={c.idx} balise={c.alias} bname={c.name} type="checkbox"
-                                                              checked={this.state.contactList[c.idx].selected === 1}
-                                                              onChange={() => {
-                                                                  this.clickContact(c);
-                                                              }
-                                                              }/></label></td>
+                        <td className="contact">
+                            <label><input key={c.idx} balise={c.alias} bname={c.name} type="checkbox"
+                                          checked={this.state.contactList[c.idx].selected === 1}
+                                          onChange={() => this.clickContact(c)}/>
+                            </label>
+                        </td>
                         <td className="contact">{c.alias}</td>
                         <td className="contact">{c.name}</td>
                     </tr>
