@@ -44,9 +44,9 @@ app.get('/lifecycle/logon/log', async (req, response) => {
 
 app.get('/lifecycle/logon/contact', (req, response) => {
     bot.Contact.findAll().then(async clist => {
-        await clist.map(async x => {
+        for (let x of clist) {
             await x.sync();
-        });
+        };
         Promise.all(clist
             .filter(c => c.type() === bot.Contact.Type.Personal)
             .filter(c => c.friend() === true)
