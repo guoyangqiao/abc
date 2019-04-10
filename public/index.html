@@ -289,7 +289,7 @@
 
         constructor(props) {
             super(props);
-            this.state = {contactList: []};
+            this.state = {contactList: [], onLoadingContacts: false};
         }
 
         componentDidMount() {
@@ -297,6 +297,7 @@
         }
 
         loadContact(sync) {
+            this.setState(Object.assign({}, this.state, {onLoadingContacts: true}));
             superagent.get('/lifecycle/logon/contact?sync=' + sync).then(resp => {
                 this.setState({contactList: []});
                 let idxed_resp = resp.body.map(
@@ -307,7 +308,9 @@
                     }
                 );
                 this.setState({contactList: idxed_resp});
-            }).catch(console.error);
+            }).catch(console.error).finally(() => {
+                this.setState(Object.assign({}, this.state, {onLoadingContacts: false}));
+            });
         }
 
         render() {
@@ -319,10 +322,10 @@
                         <button onClick={() => {
                             let nlist = this.state.contactList.slice();
                             nlist.forEach(x => {
-                                x.selected = ContactPanel.revertSelected(x);
+                                x.selected = this.revertSelected(x);
                             });
                             this.setState({contactList: nlist});
-                            console.log("已选中的人有", ContactPanel.getSelected());
+                            console.log("已选中的人有", this.getSelected());
                         }}>反选
                         </button>
                     </td>
@@ -336,7 +339,7 @@
                                                               onChange={() => {
                                                                   let nlist = this.state.contactList.slice();
                                                                   let nlistElement = nlist[c.idx];
-                                                                  nlistElement.selected = ContactPanel.revertSelected(nlistElement);
+                                                                  nlistElement.selected = this.revertSelected(nlistElement);
                                                                   // console.log("做了一次点击,", this.getSelected());
                                                                   this.setState({
                                                                       contactList: nlist
@@ -355,7 +358,7 @@
                         this.load(false);
                     }}>刷新本地联系人列表
                 </button>
-                <button disabled={this.state.onSending}
+                <button disabled={this.state.onLoadingContacts}
                         onClick={() => {
                             this.load(true);
                         }}>拉取最新联系人信息
@@ -394,7 +397,7 @@
             });
         }
 
-        static revertSelected(nlistElement) {
+        revertSelected(nlistElement) {
             return (nlistElement.selected + 1) % 2;
         }
     }
