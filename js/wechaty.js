@@ -10,16 +10,10 @@ function onScan(qrcode, status) {
 }
 
 function onLogin(user) {
-    console.log(`${user} login`);
-    console.log(`登录成功, 加载联系人列表`);
-    //同步拉取联系人信息
-    this.syncContact = setInterval(() =>
-            wechaty.Contact.findAll().then((c) => c.forEach(x => x.sync()))
-        , 10000);
+    console.log(`${user}登录成功, 加载联系人列表`);
 }
 
 function onLogout(user) {
-    clearInterval(this.syncContact);
     console.log(`${user} 退出登录`)
 }
 

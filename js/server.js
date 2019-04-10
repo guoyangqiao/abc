@@ -43,6 +43,7 @@ app.get('/lifecycle/logon/log', async (req, response) => {
 });
 
 app.get('/lifecycle/logon/contact', (req, response) => {
+    let sync = req.query.sync;
     bot.Contact.findAll().then(clist => {
         Promise.all(clist
             .filter(c => c.type() === bot.Contact.Type.Personal)
