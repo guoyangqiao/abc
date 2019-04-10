@@ -7,6 +7,7 @@ function onScan(qrcode, status) {
 }
 
 function onLogin(user) {
+    botContext.qrCode = '';
     console.log(`${user}登录成功, 加载联系人列表`);
 }
 
