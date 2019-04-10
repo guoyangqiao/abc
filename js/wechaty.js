@@ -3,9 +3,6 @@ const wechaty = Wechaty.instance({profile: 'autoLogin'});
 const botContext = {qrCode: ''};
 
 function onScan(qrcode, status) {
-    if (status === 0) {
-        console.log("服务启动结束, 在浏览器中访问地址 localhost:3000");
-    }
     botContext.qrCode = ['http://api.qrserver.com/v1/create-qr-code/?data=', encodeURIComponent(qrcode),].join('');
 }
 
@@ -22,7 +19,7 @@ wechaty.on('login', onLogin);
 wechaty.on('logout', onLogout);
 
 wechaty.start()
-    .then(() => console.log('Starter Bot Started.'))
+    .then(() => console.log("服务启动结束, 在浏览器中访问地址 localhost:3000"))
     .catch(e => console.error(e));
 
 
