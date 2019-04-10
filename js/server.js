@@ -11,10 +11,12 @@ const readLastLines = require('read-last-lines');
 
 const endOfLine = require('os').EOL;
 
+//创建文件上传目录
 let uploadDir = path.resolve("upload");
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
+
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
