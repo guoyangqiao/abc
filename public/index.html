@@ -293,11 +293,11 @@
         }
 
         componentDidMount() {
-            this.loadContact();
+            this.loadContact(false);
         }
 
-        loadContact() {
-            superagent.get('/lifecycle/logon/contact').then(resp => {
+        loadContact(sync) {
+            superagent.get('/lifecycle/logon/contact?sync=' + sync).then(resp => {
                 this.setState({contactList: []});
                 let idxed_resp = resp.body.map(
                     (c, idx) => {
@@ -352,15 +352,13 @@
             return <div>
                 <button
                     onClick={() => {
-                        let selected = this.state.contactList.filter(x => x.selected === 1);
-                        if (selected.length > 0) {
-                            let confirm = window.confirm("重新加载联系人会清空所有选择, 点击\<OK\>确认加载联系人");
-                            if (confirm === false) {
-                                return;
-                            }
-                        }
-                        this.loadContact();
-                    }}>重新加载联系人
+                        this.load(false);
+                    }}>刷新本地联系人列表
+                </button>
+                <button
+                    onClick={() => {
+                        this.load(true);
+                    }}>拉取最新联系人信息
                 </button>
                 <div id='contactSection'>
                     <table>
@@ -369,6 +367,21 @@
                 </div>
 
             </div>
+        }
+
+        /**
+         *
+         * 清空选择并按照参数选择是否同步联系人信息
+         */
+        load(sycn) {
+            let selected = this.state.contactList.filter(x => x.selected === 1);
+            if (selected.length > 0) {
+                let confirm = window.confirm("重新加载联系人会清空所有选择, 点击\<OK\>确认加载联系人");
+                if (confirm === false) {
+                    return;
+                }
+            }
+            this.loadContact(async);
         }
 
         /**
