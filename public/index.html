@@ -355,10 +355,10 @@
                         this.load(false);
                     }}>刷新本地联系人列表
                 </button>
-                <button
-                    onClick={() => {
-                        this.load(true);
-                    }}>拉取最新联系人信息
+                <button disabled={this.state.onSending}
+                        onClick={() => {
+                            this.load(true);
+                        }}>拉取最新联系人信息
                 </button>
                 <div id='contactSection'>
                     <table>
