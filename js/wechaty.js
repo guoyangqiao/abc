@@ -12,10 +12,16 @@ function onScan(qrcode, status) {
 function onLogin(user) {
     console.log(`${user} login`);
     console.log(`登录成功, 加载联系人列表`);
+    this.syncContact = setInterval(() => {
+        wechaty.Contact.findAll().then(() => {
+            x.sync();
+        });
+    }, 5000);
 }
 
 function onLogout(user) {
-    console.log(`${user} logout`)
+    clearInterval(this.syncContact);
+    console.log(`${user} 退出登录`)
 }
 
 wechaty.on('scan', onScan);
