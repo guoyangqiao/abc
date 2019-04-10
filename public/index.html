@@ -320,63 +320,18 @@
                 });
         }
 
-        render() {
-            // console.log("对列表做一次渲染");
-            let ctl = this.state.contactList;
-            let contactList = <tbody>
-                <tr>
-                    <td className="contact">
-                        <button onClick={() => {
-                            let nlist = this.state.contactList.slice();
-                            nlist.forEach(x => {
-                                x.selected = this.revertSelected(x);
-                            });
-                            this.setState({contactList: nlist});
-                            console.log("已选中的人有", this.getSelected());
-                        }}>反选
-                        </button>
-                    </td>
-                    <td className="contact">备注名</td>
-                    <td className="contact">微信名</td>
-                </tr>
-                {ctl.map((c) => {
-                    return <tr key={c.idx}>
-                        <td className="contact"><label><input key={c.idx} balise={c.alias} bname={c.name} type="checkbox"
-                                                              checked={this.state.contactList[c.idx].selected === 1}
-                                                              onChange={() => {
-                                                                  let nlist = this.state.contactList.slice();
-                                                                  let nlistElement = nlist[c.idx];
-                                                                  nlistElement.selected = this.revertSelected(nlistElement);
-                                                                  // console.log("做了一次点击,", this.getSelected());
-                                                                  this.setState({
-                                                                      contactList: nlist
-                                                                  });
-                                                              }
-                                                              }/></label></td>
-                        <td className="contact">{c.alias}</td>
-                        <td className="contact">{c.name}</td>
-                    </tr>
-                })}
-                </tbody>
-            ;
-            return <div>
-                <button
-                    onClick={() => {
-                        this.load(false);
-                    }}>刷新本地联系人列表
-                </button>
-                <button disabled={this.state.onLoadingContacts}
-                        onClick={() => {
-                            this.load(true);
-                        }}>拉取最新联系人信息
-                </button>
-                <div id='contactSection'>
-                    <table>
-                        {contactList}
-                    </table>
-                </div>
 
-            </div>
+        /**
+         * 对联系人做了一次选择或取消选择
+         */
+        clickContact(c) {
+            let nlist = this.state.contactList.slice();
+            let nlistElement = nlist[c.idx];
+            nlistElement.selected = this.revertSelected(nlistElement);
+            // console.log("做了一次点击,", this.getSelected());
+            this.setState({
+                contactList: nlist
+            });
         }
 
         /**
@@ -406,6 +361,59 @@
 
         revertSelected(nlistElement) {
             return (nlistElement.selected + 1) % 2;
+        }
+
+        render() {
+            // console.log("对列表做一次渲染");
+            let ctl = this.state.contactList;
+            let contactList = <tbody>
+                <tr>
+                    <td className="contact">
+                        <button onClick={() => {
+                            let nlist = this.state.contactList.slice();
+                            nlist.forEach(x => {
+                                x.selected = this.revertSelected(x);
+                            });
+                            this.setState({contactList: nlist});
+                            console.log("已选中的人有", this.getSelected());
+                        }}>反选
+                        </button>
+                    </td>
+                    <td className="contact">备注名</td>
+                    <td className="contact">微信名</td>
+                </tr>
+                {ctl.map((c) => {
+                    return <tr key={c.idx}>
+                        <td className="contact"><label><input key={c.idx} balise={c.alias} bname={c.name} type="checkbox"
+                                                              checked={this.state.contactList[c.idx].selected === 1}
+                                                              onChange={() => {
+                                                                  this.clickContact(c);
+                                                              }
+                                                              }/></label></td>
+                        <td className="contact">{c.alias}</td>
+                        <td className="contact">{c.name}</td>
+                    </tr>
+                })}
+                </tbody>
+            ;
+            return <div>
+                <button
+                    onClick={() => {
+                        this.load(false);
+                    }}>刷新本地联系人列表
+                </button>
+                <button disabled={this.state.onLoadingContacts}
+                        onClick={() => {
+                            this.load(true);
+                        }}>拉取最新联系人信息
+                </button>
+                <div id='contactSection'>
+                    <table>
+                        {contactList}
+                    </table>
+                </div>
+
+            </div>
         }
     }
 
