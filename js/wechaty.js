@@ -4,7 +4,7 @@ const botContext = {qrCode: ''};
 
 function onScan(qrcode, status) {
     let qrCode = ['http://api.qrserver.com/v1/create-qr-code/?data=', encodeURIComponent(qrcode),].join('');
-    console.log(qrCode);
+    console.log("服务启动结束");
     botContext.qrCode = qrCode;
 }
 
