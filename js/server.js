@@ -44,7 +44,13 @@ app.get('/lifecycle/logon/log', async (req, response) => {
 
 app.get('/lifecycle/logon/contact', (req, response) => {
     let sync = req.query.sync;
-    bot.Contact.findAll().then(clist => {
+    bot.Contact.findAll().then(async clist => {
+        if (sync) {
+            console.log(`需要同步联系人信息${sync}`);
+            for (let c of clist) {
+                await c.sync();
+            }
+        }
         Promise.all(clist
             .filter(c => c.type() === bot.Contact.Type.Personal)
             .filter(c => c.friend() === true)
