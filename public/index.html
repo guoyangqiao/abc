@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap-select/1.13.9/css/bootstrap-select.min.css">
+
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-select/1.13.9/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-select/1.13.9/js/i18n/defaults-zh_CN.min.js"></script>
     <title>出云</title>
     <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
     <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
@@ -163,7 +168,8 @@
                         </div>
                         <div className="row">
                             <div className="col-xs-2">
-                                <label><select id="inputType" defaultValue={this.state.inputType}
+                                <label><select className="selectpicker"
+                                               defaultValue={this.state.inputType}
                                                onChange={(event) => {
                                                    this.setState({inputType: event.target.value});
                                                }}>
@@ -180,18 +186,25 @@
                         </div>
                         <div className="row">
                             <div className="col-xs-12">
-                                <button className="btn btn-info btn-xs btn-block"
-                                    disabled={this.state.onSending}
-                                    onClick={() => this.publishMessage()}>{this.state.onSending ?
+                                <button className="btn btn-success btn-xs btn-block"
+                                        disabled={this.state.onSending}
+                                        onClick={() => this.publishMessage()}>{this.state.onSending ?
                                     <div style={{color: "#0bbb00"}}>正在发送</div> :
                                     <div style={{color: "#000000"}}>点击发送</div>}
                                 </button>
                             </div>
                         </div>
-                        <div className="section">日志</div>
-                        <div id='logOutput' className="section">
-                            <LogPanel ref={this.logChild}/>
+                        <div className="row">
+                            <div className="col-xs-12">
+                                日志
+                            </div>
                         </div>
+                        <div className="row">
+                            <div className="col-xs-12">
+                                <LogPanel ref={this.logChild}/>
+                            </div>
+                        </div>
+
                     </div>
                     <div id="contactPanel" className="col-xs-4">
                         <ContactPanel ref={this.contactChild}/>
@@ -223,13 +236,15 @@
         }
 
         render() {
-            let map = this.state.pendingLog.map((x, id) => {
-                return (<tr align="left" key={id} className="log">
+            let map = this.state.pendingLog.filter(x => {
+                return x !== '';
+            }).map((x, id) => {
+                return (<tr key={id} className="success">
                     <td>
                         {x}</td>
                 </tr>)
             });
-            return <table>
+            return <table className="table">
                 <tbody>{map}</tbody>
             </table>
         }
