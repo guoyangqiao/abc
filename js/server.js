@@ -11,8 +11,10 @@ const readLastLines = require('read-last-lines');
 
 const endOfLine = require('os').EOL;
 
-fs.mkdirSync(path.resolve("upload"));
-
+let uploadDir = path.resolve("upload");
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
