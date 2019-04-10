@@ -82,20 +82,20 @@
         renderSelectedInputArea() {
             let type = this.state.inputType;
             if (type === 'words') {
-                return <label><textarea style={{resize: "none", border: "none", height: "78px", width: "99%"}}
-                                        id='writeArea'
-                                        value={this.state.textContent}
-                                        onChange={(e) => {
-                                            let textContent = e.target.value;
-                                            this.setState(Object.assign({}, this.state, {
-                                                textContent: textContent,
-                                            }));
-                                        }}/>
-                </label>;
+                return <textarea className="form-control"
+                                 style={{resize: "none", border: "black"}}
+                                 id='writeArea'
+                                 value={this.state.textContent}
+                                 onChange={(e) => {
+                                     let textContent = e.target.value;
+                                     this.setState(Object.assign({}, this.state, {
+                                         textContent: textContent,
+                                     }));
+                                 }}/>;
             }
             if (type === 'file') {
-                return <div>
-                    <div className="floatable">
+                return <div className="row">
+                    <div className="col-xs-6">
                         <input type="file" id="files" onChange={(e) => {
                             this.uploadFile(e);
                             let file = e.target.files[0];
@@ -105,14 +105,14 @@
                             e.target.value = null;
                         }
                         }/>
-                        <div>{(() => {
-                            let fnmae = this.state.fileContent;
-                            if (fnmae)
-                                return `选中文件:${fnmae}`;
-                            else return ``;
-                        })()
-                        }</div>
                     </div>
+                    <div className="col-xs-6">{(() => {
+                        let fnmae = this.state.fileContent;
+                        if (fnmae)
+                            return `选中文件:${fnmae}`;
+                        else return ``;
+                    })()
+                    }</div>
                 </div>;
             }
         }
@@ -172,16 +172,21 @@
                                 </select>
                                 </label>
                             </div>
-                            <div className="col-xs-10">{this.renderSelectedInputArea()}
+                            <div className="col-xs-10">
+                                <div className="row">
+                                    <div className="col-xs-12">{this.renderSelectedInputArea()}</div>
+                                </div>
                             </div>
                         </div>
-                        <div className="section">
-                            <button
-                                disabled={this.state.onSending}
-                                onClick={() => this.publishMessage()}>{this.state.onSending ?
-                                <div style={{color: "#0bbb00"}}>正在发送</div> :
-                                <div style={{color: "#000000"}}>点击发送</div>}
-                            </button>
+                        <div className="row">
+                            <div className="col-xs-12">
+                                <button className="btn btn-info btn-xs btn-block"
+                                    disabled={this.state.onSending}
+                                    onClick={() => this.publishMessage()}>{this.state.onSending ?
+                                    <div style={{color: "#0bbb00"}}>正在发送</div> :
+                                    <div style={{color: "#000000"}}>点击发送</div>}
+                                </button>
+                            </div>
                         </div>
                         <div className="section">日志</div>
                         <div id='logOutput' className="section">
