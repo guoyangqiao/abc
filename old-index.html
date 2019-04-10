@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hello React!</title>
+    <style>
+        body {
+            font-size: 12px;
+            text-align: left;
+        }
+
+        .log {
+            border: none;
+        }
+
+        .contact {
+            border: 1px solid sandybrown;
+        }
+
+        .section {
+            border: 1px solid sandybrown;
+        }
+
+
+        #mainFrame {
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        #mainPanel {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        #controlPanel {
+            height: 500px;
+            float: left;
+            width: 60%;
+        }
+
+        #inputSection {
+            height: 20%;
+            overflow-y: auto;
+        }
+
+        #logOutput {
+            overflow-y: auto;
+            height: 74.5%;
+        }
+
+        #contactPanel {
+            float: left;
+            width: 30%;
+        }
+
+        #writeArea {
+            float: left;
+            height: 60px;
+            width: 85%;
+        }
+
+        .floatable {
+            float: left;
+        }
+
+        #contactSection {
+            height: 517px;
+            overflow-y: auto;
+        }
+    </style>
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdn.staticfile.org/superagent/4.1.0/superagent.js"></script>
+</head>
+<body>
+<div id="root"></div>
+</body>
+<script type="text/jsx">
+    class Abs extends React.Component {
+
+        constructor(props) {
+            super(props);
+            this.state = {};
+            superagent.get('/lifecycle/scan').then(resp => {
+                let qrCode = resp.body.qrCode;
+                this.setState({qrCode: qrCode});
+            }).catch(console.error);
+        }
+
+        render() {
+            let codeInst;
+            let mainPanel;
+            if (this.state.qrCode !== null) {
+                codeInst = <QrCode url={this.state.qrCode}/>;
+                mainPanel = <div/>;
+            } else {
+                mainPanel = <MainPanel/>;
+                codeInst = <div/>;
+            }
+            return <div id="mainFrame">
+                <div>{codeInst}</div>
+                <div>{mainPanel}</div>
+            </div>
+        }
+    }
+
+
+    class QrCode extends React.Component {
+
+        constructor(props) {
+            super(props);
+        }
+
+        render() {
+            return <div>
+                <div>扫码登录, 手机端确认登录后刷新该页面</div>
+                <img src={this.props.url} alt={"loginCode"}/>
+            </div>;
+        }
+    }
+
+    class MainPanel extends React.Component {
+
+        constructor() {
+            super();
+            this.state = {inputType: 'words', textContent: '', fileContent: ''};
+            this.contactChild = React.createRef();
+            this.logChild = React.createRef();
+        }
+
+        uploadFile(e) {
+            const formData = new FormData();
+            let file = e.target.files[0];
+            formData.append('recfile', file);
+            superagent.post('/lifecycle/logon/message/file')
+                .send(formData)
+                .end((err, response) => {
+                    console.log(err, response);
+                })
+        }
+
+
+        renderSelectedInputArea() {
+            let type = this.state.inputType;
+            if (type === 'words') {
+                return <label><textarea style={{resize: "none", border: "none", height: "78px", width: "99%"}}
+                                        id='writeArea'
+                                        value={this.state.textContent}
+                                        onChange={(e) => {
+                                            let textContent = e.target.value;
+                                            this.setState(Object.assign({}, this.state, {
+                                                textContent: textContent,
+                                            }));
+                                        }}/>
+                </label>;
+            }
+            if (type === 'file') {
+                return <div>
+                    <div className="floatable">
+                        <input type="file" id="files" onChange={(e) => {
+                            this.uploadFile(e);
+                            let file = e.target.files[0];
+                            let name = file.name;
+                            let assign = Object.assign({}, this.state, {fileContent: name});
+                            this.setState(assign);
+                            e.target.value = null;
+                        }
+                        }/>
+                        <div>{(() => {
+                            let fnmae = this.state.fileContent;
+                            if (fnmae)
+                                return `选中文件:${fnmae}`;
+                            else return ``;
+                        })()
+                        }</div>
+                    </div>
+                </div>;
+            }
+        }
+
+        render() {
+            return <div id="mainPanel">
+                <div id="controlPanel">
+                    <div className="section">输入</div>
+                    <div id='inputSection' className="section">
+                        <div className="floatable">
+                            <label><select id="inputType" defaultValue={this.state.inputType} onChange={(event) => {
+                                this.setState({inputType: event.target.value});
+                            }}>
+                                <option value="words">圣旨</option>
+                                <option value="file">文件</option>
+                            </select>
+                            </label>
+                        </div>
+                        <div>{this.renderSelectedInputArea()}
+                        </div>
+                    </div>
+                    <div className="section">
+                        <button
+                            disabled={this.state.onSending}
+                            onClick={() => {
+                                let inputType = this.state.inputType;
+                                let content;
+                                let contacts = this.contactChild.current.getSelected();
+                                if (inputType === 'file') {
+                                    content = this.state.fileContent
+                                }
+                                if (inputType === 'words') {
+                                    content = this.state.textContent
+                                }
+                                if (this.state.inputType !== '' && content !== '' && contacts.length > 0) {
+                                    let confirmed = window.confirm(`即将发送:\n${content}\n点击OK确认发送\n接收人:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name
+                                    ).join('\n')}`);
+                                    if (confirmed) {
+                                        this.setState(Object.assign({}, this.state, {onSending: true}));
+                                        let body = {type: inputType, content: content, contacts: contacts};
+                                        this.pendingLog = setInterval(() => this.logChild.current.fetchLog(), 2000);
+                                        superagent.post('/lifecycle/logon/message/publish')
+                                            .set('Content-Type', 'application/json')
+                                            .send(body)
+                                            .then((resp) => {
+                                                // console.log("发送消息结束", resp);
+                                            }, (err) => {
+                                                console.log("发送消息异常", err);
+                                            }).finally(() => {
+                                                clearInterval(this.pendingLog);
+                                                this.setState(Object.assign({}, this.state, {onSending: false}));
+                                                this.logChild.current.fetchLog();
+                                            }
+                                        );
+                                    }
+                                } else {
+                                    alert("缺少发送内容或接收人");
+                                }
+                            }
+                            }>{this.state.onSending ?
+                            <div style={{color: "#0bbb00"}}>正在发送</div> :
+                            <div style={{color: "#000000"}}>点击发送</div>}
+                        </button>
+                    </div>
+                    <div className="section">日志</div>
+                    <div id='logOutput' className="section">
+                        <LogPanel ref={this.logChild}/>
+                    </div>
+                </div>
+                <div id="contactPanel">
+                    <ContactPanel ref={this.contactChild}/>
+                </div>
+            </div>
+        }
+    }
+
+    class LogPanel extends React.Component {
+
+        constructor(props) {
+            super(props);
+            this.state = {pendingLog: []};
+        }
+
+        fetchLog() {
+            superagent.get('/lifecycle/logon/log?rows=300').then(res => {
+                this.setState({pendingLog: res.body});
+            });
+        }
+
+        componentDidMount() {
+            this.fetchLog();
+        }
+
+        componentWillUnmount() {
+        }
+
+        render() {
+            let map = this.state.pendingLog.map((x, id) => {
+                return (<tr align="left" key={id} className="log">
+                    <td>
+                        {x}</td>
+                </tr>)
+            });
+            return <table>
+                <tbody>{map}</tbody>
+            </table>
+        }
+    }
+
+    class ContactPanel extends React.Component {
+
+        constructor(props) {
+            super(props);
+            this.state = {contactList: [], onLoadingContacts: false};
+        }
+
+        componentDidMount() {
+            this.loadContact(false);
+        }
+
+        loadContact(sync) {
+            if (sync) {
+                this.setState(Object.assign({}, this.state, {onLoadingContacts: true}));
+            }
+            superagent.get('/lifecycle/logon/contact?sync=' + sync)
+                .then(resp => {
+                    this.setState({contactList: []});
+                    let idxed_resp = resp.body.map(
+                        (c, idx) => {
+                            c.idx = idx;
+                            c.selected = 0;
+                            return c;
+                        }
+                    );
+                    this.setState({contactList: idxed_resp});
+                })
+                .catch(console.error)
+                .finally(() => {
+                    this.setState(Object.assign({}, this.state, {onLoadingContacts: false}));
+                });
+        }
+
+        render() {
+            // console.log("对列表做一次渲染");
+            let ctl = this.state.contactList;
+            let contactList = <tbody>
+                <tr>
+                    <td className="contact">
+                        <button onClick={() => {
+                            let nlist = this.state.contactList.slice();
+                            nlist.forEach(x => {
+                                x.selected = this.revertSelected(x);
+                            });
+                            this.setState({contactList: nlist});
+                            console.log("已选中的人有", this.getSelected());
+                        }}>反选
+                        </button>
+                    </td>
+                    <td className="contact">备注名</td>
+                    <td className="contact">微信名</td>
+                </tr>
+                {ctl.map((c) => {
+                    return <tr key={c.idx}>
+                        <td className="contact"><label><input key={c.idx} balise={c.alias} bname={c.name} type="checkbox"
+                                                              checked={this.state.contactList[c.idx].selected === 1}
+                                                              onChange={() => {
+                                                                  let nlist = this.state.contactList.slice();
+                                                                  let nlistElement = nlist[c.idx];
+                                                                  nlistElement.selected = this.revertSelected(nlistElement);
+                                                                  // console.log("做了一次点击,", this.getSelected());
+                                                                  this.setState({
+                                                                      contactList: nlist
+                                                                  });
+                                                              }
+                                                              }/></label></td>
+                        <td className="contact">{c.alias}</td>
+                        <td className="contact">{c.name}</td>
+                    </tr>
+                })}
+                </tbody>
+            ;
+            return <div>
+                <button
+                    onClick={() => {
+                        this.load(false);
+                    }}>刷新本地联系人列表
+                </button>
+                <button disabled={this.state.onLoadingContacts}
+                        onClick={() => {
+                            this.load(true);
+                        }}>拉取最新联系人信息
+                </button>
+                <div id='contactSection'>
+                    <table>
+                        {contactList}
+                    </table>
+                </div>
+
+            </div>
+        }
+
+        /**
+         *
+         * 清空选择并按照参数选择是否同步联系人信息
+         */
+        load(sync) {
+            let selected = this.state.contactList.filter(x => x.selected === 1);
+            if (selected.length > 0) {
+                let confirm = window.confirm("该操作会清空当前的联系人选择, 点击\<OK\>确认加载联系人");
+                if (confirm === false) {
+                    return;
+                }
+            }
+            this.loadContact(sync);
+        }
+
+        /**
+         * 获取已经被选中的联系人
+         * @returns {*[]}
+         */
+        getSelected() {
+            return this.state.contactList.filter(x => {
+                return x.selected;
+            });
+        }
+
+        revertSelected(nlistElement) {
+            return (nlistElement.selected + 1) % 2;
+        }
+    }
+
+    ReactDOM.render(<Abs/>, document.getElementById('root'));
+</script>
+</html>
