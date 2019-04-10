@@ -16,7 +16,7 @@ function onLogin(user) {
         wechaty.Contact.findAll().then(() => {
             x.sync();
         });
-    }, 5000);
+    }, 10000);
 }
 
 function onLogout(user) {
