@@ -2,75 +2,10 @@
 <html lang="en-us">
 <head>
     <meta charset="UTF-8"/>
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
-    <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>出云</title>
-    <style>
-        body {
-            font-size: 12px;
-            text-align: left;
-        }
-
-        .log {
-            border: none;
-        }
-
-        .contact {
-            border: 1px solid sandybrown;
-        }
-
-        .section {
-            border: 1px solid sandybrown;
-        }
-
-
-        #mainFrame {
-            text-align: center;
-            margin: 0 auto;
-        }
-
-        #mainPanel {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        #controlPanel {
-            height: 500px;
-            float: left;
-            width: 60%;
-        }
-
-        #inputSection {
-            height: 20%;
-            overflow-y: auto;
-        }
-
-        #logOutput {
-            overflow-y: auto;
-            height: 74.5%;
-        }
-
-        #contactPanel {
-            float: left;
-            width: 30%;
-        }
-
-        #writeArea {
-            float: left;
-            height: 60px;
-            width: 85%;
-        }
-
-        .floatable {
-            float: left;
-        }
-
-        #contactSection {
-            height: 517px;
-            overflow-y: auto;
-        }
-    </style>
     <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
     <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
     <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
@@ -182,73 +117,81 @@
             }
         }
 
+        publishMessage() {
+            let inputType = this.state.inputType;
+            let content;
+            let contacts = this.contactChild.current.getSelected();
+            if (inputType === 'file') {
+                content = this.state.fileContent
+            }
+            if (inputType === 'words') {
+                content = this.state.textContent
+            }
+            if (this.state.inputType !== '' && content !== '' && contacts.length > 0) {
+                let confirmed = window.confirm(`即将发送:\n${content}\n点击OK确认发送\n接收人:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name
+                ).join('\n')}`);
+                if (confirmed) {
+                    this.setState(Object.assign({}, this.state, {onSending: true}));
+                    let body = {type: inputType, content: content, contacts: contacts};
+                    this.pendingLog = setInterval(() => this.logChild.current.fetchLog(), 2000);
+                    superagent.post('/lifecycle/logon/message/publish')
+                        .set('Content-Type', 'application/json')
+                        .send(body)
+                        .then((resp) => {
+                            // console.log("发送消息结束", resp);
+                        }, (err) => {
+                            console.log("发送消息异常", err);
+                        }).finally(() => {
+                            clearInterval(this.pendingLog);
+                            this.setState(Object.assign({}, this.state, {onSending: false}));
+                            this.logChild.current.fetchLog();
+                        }
+                    );
+                }
+            } else {
+                alert("缺少发送内容或接收人");
+            }
+        }
+
         render() {
-            return <div id="mainPanel">
-                <div id="controlPanel">
-                    <div className="section">输入</div>
-                    <div id='inputSection' className="section">
-                        <div className="floatable">
-                            <label><select id="inputType" defaultValue={this.state.inputType} onChange={(event) => {
-                                this.setState({inputType: event.target.value});
-                            }}>
-                                <option value="words">圣旨</option>
-                                <option value="file">文件</option>
-                            </select>
-                            </label>
+            return <div id="mainPanel" className="container">
+                <div className="row">
+                    <div className="col-xs-1"/>
+                    <div id="controlPanel" className="col-xs-6">
+                        <div className="row">
+                            <div className="col-xs-12">输入</div>
                         </div>
-                        <div>{this.renderSelectedInputArea()}
+                        <div className="row">
+                            <div className="col-xs-2">
+                                <label><select id="inputType" defaultValue={this.state.inputType}
+                                               onChange={(event) => {
+                                                   this.setState({inputType: event.target.value});
+                                               }}>
+                                    <option value="words">圣旨</option>
+                                    <option value="file">文件</option>
+                                </select>
+                                </label>
+                            </div>
+                            <div className="col-xs-10">{this.renderSelectedInputArea()}
+                            </div>
+                        </div>
+                        <div className="section">
+                            <button
+                                disabled={this.state.onSending}
+                                onClick={() => this.publishMessage()}>{this.state.onSending ?
+                                <div style={{color: "#0bbb00"}}>正在发送</div> :
+                                <div style={{color: "#000000"}}>点击发送</div>}
+                            </button>
+                        </div>
+                        <div className="section">日志</div>
+                        <div id='logOutput' className="section">
+                            <LogPanel ref={this.logChild}/>
                         </div>
                     </div>
-                    <div className="section">
-                        <button
-                            disabled={this.state.onSending}
-                            onClick={() => {
-                                let inputType = this.state.inputType;
-                                let content;
-                                let contacts = this.contactChild.current.getSelected();
-                                if (inputType === 'file') {
-                                    content = this.state.fileContent
-                                }
-                                if (inputType === 'words') {
-                                    content = this.state.textContent
-                                }
-                                if (this.state.inputType !== '' && content !== '' && contacts.length > 0) {
-                                    let confirmed = window.confirm(`即将发送:\n${content}\n点击OK确认发送\n接收人:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name
-                                    ).join('\n')}`);
-                                    if (confirmed) {
-                                        this.setState(Object.assign({}, this.state, {onSending: true}));
-                                        let body = {type: inputType, content: content, contacts: contacts};
-                                        this.pendingLog = setInterval(() => this.logChild.current.fetchLog(), 2000);
-                                        superagent.post('/lifecycle/logon/message/publish')
-                                            .set('Content-Type', 'application/json')
-                                            .send(body)
-                                            .then((resp) => {
-                                                // console.log("发送消息结束", resp);
-                                            }, (err) => {
-                                                console.log("发送消息异常", err);
-                                            }).finally(() => {
-                                                clearInterval(this.pendingLog);
-                                                this.setState(Object.assign({}, this.state, {onSending: false}));
-                                                this.logChild.current.fetchLog();
-                                            }
-                                        );
-                                    }
-                                } else {
-                                    alert("缺少发送内容或接收人");
-                                }
-                            }
-                            }>{this.state.onSending ?
-                            <div style={{color: "#0bbb00"}}>正在发送</div> :
-                            <div style={{color: "#000000"}}>点击发送</div>}
-                        </button>
+                    <div id="contactPanel" className="col-xs-4">
+                        <ContactPanel ref={this.contactChild}/>
                     </div>
-                    <div className="section">日志</div>
-                    <div id='logOutput' className="section">
-                        <LogPanel ref={this.logChild}/>
-                    </div>
-                </div>
-                <div id="contactPanel">
-                    <ContactPanel ref={this.contactChild}/>
+                    <div className="col-xs-1"/>
                 </div>
             </div>
         }
