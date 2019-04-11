@@ -250,7 +250,7 @@
         }
 
         render() {
-            return <tr style={{"height":"25px"}}>
+            return <tr style={{"height": "25px"}}>
                 <td style={{"width": "10%"}}>
                     <div className="floatable">
                         <label><select id="inputType" defaultValue={this.state.inputType}
@@ -313,14 +313,14 @@
                             e.target.value = null;
                         }
                         }/>
-                        <div>{(() => {
-                            let fnmae = this.state.fileContent;
-                            if (fnmae)
-                                return `选中文件:${fnmae}`;
-                            else return ``;
-                        })()
-                        }</div>
                     </div>
+                    <div className="floatable">{(() => {
+                        let fnmae = this.state.fileContent;
+                        if (fnmae)
+                            return `选中文件:${fnmae}`;
+                        else return ``;
+                    })()
+                    }</div>
                 </div>;
             }
         }
