@@ -39,13 +39,13 @@
         }
 
         #inputSection {
-            height: 20%;
+            height: 30%;
             overflow-y: auto;
         }
 
         #logOutput {
             overflow-y: auto;
-            height: 74.5%;
+            height: 64.5%;
         }
 
         #contactPanel {
@@ -237,17 +237,16 @@
         render() {
             return <table style={{"table-layout": "fixed", "width": "100%"}}>
                 <tbody>
-                {this.state.inputRows}
                 <tr>
-                    <td>
-                        <div>
-                            <button onClick={() => {
-                                this.addRow()
-                            }}>新增待发送消息
-                            </button>
-                        </div>
+                    <td style={{"width": "10%"}}>
+                    </td>
+                    <td style={{"width": "80%"}}>
+                        <button onClick={() => this.addRow()}>新增待发送消息</button>
+                    </td>
+                    <td style={{"width": "10%"}}>
                     </td>
                 </tr>
+                {this.state.inputRows}
                 </tbody>
             </table>
         }
