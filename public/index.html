@@ -198,6 +198,10 @@
                     let body = {type: inputType, content: content, contacts: contacts};
                     this.pendingLog = setInterval(() => this.logChild.current.fetchLog(), 2000);
                     superagent.post('/lifecycle/logon/message/publish')
+                        .timeout({
+                            response: 30 * 60 * 1000,//等待响应返回
+                            deadline: 31 * 60 * 1000,//等待响应结束
+                        })
                         .set('Content-Type', 'application/json')
                         .send(body)
                         .then((resp) => {
