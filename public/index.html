@@ -255,16 +255,10 @@
             let nRows = this.state.inputRows.slice();
             nRows.push({
                 component: <InputRow onRemove={(x) => this.removeRow(x)}
-                                     onInput={(idx, inputState) => this.acceptChildInput(idx, inputState)}
                                      cid={nRows.length}/>,
                 input: {}
             });
             this.setState({inputRows: nRows});
-        }
-
-
-        acceptChildInput(idx, inputState) {
-            this.state.inputRows[idx].input = inputState
         }
 
         /**
@@ -290,7 +284,7 @@
                 <td style={{"width": "10%"}}>
                     <div className="floating">
                         <label><select id="inputType" defaultValue={this.state.inputType}
-                                       onChange={(event) => this.setState({inputType: event.target.value})}>
+                                       onChange={(event) => this.setState(Object.assign({}, {inputType: event.target.value}))}>
                             <option value="words">圣旨</option>
                             <option value="file">文件</option>
                         </select>
