@@ -54,9 +54,7 @@
         }
 
         #writeArea {
-            float: left;
-            height: 60px;
-            width: 85%;
+            width: 95%;
         }
 
         .floatable {
@@ -79,12 +77,12 @@
 </body>
 <script type="text/jsx">
     let login = false;
-    window.addEventListener('beforeunload', function (e) {
-        e.preventDefault();
-        if (login) {
-            e.returnValue = '';
-        }
-    }, false);
+    // window.addEventListener('beforeunload', function (e) {
+    //     e.preventDefault();
+    //     if (login) {
+    //         e.returnValue = '';
+    //     }
+    // }, false);
 
 
     class Abs extends React.Component {
@@ -139,60 +137,9 @@
 
         constructor() {
             super();
-            this.state = {inputType: 'words', textContent: '', fileContent: ''};
             this.contactChild = React.createRef();
             this.logChild = React.createRef();
-        }
-
-        uploadFile(e) {
-            const formData = new FormData();
-            let file = e.target.files[0];
-            formData.append('recfile', file);
-            superagent.post('/lifecycle/logon/message/file')
-                .send(formData)
-                .end((err, response) => {
-                    console.log(err, response);
-                })
-        }
-
-
-        renderSelectedInputArea() {
-            let type = this.state.inputType;
-            if (type === 'words') {
-                return <label><textarea
-                    style={{resize: "none", border: "none", height: "76px", width: "99%", outline: "none"}}
-                    id='writeArea'
-                    value={this.state.textContent}
-                    onChange={(e) => {
-                        let textContent = e.target.value;
-                        this.setState(Object.assign({}, this.state, {
-                            textContent: textContent,
-                        }));
-                    }}/>
-                </label>;
-            }
-            if (type === 'file') {
-                return <div>
-                    <div className="floatable">
-                        <input type="file" id="files" onChange={(e) => {
-                            this.uploadFile(e);
-                            let file = e.target.files[0];
-                            let name = file.name;
-                            let assign = Object.assign({}, this.state, {fileContent: name});
-                            this.setState(assign);
-                            e.target.value = null;
-                        }
-                        }/>
-                        <div>{(() => {
-                            let fnmae = this.state.fileContent;
-                            if (fnmae)
-                                return `选中文件:${fnmae}`;
-                            else return ``;
-                        })()
-                        }</div>
-                    </div>
-                </div>;
-            }
+            this.contentChild = React.createRef();
         }
 
         /**
@@ -255,17 +202,7 @@
                 <div id="controlPanel">
                     <div className="bordered">输入</div>
                     <div id='inputSection' className="bordered">
-                        <div className="floatable">
-                            <label><select id="inputType" defaultValue={this.state.inputType} onChange={(event) => {
-                                this.setState({inputType: event.target.value});
-                            }}>
-                                <option value="words">圣旨</option>
-                                <option value="file">文件</option>
-                            </select>
-                            </label>
-                        </div>
-                        <div>{this.renderSelectedInputArea()}
-                        </div>
+                        <InputTable ref={this.contentChild}/>
                     </div>
                     <div className="bordered">
                         <button
@@ -285,6 +222,93 @@
                     <ContactPanel ref={this.contactChild}/>
                 </div>
             </div>
+        }
+    }
+
+    class InputTable extends React.Component {
+        uploadFile(e) {
+            const formData = new FormData();
+            let file = e.target.files[0];
+            formData.append('recfile', file);
+            superagent.post('/lifecycle/logon/message/file')
+                .send(formData)
+                .end((err, response) => {
+                    console.log(err, response);
+                })
+        }
+
+        renderSelectedInputArea() {
+            let type = this.state.inputType;
+            if (type === 'words') {
+                return <label><textarea
+                    rows="1"
+                    style={{resize: "none", border: "1px solid #00c1f4", outline: "none"}}
+                    id='writeArea'
+                    value={this.state.textContent}
+                    onChange={(e) => {
+                        let textContent = e.target.value;
+                        this.setState(Object.assign({}, this.state, {
+                            textContent: textContent,
+                        }));
+                    }}/>
+                </label>;
+            }
+            if (type === 'file') {
+                return <div>
+                    <div className="floatable">
+                        <input type="file" id="files" onChange={(e) => {
+                            this.uploadFile(e);
+                            let file = e.target.files[0];
+                            let name = file.name;
+                            let assign = Object.assign({}, this.state, {fileContent: name});
+                            this.setState(assign);
+                            e.target.value = null;
+                        }
+                        }/>
+                        <div>{(() => {
+                            let fnmae = this.state.fileContent;
+                            if (fnmae)
+                                return `选中文件:${fnmae}`;
+                            else return ``;
+                        })()
+                        }</div>
+                    </div>
+                </div>;
+            }
+        }
+
+        constructor() {
+            super();
+            this.state = {inputType: 'words', textContent: '', fileContent: ''};
+        }
+
+        render() {
+            return <table style={{"table-layout": "fixed", "width": "100%"}}>
+                <tbody>
+                <tr>
+                    <td style={{"width": "10%"}}>
+                        <div className="floatable">
+                            <label><select id="inputType" defaultValue={this.state.inputType}
+                                           onChange={(event) => {
+                                               this.setState({inputType: event.target.value});
+                                           }}>
+                                <option value="words">圣旨</option>
+                                <option value="file">文件</option>
+                            </select>
+                            </label>
+                        </div>
+                    </td>
+                    <td style={{"width": "80%"}}>
+                        <div>{this.renderSelectedInputArea()}</div>
+                    </td>
+                    <td style={{"width": "10%"}}>
+                        <div>
+                            <button>删除</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         }
     }
 
