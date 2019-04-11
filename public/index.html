@@ -298,8 +298,8 @@
                         <label><select id="inputType" defaultValue={this.state.inputType}
                                        onChange={(event) => {
                                            let partialState = Object.assign({}, this.state, {inputType: event.target.value});
-                                           this.setState(partialState);
                                            this.uploadUserInput(partialState);
+                                           this.setState(partialState);
                                        }}>
                             <option value="words">圣旨</option>
                             <option value="file">文件</option>
@@ -342,8 +342,8 @@
                     onChange={(e) => {
                         let textContent = e.target.value;
                         let partialState = Object.assign({}, this.state, {textContent: textContent});
-                        this.setState(partialState);
                         this.uploadUserInput(partialState);
+                        this.setState(partialState);
                     }}/>
                 </label>;
             }
@@ -355,8 +355,8 @@
                             let file = e.target.files[0];
                             let name = file.name;
                             let partialState = Object.assign({}, this.state, {fileContent: name});
-                            this.setState(partialState);
                             this.uploadUserInput(partialState);
+                            this.setState(partialState);
                             e.target.value = null;
                         }
                         }/>
