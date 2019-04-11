@@ -254,8 +254,7 @@
 
         addRow() {
             let nRows = this.state.inputRows.slice();
-            let cid = uuid.v1();
-            nRows.push({comp: <InputRow onRemove={(x) => this.removeRow(x)} cid={cid}/>, cid: cid});
+            nRows.push(<InputRow onRemove={(x) => this.removeRow(x)} cid={nRows.length}/>);
             this.setState({inputRows: nRows});
         }
 
@@ -263,7 +262,10 @@
          *删除一行
          */
         removeRow(idx) {
-            this.setState({inputRows: this.state.inputRows.slice().filter(x => x.cid !== idx)});
+            let slice = this.state.inputRows.slice();
+            console.log("删除", idx, '行', slice);
+            slice[idx] = undefined;
+            this.setState({inputRows: slice});
         }
     }
 
@@ -279,9 +281,7 @@
                 <td style={{"width": "10%"}}>
                     <div className="floating">
                         <label><select id="inputType" defaultValue={this.state.inputType}
-                                       onChange={(event) => {
-                                           this.setState({inputType: event.target.value});
-                                       }}>
+                                       onChange={(event) => this.setState({inputType: event.target.value})}>
                             <option value="words">圣旨</option>
                             <option value="file">文件</option>
                         </select>
