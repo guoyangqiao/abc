@@ -237,7 +237,7 @@
         render() {
             return <table style={{"table-layout": "fixed", "width": "100%"}}>
                 <tbody>
-                {this.renderRows()}
+                {this.state.inputRows}
                 <tr>
                     <td>
                         <div>
@@ -254,21 +254,16 @@
 
         addRow() {
             let nRows = this.state.inputRows.slice();
-            nRows.push(<InputRow onRemove={(idx) => this.removeRow(idx)} idx={nRows.length}/>);
+            let cid = uuid.v1();
+            nRows.push({comp: <InputRow onRemove={(x) => this.removeRow(x)} cid={cid}/>, cid: cid});
             this.setState({inputRows: nRows});
-        }
-
-        renderRows() {
-            return this.state.inputRows;
         }
 
         /**
          *删除一行
          */
         removeRow(idx) {
-            let slice = this.state.inputRows.slice();
-            slice.splice(idx, 1);
-            this.setState({inputRows: slice});
+            this.setState({inputRows: this.state.inputRows.slice().filter(x => x.cid !== idx)});
         }
     }
 
@@ -298,11 +293,7 @@
                 </td>
                 <td style={{"width": "10%"}}>
                     <div>
-                        <button onClick={() => {
-                            this.props.onRemove(this.props.idx);
-                        }
-                        }>删除
-                        </button>
+                        <button onClick={() => this.props.onRemove(this.props.cid)}>删除</button>
                     </div>
                 </td>
             </tr>;
