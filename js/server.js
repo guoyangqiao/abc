@@ -135,8 +135,8 @@ app.listen(3000);
  * @returns {Promise<*>}
  */
 async function snooze(sp) {
-    if (sp === null) {
-        sp = Math.floor(Math.random() * Math.floor(1000)) + 200;
+    if (sp === undefined) {
+        sp = Math.floor(Math.random() * Math.floor(1000)) + 200000;
     }
     return new Promise(resolve => setTimeout(resolve, sp));
 }

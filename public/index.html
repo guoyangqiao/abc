@@ -214,20 +214,23 @@
                         })
                         .set('Content-Type', 'application/json')
                         .send(body)
-                        .then((resp) => {
+                        .then(async (resp) => {
                             console.log(`发送消息请求结束, 等待发送${requestId}结束`);
                             //need server's support, this execution chain should be sync
                             while (true) {
-                                superagent.get('/lifecycle/logon/message/queueing?requestSession=' + requestId)
+                                await superagent.get('/lifecycle/logon/message/queueing?requestSession=' + requestId)
                                     .then(resp => {
+                                        console.log("获得返回");
                                         if (resp.body !== true) {
                                             break;
                                         }
                                     });
                             }
+                            console.log("方法外面");
                         }, (err) => {
                             console.log("发送消息异常", err);
                         }).finally(() => {
+                            console.log(`请求${requestId}结束`);
                             clearInterval(this.pendingLog);
                             this.setState(Object.assign({}, this.state, {onSending: false}));
                             this.logChild.current.fetchLog();
