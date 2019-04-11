@@ -237,10 +237,14 @@
         render() {
             return <table style={{"table-layout": "fixed", "width": "100%"}}>
                 <tbody>
+                {this.renderRows()}
                 <tr>
                     <td>
                         <div>
-                            <button onClick={this.addRow}>新增待发送消息</button>
+                            <button onClick={() => {
+                                this.addRow()
+                            }}>新增待发送消息
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -250,16 +254,28 @@
 
         addRow() {
             let nRows = this.state.inputRows.slice();
-            nRows.add(<InputRow/>);
+            console.log(nRows);
+            nRows.push(<InputRow onRemove={(idx) => this.removeRow(idx)} idx={nRows.length}/>);
             this.setState({inputRows: nRows});
+        }
+
+        renderRows() {
+            return this.state.inputRows;
+        }
+
+        /**
+         *删除一行
+         */
+        removeRow(idx) {
+            //TODO
         }
     }
 
     class InputRow extends React.Component {
 
-        constructor() {
+        constructor(props) {
             super();
-            this.state = {inputType: 'words', textContent: '', fileContent: ''};
+            this.state = {inputType: 'words', textContent: '', fileContent: '', idx: props.idx};
         }
 
         render() {
@@ -281,7 +297,11 @@
                 </td>
                 <td style={{"width": "10%"}}>
                     <div>
-                        <button>删除</button>
+                        <button onClick={() => {
+
+                        }
+                        }>删除
+                        </button>
                     </div>
                 </td>
             </tr>;
