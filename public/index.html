@@ -255,10 +255,19 @@
             let nRows = this.state.inputRows.slice();
             nRows.push({
                 component: <InputRow onRemove={(x) => this.removeRow(x)}
+                                     onInput={(idx, inputState) => this.acceptChildInput(idx, inputState)}
                                      cid={nRows.length}/>,
                 input: {}
             });
             this.setState({inputRows: nRows});
+        }
+
+
+        acceptChildInput(idx, inputState) {
+            let assign = Object.assign({}, this.state);
+            assign.inputRows[idx].input = inputState;
+            this.setState(assign);
+            console.log(this.state.inputRows.filter(x => x !== undefined).map(x => x.input));
         }
 
         /**
@@ -266,7 +275,6 @@
          */
         removeRow(idx) {
             let slice = this.state.inputRows.slice();
-            console.log("删除", idx, '行', slice);
             slice[idx] = undefined;
             this.setState({inputRows: slice});
         }
@@ -279,12 +287,20 @@
             this.state = {inputType: 'words', textContent: '', fileContent: ''}
         }
 
+        uploadUserInput(input) {
+            this.props.onInput(this.props.cid, Object.assign({}, input));
+        }
+
         render() {
             return <tr style={{"height": "25px"}}>
                 <td style={{"width": "10%"}}>
                     <div className="floating">
                         <label><select id="inputType" defaultValue={this.state.inputType}
-                                       onChange={(event) => this.setState(Object.assign({}, {inputType: event.target.value}))}>
+                                       onChange={(event) => {
+                                           let partialState = Object.assign({}, this.state, {inputType: event.target.value});
+                                           this.setState(partialState);
+                                           this.uploadUserInput(partialState);
+                                       }}>
                             <option value="words">圣旨</option>
                             <option value="file">文件</option>
                         </select>
@@ -309,7 +325,9 @@
             superagent.post('/lifecycle/logon/message/file')
                 .send(formData)
                 .end((err, response) => {
-                    console.log(err, response);
+                    if (err) {
+                        console.log(err, response);
+                    }
                 })
         }
 
@@ -323,9 +341,9 @@
                     value={this.state.textContent}
                     onChange={(e) => {
                         let textContent = e.target.value;
-                        this.setState(Object.assign({}, this.state, {
-                            textContent: textContent,
-                        }));
+                        let partialState = Object.assign({}, this.state, {textContent: textContent});
+                        this.setState(partialState);
+                        this.uploadUserInput(partialState);
                     }}/>
                 </label>;
             }
@@ -336,8 +354,9 @@
                             this.uploadFile(e);
                             let file = e.target.files[0];
                             let name = file.name;
-                            let assign = Object.assign({}, this.state, {fileContent: name});
-                            this.setState(assign);
+                            let partialState = Object.assign({}, this.state, {fileContent: name});
+                            this.setState(partialState);
+                            this.uploadUserInput(partialState);
                             e.target.value = null;
                         }
                         }/>
