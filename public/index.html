@@ -254,7 +254,6 @@
 
         addRow() {
             let nRows = this.state.inputRows.slice();
-            console.log(nRows);
             nRows.push(<InputRow onRemove={(idx) => this.removeRow(idx)} idx={nRows.length}/>);
             this.setState({inputRows: nRows});
         }
@@ -267,15 +266,17 @@
          *删除一行
          */
         removeRow(idx) {
-            //TODO
+            let slice = this.state.inputRows.slice();
+            slice.splice(idx, 1);
+            this.setState({inputRows: slice});
         }
     }
 
     class InputRow extends React.Component {
 
         constructor(props) {
-            super();
-            this.state = {inputType: 'words', textContent: '', fileContent: '', idx: props.idx};
+            super(props);
+            this.state = {inputType: 'words', textContent: '', fileContent: ''}
         }
 
         render() {
@@ -298,7 +299,7 @@
                 <td style={{"width": "10%"}}>
                     <div>
                         <button onClick={() => {
-
+                            this.props.onRemove(this.props.idx);
                         }
                         }>删除
                         </button>
