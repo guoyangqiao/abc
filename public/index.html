@@ -287,30 +287,41 @@
         render() {
             return <table style={{"table-layout": "fixed", "width": "100%"}}>
                 <tbody>
-                <tr>
-                    <td style={{"width": "10%"}}>
-                        <div className="floatable">
-                            <label><select id="inputType" defaultValue={this.state.inputType}
-                                           onChange={(event) => {
-                                               this.setState({inputType: event.target.value});
-                                           }}>
-                                <option value="words">圣旨</option>
-                                <option value="file">文件</option>
-                            </select>
-                            </label>
-                        </div>
-                    </td>
-                    <td style={{"width": "80%"}}>
-                        <div>{this.renderSelectedInputArea()}</div>
-                    </td>
-                    <td style={{"width": "10%"}}>
-                        <div>
-                            <button>删除</button>
-                        </div>
-                    </td>
-                </tr>
+                <InputRow/>
                 </tbody>
             </table>
+        }
+    }
+
+    class InputRow extends React.Component {
+
+        constructor() {
+            super();
+        }
+
+        render() {
+            return <tr>
+                <td style={{"width": "10%"}}>
+                    <div className="floatable">
+                        <label><select id="inputType" defaultValue={this.state.inputType}
+                                       onChange={(event) => {
+                                           this.setState({inputType: event.target.value});
+                                       }}>
+                            <option value="words">圣旨</option>
+                            <option value="file">文件</option>
+                        </select>
+                        </label>
+                    </div>
+                </td>
+                <td style={{"width": "80%"}}>
+                    <div>{this.renderSelectedInputArea()}</div>
+                </td>
+                <td style={{"width": "10%"}}>
+                    <div>
+                        <button>删除</button>
+                    </div>
+                </td>
+            </tr>;
         }
     }
 
