@@ -231,14 +231,31 @@
 
         constructor() {
             super();
+            this.state = {inputRows: []}
         }
 
         render() {
             return <table style={{"table-layout": "fixed", "width": "100%"}}>
                 <tbody>
-                <InputRow/>
+                <tr>
+                    <td>
+                        <div>
+                            <button onClick={() => {
+                                this.addRow();
+                            }
+                            }>新增待发送消息
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
+        }
+
+        addRow() {
+            let nRows = this.state.inputRows.slice();
+            nRows.add(<InputRow/>);
+            this.setState({inputRows: nRows});
         }
     }
 
