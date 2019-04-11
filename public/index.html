@@ -75,18 +75,23 @@
 <div id="root"></div>
 </body>
 <script type="text/jsx">
-    window.addEventListener('beforeunload', (event) => {
-        // Cancel the event as stated by the standard.
-        event.preventDefault();
-        // Chrome requires returnValue to be set.
-        event.returnValue = '';
-    });
+    let login = false;
+    window.addEventListener('beforeunload', function (e) {
+        e.preventDefault();
+        if (login) {
+            e.returnValue = '';
+        }
+    }, false);
+
 
     class Abs extends React.Component {
 
         constructor(props) {
             super(props);
             this.state = {};
+        }
+
+        componentDidMount() {
             superagent.get('/lifecycle/scan').then(resp => {
                 let qrCode = resp.body.qrCode;
                 this.setState({qrCode: qrCode});
@@ -97,9 +102,11 @@
             let codeInst;
             let mainPanel;
             if (this.state.qrCode !== null) {
+                login = false;
                 codeInst = <QrCode url={this.state.qrCode}/>;
                 mainPanel = <div/>;
             } else {
+                login = true;
                 mainPanel = <MainPanel/>;
                 codeInst = <div/>;
             }
