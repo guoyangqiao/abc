@@ -137,6 +137,7 @@
 
         constructor() {
             super();
+            this.state = {onSending: false};
             this.contactChild = React.createRef();
             this.logChild = React.createRef();
             this.contentChild = React.createRef();
@@ -218,7 +219,7 @@
                         <LogPanel ref={this.logChild}/>
                     </div>
                 </div>
-                <div id="contactPanel">
+                <div id="contactPanel" className="bordered">
                     <ContactPanel ref={this.contactChild}/>
                 </div>
             </div>
