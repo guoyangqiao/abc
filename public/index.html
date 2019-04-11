@@ -246,15 +246,25 @@
                     <td style={{"width": "10%"}}>
                     </td>
                 </tr>
-                {this.state.inputRows}
+                {this.state.inputRows.map(x => x.component)}
                 </tbody>
             </table>
         }
 
         addRow() {
             let nRows = this.state.inputRows.slice();
-            nRows.push(<InputRow onRemove={(x) => this.removeRow(x)} cid={nRows.length}/>);
+            nRows.push({
+                component: <InputRow onRemove={(x) => this.removeRow(x)}
+                                     onInput={(idx, inputState) => this.acceptChildInput(idx, inputState)}
+                                     cid={nRows.length}/>,
+                input: {}
+            });
             this.setState({inputRows: nRows});
+        }
+
+
+        acceptChildInput(idx, inputState) {
+            this.state.inputRows[idx].input = inputState
         }
 
         /**
