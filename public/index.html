@@ -216,10 +216,11 @@
                         .send(body)
                         .then((resp) => {
                             console.log(`发送消息请求结束, 等待发送${requestId}结束`);
+                            //need server's support, this exection chain should be sync
                             while (true) {
                                 superagent.get('/lifecycle/logon/message/queueing?requestSession=' + requestId)
                                     .then(resp => {
-                                        if (resp.body.finished === true) {
+                                        if (resp.body !== true) {
                                             break;
                                         }
                                     });

@@ -17,6 +17,8 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
 
+const publishTask = {};
+
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
@@ -72,6 +74,14 @@ app.post('/lifecycle/logon/message/file', upload.single('recfile'), (req, respon
     response.status(200).end();
 });
 
+app.get('/lifecycle/logon/message/queueing', async (req, resp) => {
+    let publishTaskElement = publishTask[req.query.requestSession];
+    if (publishTaskElement === true) {
+        return true;
+    } else {
+        return false;
+    }
+});
 app.post('/lifecycle/logon/message/publish', async (req, resp) => {
     let type = req.body.type;
     let content = req.body.content;
