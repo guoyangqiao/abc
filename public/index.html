@@ -228,6 +228,52 @@
     }
 
     class InputTable extends React.Component {
+
+        constructor() {
+            super();
+        }
+
+        render() {
+            return <table style={{"table-layout": "fixed", "width": "100%"}}>
+                <tbody>
+                <InputRow/>
+                </tbody>
+            </table>
+        }
+    }
+
+    class InputRow extends React.Component {
+
+        constructor() {
+            super();
+            this.state = {inputType: 'words', textContent: '', fileContent: ''};
+        }
+
+        render() {
+            return <tr style={{"height":"25px"}}>
+                <td style={{"width": "10%"}}>
+                    <div className="floatable">
+                        <label><select id="inputType" defaultValue={this.state.inputType}
+                                       onChange={(event) => {
+                                           this.setState({inputType: event.target.value});
+                                       }}>
+                            <option value="words">圣旨</option>
+                            <option value="file">文件</option>
+                        </select>
+                        </label>
+                    </div>
+                </td>
+                <td style={{"width": "80%"}}>
+                    <div>{this.renderSelectedInputArea()}</div>
+                </td>
+                <td style={{"width": "10%"}}>
+                    <div>
+                        <button>删除</button>
+                    </div>
+                </td>
+            </tr>;
+        }
+
         uploadFile(e) {
             const formData = new FormData();
             let file = e.target.files[0];
@@ -279,50 +325,6 @@
             }
         }
 
-        constructor() {
-            super();
-            this.state = {inputType: 'words', textContent: '', fileContent: ''};
-        }
-
-        render() {
-            return <table style={{"table-layout": "fixed", "width": "100%"}}>
-                <tbody>
-                <InputRow/>
-                </tbody>
-            </table>
-        }
-    }
-
-    class InputRow extends React.Component {
-
-        constructor() {
-            super();
-        }
-
-        render() {
-            return <tr>
-                <td style={{"width": "10%"}}>
-                    <div className="floatable">
-                        <label><select id="inputType" defaultValue={this.state.inputType}
-                                       onChange={(event) => {
-                                           this.setState({inputType: event.target.value});
-                                       }}>
-                            <option value="words">圣旨</option>
-                            <option value="file">文件</option>
-                        </select>
-                        </label>
-                    </div>
-                </td>
-                <td style={{"width": "80%"}}>
-                    <div>{this.renderSelectedInputArea()}</div>
-                </td>
-                <td style={{"width": "10%"}}>
-                    <div>
-                        <button>删除</button>
-                    </div>
-                </td>
-            </tr>;
-        }
     }
 
     class LogPanel extends React.Component {
