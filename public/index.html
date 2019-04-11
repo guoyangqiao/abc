@@ -246,28 +246,15 @@
                     <td style={{"width": "10%"}}>
                     </td>
                 </tr>
-                {this.state.inputRows.filter(x => x !== undefined).map(x => x.component)}
+                {this.state.inputRows.filter(x => x !== undefined)}
                 </tbody>
             </table>
         }
 
         addRow() {
             let nRows = this.state.inputRows.slice();
-            nRows.push({
-                component: <InputRow onRemove={(x) => this.removeRow(x)}
-                                     onInput={(idx, inputState) => this.acceptChildInput(idx, inputState)}
-                                     cid={nRows.length}/>,
-                input: {}
-            });
-            this.setState({inputRows: nRows});
-        }
-
-
-        acceptChildInput(idx, inputState) {
-            let assign = Object.assign({}, this.state);
-            assign.inputRows[idx].input = inputState;
-            this.setState(assign);
-            console.log(this.state.inputRows);
+            nRows.push(<InputRow onRemove={(x) => this.removeRow(x)} cid={nRows.length} inputCtx={new Map()}/>);
+            this.setState({inputRows: nRows}, () => console.log(this.state.inputRows));
         }
 
         /**
@@ -276,7 +263,7 @@
         removeRow(idx) {
             let slice = this.state.inputRows.slice();
             slice[idx] = undefined;
-            this.setState({inputRows: slice});
+            this.setState({inputRows: slice}, () => console.log(this.state.inputRows));
         }
     }
 
@@ -288,7 +275,7 @@
         }
 
         uploadUserInput(input) {
-            this.props.onInput(this.props.cid, Object.assign({}, input));
+            this.props.inputCtx = new Map(Object.entries(input));
         }
 
         render() {
@@ -389,9 +376,6 @@
 
         componentDidMount() {
             this.fetchLog();
-        }
-
-        componentWillUnmount() {
         }
 
         render() {
