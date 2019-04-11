@@ -83,41 +83,50 @@ app.get('/lifecycle/logon/message/queueing', async (req, resp) => {
     }
 });
 app.post('/lifecycle/logon/message/publish', async (req, resp) => {
-    let type = req.body.type;
-    let content = req.body.content;
-    let okContacts = req.body.contacts.filter(x => x.selected === 1);
-    let sayContent;
-    if (type === 'file') {
-        sayContent = FileBox.fromFile('upload/' + content);
-    }
-    if (type === 'words') {
-        sayContent = escape(content);
-    }
-    let sendStatistic = [];
-    for (let i = 0; i < okContacts.length; i++) {
-        let okContact = okContacts[i];
-        let alias = okContact.alias;
-        let name = okContact.name;
-        let contact;
-        if (alias !== null) {
-            contact = await bot.Contact.find({alias: alias});
-        } else {
-            contact = await bot.Contact.find({name: name});
-        }
-        let result;
-        if (contact === null || contact.friend() === false) {
-            result = `联系人不存在或不是你的好友`;
-        } else {
-            result = '成功';
-            await contact.say(sayContent).catch(reason => {
-                result = "异常," + reason.toString();
-            });
-        }
-        appendLog(`发送<${content}>到<${name}>结果<${result}>`);
-        sendStatistic.push({name: name, alias: alias, result: result});
-        await snooze();
-    }
+    let requestSession = req.query.requestSession;
+    publishTask.add(requestSession);
     resp.status(200).end();
+    try {
+        console.log(`收到发送请求${requestSession}`);
+        let type = req.body.type;
+        let content = req.body.content;
+        let okContacts = req.body.contacts.filter(x => x.selected === 1);
+        let sayContent;
+        if (type === 'file') {
+            sayContent = FileBox.fromFile('upload/' + content);
+        }
+        if (type === 'words') {
+            sayContent = escape(content);
+        }
+        let sendStatistic = [];
+        for (let i = 0; i < okContacts.length; i++) {
+            let okContact = okContacts[i];
+            let alias = okContact.alias;
+            let name = okContact.name;
+            let contact;
+            if (alias !== null) {
+                contact = await bot.Contact.find({alias: alias});
+            } else {
+                contact = await bot.Contact.find({name: name});
+            }
+            let result;
+            if (contact === null || contact.friend() === false) {
+                result = `联系人不存在或不是你的好友`;
+            } else {
+                result = '成功';
+                await contact.say(sayContent).catch(reason => {
+                    result = "异常," + reason.toString();
+                });
+            }
+            appendLog(`发送<${content}>到<${name}>结果<${result}>`);
+            sendStatistic.push({name: name, alias: alias, result: result});
+            await snooze();
+        }
+    } finally {
+        console.log(`发送结束${requestSession}`);
+        console.log(publishTask);
+        publishTask.delete(requestSession);
+    }
 });
 app.listen(3000);
 
