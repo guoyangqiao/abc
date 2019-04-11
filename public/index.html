@@ -246,7 +246,7 @@
                     <td style={{"width": "10%"}}>
                     </td>
                 </tr>
-                {this.state.inputRows.map(x => x.component)}
+                {this.state.inputRows.filter(x => x !== undefined).map(x => x.component)}
                 </tbody>
             </table>
         }
