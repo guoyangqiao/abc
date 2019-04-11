@@ -57,7 +57,7 @@
             width: 95%;
         }
 
-        .floatable {
+        .floating {
             float: left;
         }
 
@@ -252,7 +252,7 @@
         render() {
             return <tr style={{"height": "25px"}}>
                 <td style={{"width": "10%"}}>
-                    <div className="floatable">
+                    <div className="floating">
                         <label><select id="inputType" defaultValue={this.state.inputType}
                                        onChange={(event) => {
                                            this.setState({inputType: event.target.value});
@@ -303,7 +303,7 @@
             }
             if (type === 'file') {
                 return <div>
-                    <div className="floatable">
+                    <div className="floating">
                         <input type="file" id="files" onChange={(e) => {
                             this.uploadFile(e);
                             let file = e.target.files[0];
@@ -314,7 +314,7 @@
                         }
                         }/>
                     </div>
-                    <div className="floatable">{(() => {
+                    <div className="floating">{(() => {
                         let fnmae = this.state.fileContent;
                         if (fnmae)
                             return `选中文件:${fnmae}`;
