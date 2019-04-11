@@ -124,7 +124,6 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
         }
     } finally {
         console.log(`发送结束${requestSession}`);
-        console.log(publishTask);
         publishTask.delete(requestSession);
     }
 });
