@@ -17,7 +17,7 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
 
-const publishTask = {};
+const publishTask = new Set();
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -75,11 +75,11 @@ app.post('/lifecycle/logon/message/file', upload.single('recfile'), (req, respon
 });
 
 app.get('/lifecycle/logon/message/queueing', async (req, resp) => {
-    let publishTaskElement = publishTask[req.query.requestSession];
-    if (publishTaskElement === true) {
-        return true;
+    if (publishTask.has(req.query.requestSession)) {
+        await snooze(2000);
+        resp.send(true);
     } else {
-        return false;
+        resp.send(false);
     }
 });
 app.post('/lifecycle/logon/message/publish', async (req, resp) => {
@@ -125,9 +125,11 @@ app.listen(3000);
  * 在发送时休眠随意一段时间
  * @returns {Promise<*>}
  */
-async function snooze() {
-    let sleepPeriod = Math.floor(Math.random() * Math.floor(1000)) + 200;
-    return new Promise(resolve => setTimeout(resolve, sleepPeriod));
+async function snooze(sp) {
+    if (sp === null) {
+        sp = Math.floor(Math.random() * Math.floor(1000)) + 200;
+    }
+    return new Promise(resolve => setTimeout(resolve, sp));
 }
 
 const stream = fs.createWriteStream(logFilePath, {flags: 'a'});
