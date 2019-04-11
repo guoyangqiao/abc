@@ -69,7 +69,7 @@
     <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
     <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
     <script src="https://cdn.staticfile.org/superagent/4.1.0/superagent.js"></script>
-
+    <script src="https://cdn.bootcss.com/node-uuid/1.4.8/uuid.min.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -206,7 +206,8 @@
                     this.setState(Object.assign({}, this.state, {onSending: true}));
                     let body = {type: inputType, content: content, contacts: contacts};
                     this.pendingLog = setInterval(() => this.logChild.current.fetchLog(), 2000);
-                    superagent.post('/lifecycle/logon/message/publish')
+                    let requestId = uuid.v1();
+                    superagent.post('/lifecycle/logon/message/publish?requestSession=' + requestId)
                         .timeout({
                             response: 30 * 60 * 1000,//等待响应返回, 30分钟
                             deadline: 31 * 60 * 1000,//等待响应结束
@@ -214,7 +215,15 @@
                         .set('Content-Type', 'application/json')
                         .send(body)
                         .then((resp) => {
-                            // console.log("发送消息结束", resp);
+                            console.log(`发送消息请求结束, 等待发送${requestId}结束`);
+                            while (true) {
+                                superagent.get('/lifecycle/logon/message/queueing?requestSession=' + requestId)
+                                    .then(resp => {
+                                        if (resp.body.finished === true) {
+                                            break;
+                                        }
+                                    });
+                            }
                         }, (err) => {
                             console.log("发送消息异常", err);
                         }).finally(() => {
@@ -428,6 +437,10 @@
 
             </div>
         }
+    }
+
+    async function snooze(t) {
+        return new Promise(resolve => setTimeout(resolve, t));
     }
 
     ReactDOM.render(<Abs/>, document.getElementById('root'));
