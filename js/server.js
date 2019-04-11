@@ -87,7 +87,7 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
     publishTask.add(requestSession);
     resp.status(200).end();
     try {
-        console.log(`收到发送请求${requestSession}`);
+        console.log(`${new Date()}收到发送请求${requestSession}`);
         let type = req.body.type;
         let content = req.body.content;
         let okContacts = req.body.contacts.filter(x => x.selected === 1);
@@ -123,7 +123,7 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
             await snooze();
         }
     } finally {
-        console.log(`发送结束${requestSession}`);
+        console.log(`${new Date()}发送结束${requestSession}`);
         publishTask.delete(requestSession);
     }
 });

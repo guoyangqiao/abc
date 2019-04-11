@@ -215,7 +215,7 @@
                         .set('Content-Type', 'application/json')
                         .send(body)
                         .then(async (resp) => {
-                            console.log(`发送消息请求结束, 等待发送${requestId}结束`);
+                            console.log(`${new Date()}发送消息请求结束, 等待发送${requestId}结束`);
                             //need server's support, this execution chain should be sync
                             let queueing = true;
                             while (queueing) {
@@ -229,7 +229,7 @@
                         }, (err) => {
                             console.log("发送消息异常", err);
                         }).finally(() => {
-                            console.log(`请求${requestId}结束`);
+                            console.log(`${new Date()}请求${requestId}结束`);
                             clearInterval(this.pendingLog);
                             this.setState(Object.assign({}, this.state, {onSending: false}));
                             this.logChild.current.fetchLog();
