@@ -13,12 +13,8 @@
             border: none;
         }
 
-        .contact {
-            border: 1px solid sandybrown;
-        }
-
-        .section {
-            border: 1px solid sandybrown;
+        .bordered {
+            border: 1px solid #00c1f4;
         }
 
 
@@ -145,15 +141,16 @@
         renderSelectedInputArea() {
             let type = this.state.inputType;
             if (type === 'words') {
-                return <label><textarea style={{resize: "none", border: "none", height: "78px", width: "99%"}}
-                                        id='writeArea'
-                                        value={this.state.textContent}
-                                        onChange={(e) => {
-                                            let textContent = e.target.value;
-                                            this.setState(Object.assign({}, this.state, {
-                                                textContent: textContent,
-                                            }));
-                                        }}/>
+                return <label><textarea
+                    style={{resize: "none", border: "none", height: "76px", width: "99%", outline: "none"}}
+                    id='writeArea'
+                    value={this.state.textContent}
+                    onChange={(e) => {
+                        let textContent = e.target.value;
+                        this.setState(Object.assign({}, this.state, {
+                            textContent: textContent,
+                        }));
+                    }}/>
                 </label>;
             }
             if (type === 'file') {
@@ -222,8 +219,8 @@
         render() {
             return <div id="mainPanel">
                 <div id="controlPanel">
-                    <div className="section">输入</div>
-                    <div id='inputSection' className="section">
+                    <div className="bordered">输入</div>
+                    <div id='inputSection' className="bordered">
                         <div className="floatable">
                             <label><select id="inputType" defaultValue={this.state.inputType} onChange={(event) => {
                                 this.setState({inputType: event.target.value});
@@ -236,7 +233,7 @@
                         <div>{this.renderSelectedInputArea()}
                         </div>
                     </div>
-                    <div className="section">
+                    <div className="bordered">
                         <button
                             disabled={this.state.onSending}
                             onClick={() => this.publishMessage()}>
@@ -245,8 +242,8 @@
                                 <div style={{color: "#000000"}}>点击发送</div>}
                         </button>
                     </div>
-                    <div className="section">日志</div>
-                    <div id='logOutput' className="section">
+                    <div className="bordered">日志</div>
+                    <div id='logOutput' className="bordered">
                         <LogPanel ref={this.logChild}/>
                     </div>
                 </div>
@@ -371,7 +368,7 @@
             let ctl = this.state.contactList;
             let contactList = <tbody>
                 <tr>
-                    <td className="contact">
+                    <td className="bordered">
                         <button onClick={() => {
                             let nlist = this.state.contactList.slice();
                             nlist.forEach(x => {
@@ -382,19 +379,19 @@
                         }}>反选
                         </button>
                     </td>
-                    <td className="contact">备注名</td>
-                    <td className="contact">微信名</td>
+                    <td className="bordered">备注名</td>
+                    <td className="bordered">微信名</td>
                 </tr>
                 {ctl.map((c) => {
                     return <tr key={c.idx}>
-                        <td className="contact">
+                        <td className="bordered">
                             <label><input key={c.idx} balise={c.alias} bname={c.name} type="checkbox"
                                           checked={this.state.contactList[c.idx].selected === 1}
                                           onChange={() => this.clickContact(c)}/>
                             </label>
                         </td>
-                        <td className="contact">{c.alias}</td>
-                        <td className="contact">{c.name}</td>
+                        <td className="bordered">{c.alias}</td>
+                        <td className="bordered">{c.name}</td>
                     </tr>
                 })}
                 </tbody>
