@@ -217,16 +217,15 @@
                         .then(async (resp) => {
                             console.log(`发送消息请求结束, 等待发送${requestId}结束`);
                             //need server's support, this execution chain should be sync
-                            while (true) {
+                            let queueing = true;
+                            while (queueing) {
                                 await superagent.get('/lifecycle/logon/message/queueing?requestSession=' + requestId)
                                     .then(resp => {
-                                        console.log("获得返回");
-                                        if (resp.body !== true) {
-                                            break;
+                                        if (resp.body === false) {
+                                            queueing = false;
                                         }
                                     });
                             }
-                            console.log("方法外面");
                         }, (err) => {
                             console.log("发送消息异常", err);
                         }).finally(() => {
