@@ -148,14 +148,7 @@
             }).filter(x => x.content.length > 0);
             let contacts = this.contactChild.current.getSelected();
             if (inputs.length > 0 && contacts.length > 0) {
-                let confirmed = window.confirm(`即将发送:\n${content}\n点击OK确认发送\n接收人:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name
-                ).join('\n')}`);
-            } else {
-                alert("发送内容和接收人缺一不可哟 :-)");
-            }
-
-            //======================================================================
-            if (this.state.inputType !== '' && content !== '' && contacts.length > 0) {
+                let confirmed = window.confirm(`即将发送:\n${content}\n点击OK确认发送\n接收人:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name).join('\n')}`);
                 if (confirmed) {
                     this.setState(Object.assign({}, this.state, {onSending: true}));
                     let body = {type: inputType, content: content, contacts: contacts};
@@ -191,6 +184,7 @@
                     );
                 }
             } else {
+                alert("发送内容和接收人缺一不可哟 :-)");
             }
         }
 
