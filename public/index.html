@@ -95,7 +95,6 @@
 
         loadQrCode() {
             superagent.get('/lifecycle/scan').then(resp => {
-                console.log("加载二维码");
                 this.setState({qrCode: resp.body.qrCode, clicked: false});
             });
         }
@@ -207,7 +206,9 @@
                             disabled={this.state.onSending}
                             onClick={() => {
                                 let allInput = this.contentChild.current.getAllInput();
-                                console.log(allInput);
+                                allInput.forEach(x => {
+                                    console.log(x)
+                                })
                                 // this.publishMessage()
                             }}>
                             {this.state.onSending ?
@@ -246,13 +247,13 @@
                     <td style={{"width": "10%"}}>
                     </td>
                 </tr>
-                {this.state.inputRows.filter(x => x !== undefined)}
+                {this.state.inputRows}
                 </tbody>
             </table>
         }
 
         getAllInput() {
-            return this.state.inputRows.map(x => x !== undefined ? x.props.inputCtx : undefined);
+            return this.state.inputRows.map(x => x.props.inputCtx);
         }
 
         addRow() {
