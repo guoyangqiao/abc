@@ -150,19 +150,18 @@
             if (inputs.length > 0 && contacts.length > 0) {
                 let confirmed = window.confirm(`即将发送:\n${content}\n点击OK确认发送\n接收人:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name).join('\n')}`);
                 if (confirmed) {
-                    this.setState(Object.assign({}, this.state, {onSending: true}));
-                    let body = {type: inputType, content: content, contacts: contacts};
-                    this.pendingLog = setInterval(() => this.logChild.current.fetchLog(), 2000);
                     let requestId = uuid.v1();
+                    {//发送前的操作
+                        console.log(`${new Date()}请求${requestId}开始`);
+                        this.setState(Object.assign({}, this.state, {onSending: true}));
+                        this.pendingLog = setInterval(() => this.logChild.current.fetchLog(), 2000);
+                    }
+                    let body = {inputs: inputs, contacts: contacts};
                     superagent.post('/lifecycle/logon/message/publish?requestSession=' + requestId)
-                        .timeout({
-                            response: 30 * 60 * 1000,//等待响应返回, 30分钟
-                            deadline: 31 * 60 * 1000,//等待响应结束
-                        })
                         .set('Content-Type', 'application/json')
                         .send(body)
-                        .then(async (resp) => {
-                            console.log(`${new Date()}发送消息请求结束, 等待发送${requestId}结束`);
+                        .then(async () => {
+                            console.log(`${new Date()}等待发送${requestId}结束`);
                             //need server's support, this execution chain should be sync
                             let queueing = true;
                             while (queueing) {
@@ -173,15 +172,19 @@
                                         }
                                     });
                             }
-                        }, (err) => {
+                        })
+                        .catch(err => {
                             console.log("发送消息异常", err);
-                        }).finally(() => {
-                            console.log(`${new Date()}请求${requestId}结束`);
-                            clearInterval(this.pendingLog);
-                            this.setState(Object.assign({}, this.state, {onSending: false}));
-                            this.logChild.current.fetchLog();
-                        }
-                    );
+                        })
+                        .finally(() => {
+                                this.logChild.current.fetchLog();
+                                {//发送后的操作
+                                    console.log(`${new Date()}请求${requestId}结束`);
+                                    this.setState(Object.assign({}, this.state, {onSending: false}));
+                                    clearInterval(this.pendingLog);
+                                }
+                            }
+                        );
                 }
             } else {
                 alert("发送内容和接收人缺一不可哟 :-)");
