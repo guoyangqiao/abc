@@ -89,47 +89,43 @@
 
         constructor(props) {
             super(props);
-            this.state = {};
+            this.state = {qrCode: null};
+            this.loadQrCode();
         }
 
-        componentDidMount() {
+        loadQrCode() {
             superagent.get('/lifecycle/scan').then(resp => {
-                let qrCode = resp.body.qrCode;
-                this.setState({qrCode: qrCode});
-            }).catch(console.error);
+                console.log("加载二维码");
+                this.setState({qrCode: resp.body.qrCode, clicked: false});
+            });
         }
 
         render() {
-            let codeInst;
-            let mainPanel;
+            let code;
             if (this.state.qrCode !== null) {
-                login = false;
-                codeInst = <QrCode url={this.state.qrCode}/>;
-                mainPanel = <div/>;
+                if (this.state.clicked !== true) {
+                    code = <div>
+                        <div><img src={this.state.qrCode} alt={"loginCode"}/></div>
+                        <div>
+                            <button onClick={() => {
+                                this.setState(Object.assign({}, this.state, {clicked: true}));
+                                setTimeout(() => {
+                                    this.loadQrCode();
+                                }, 5000);
+                            }
+                            }>手机扫描登录后点这里
+                            </button>
+                        </div>
+                    </div>;
+                } else {
+                    code = <div>正在确认登录状态, 稍后将进行跳转</div>;
+                }
             } else {
-                login = true;
-                mainPanel = <MainPanel/>;
-                codeInst = <div/>;
+                code = <MainPanel/>;
             }
             return <div id="mainFrame">
-                <div>{codeInst}</div>
-                <div>{mainPanel}</div>
+                <div>{code}</div>
             </div>
-        }
-    }
-
-
-    class QrCode extends React.Component {
-
-        constructor(props) {
-            super(props);
-        }
-
-        render() {
-            return <div>
-                <div>扫码登录, 手机端确认登录后刷新该页面</div>
-                <img src={this.props.url} alt={"loginCode"}/>
-            </div>;
         }
     }
 
@@ -209,7 +205,11 @@
                     <div className="bordered">
                         <button
                             disabled={this.state.onSending}
-                            onClick={() => this.publishMessage()}>
+                            onClick={() => {
+                                let allInput = this.contentChild.current.getAllInput();
+                                console.log(allInput);
+                                // this.publishMessage()
+                            }}>
                             {this.state.onSending ?
                                 <div style={{color: "#a7a7a7"}}>正在发送</div> :
                                 <div style={{color: "#000000"}}>点击发送</div>}
@@ -249,6 +249,10 @@
                 {this.state.inputRows.filter(x => x !== undefined)}
                 </tbody>
             </table>
+        }
+
+        getAllInput() {
+            return this.state.inputRows.map(x => x !== undefined ? x.props.inputCtx : undefined);
         }
 
         addRow() {
