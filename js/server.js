@@ -88,7 +88,6 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
     resp.status(200).end();
     try {
         console.log(`${new Date()}收到发送请求${requestSession}`);
-
         let inputs = req.body.inputs.map(x => x.inputType === 'file' ? FileBox.fromFile('upload/' + x.content) : x.inputType === 'words' ? escape(x.content) : escape(x.content));
         let okContacts = req.body.contacts.filter(x => x.selected === 1);
         let sendStatistic = [];
@@ -109,10 +108,7 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
                 result = '成功';
                 for (let j = 0; j < inputs.length; j++) {
                     let input = inputs[j];
-                    console.log(contact, "发送内容", typeof input);
-                    await contact.say(input).then(c => {
-                        console.log(c);
-                    }).catch(reason => {
+                    await contact.say(input).catch(reason => {
                         result = "异常," + reason.toString();
                     });
                     await snooze();
@@ -147,7 +143,6 @@ const stream = fs.createWriteStream(logFilePath, {flags: 'a'});
  */
 function appendLog(log) {
     let chunk = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') + " " + log;
-    console.log("==" + chunk + "====");
     stream.write(chunk + endOfLine);
 }
 
