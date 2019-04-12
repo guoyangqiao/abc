@@ -143,18 +143,19 @@
          * TODO 内容改了 这个地方和后端都需要改
          */
         publishMessage() {
-            let inputType = this.state.inputType;
-            let content;
+            let inputs = this.contentChild.current.getAllInput().map(x => {
+                return {inputType: x.inputType, content: x.inputType === 'file' ? x.fileContent : x.textContent}
+            }).filter(x => x.content.length > 0);
             let contacts = this.contactChild.current.getSelected();
-            if (inputType === 'file') {
-                content = this.state.fileContent
-            }
-            if (inputType === 'words') {
-                content = this.state.textContent
-            }
-            if (this.state.inputType !== '' && content !== '' && contacts.length > 0) {
+            if (inputs.length > 0 && contacts.length > 0) {
                 let confirmed = window.confirm(`即将发送:\n${content}\n点击OK确认发送\n接收人:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name
                 ).join('\n')}`);
+            } else {
+                alert("发送内容和接收人缺一不可哟 :-)");
+            }
+
+            //======================================================================
+            if (this.state.inputType !== '' && content !== '' && contacts.length > 0) {
                 if (confirmed) {
                     this.setState(Object.assign({}, this.state, {onSending: true}));
                     let body = {type: inputType, content: content, contacts: contacts};
@@ -190,7 +191,6 @@
                     );
                 }
             } else {
-                alert("缺少发送内容或接收人");
             }
         }
 
@@ -205,11 +205,7 @@
                         <button
                             disabled={this.state.onSending}
                             onClick={() => {
-                                let allInput = this.contentChild.current.getAllInput();
-                                allInput.forEach(x => {
-                                    console.log(x)
-                                })
-                                // this.publishMessage()
+                                this.publishMessage();
                             }}>
                             {this.state.onSending ?
                                 <div style={{color: "#a7a7a7"}}>正在发送</div> :
