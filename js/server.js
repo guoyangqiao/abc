@@ -86,19 +86,11 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
     let requestSession = req.query.requestSession;
     publishTask.add(requestSession);
     resp.status(200).end();
-
     try {
         console.log(`${new Date()}收到发送请求${requestSession}`);
-        let type = req.body.type;
-        let content = req.body.content;
+
+        let inputs = req.body.inputs.map(x => x.inputType === 'file' ? FileBox.fromFile('upload/' + x.content) : x.inputType === 'words' ? escape(x.content) : escape(x.content));
         let okContacts = req.body.contacts.filter(x => x.selected === 1);
-        let sayContent;
-        if (type === 'file') {
-            sayContent = FileBox.fromFile('upload/' + content);
-        }
-        if (type === 'words') {
-            sayContent = escape(content);
-        }
         let sendStatistic = [];
         for (let i = 0; i < okContacts.length; i++) {
             let okContact = okContacts[i];
@@ -115,11 +107,14 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
                 result = `联系人不存在或不是你的好友`;
             } else {
                 result = '成功';
-                await contact.say(sayContent).catch(reason => {
-                    result = "异常," + reason.toString();
-                });
+                for (let j = 0; j < inputs.length; j++) {
+                    let input = inputs[j];
+                    await contact.say(input).catch(reason => {
+                        result = "异常," + reason.toString();
+                    });
+                    appendLog(`发送<${input}>到<${name}>结果<${result}>`);
+                }
             }
-            appendLog(`发送<${content}>到<${name}>结果<${result}>`);
             sendStatistic.push({name: name, alias: alias, result: result});
             await snooze();
         }
