@@ -150,9 +150,7 @@
             });
             let contacts = this.contactChild.current.getSelected();
             if (inputs.length > 0 && contacts.length > 0) {
-                let confirmed = window.confirm(`即将发送:\n${inputs.map(x => {
-                    return JSON.stringify(x);
-                }).join("\n")}\n点击OK确认发送\n接收人:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name).join('\n')}`);
+                let confirmed = window.confirm(`即将发送:\n${inputs.map(x => JSON.stringify(x)).join("\n")}\n点击OK确认发送\n接收人:\n${contacts.map(c => "备注名:" + (c.alias === null ? '  ' : c.alias) + " 微信名: " + c.name).join('\n')}`);
                 if (confirmed) {
                     let requestId = uuid.v1();
                     {//发送前的操作
@@ -171,7 +169,6 @@
                             while (queueing === true) {
                                 await superagent.get('/lifecycle/logon/message/queueing?requestSession=' + requestId)
                                     .then(resp => queueing = resp.body);
-                                //TODO 验证会不会等待
                             }
                         })
                         .catch(err => {

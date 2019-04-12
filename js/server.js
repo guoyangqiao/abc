@@ -88,10 +88,6 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
     resp.status(200).end();
 
     try {
-        if (true) {
-            await snooze(10000);
-            return;
-        }
         console.log(`${new Date()}收到发送请求${requestSession}`);
         let type = req.body.type;
         let content = req.body.content;
