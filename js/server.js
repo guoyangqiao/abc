@@ -112,11 +112,11 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
                     await contact.say(input).catch(reason => {
                         result = "异常," + reason.toString();
                     });
+                    await snooze();
                     appendLog(`发送<${input}>到<${name}>结果<${result}>`);
                 }
             }
             sendStatistic.push({name: name, alias: alias, result: result});
-            await snooze();
         }
     } finally {
         console.log(`${new Date()}发送结束${requestSession}`);
@@ -131,7 +131,7 @@ app.listen(3000);
  */
 async function snooze(sp) {
     if (sp === undefined) {
-        sp = Math.floor(Math.random() * Math.floor(1000)) + 200;
+        sp = Math.floor(Math.random() * Math.floor(600)) + 200;
     }
     return new Promise(resolve => setTimeout(resolve, sp));
 }
