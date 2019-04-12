@@ -257,17 +257,18 @@
 
         addRow() {
             let nRows = this.state.inputRows.slice();
-            nRows.push(<InputRow onRemove={(x) => this.removeRow(x)} cid={nRows.length} inputCtx={new Map()}/>);
-            this.setState({inputRows: nRows}, () => console.log(this.state.inputRows));
+            let rowKey = uuid.v1();
+            nRows.push(<InputRow key={rowKey} onRemove={(x) => this.removeRow(x)} cid={rowKey}
+                                 inputCtx={new Map()}/>);
+            this.setState({inputRows: nRows});
         }
 
         /**
          *删除一行
          */
-        removeRow(idx) {
+        removeRow(cid) {
             let slice = this.state.inputRows.slice();
-            slice[idx] = undefined;
-            this.setState({inputRows: slice}, () => console.log(this.state.inputRows));
+            this.setState({inputRows: slice.filter(x => x.props.cid !== cid)});
         }
     }
 
