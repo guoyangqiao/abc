@@ -109,7 +109,10 @@ app.post('/lifecycle/logon/message/publish', async (req, resp) => {
                 result = '成功';
                 for (let j = 0; j < inputs.length; j++) {
                     let input = inputs[j];
-                    await contact.say(input).catch(reason => {
+                    console.log(contact, "发送内容", typeof input);
+                    await contact.say(input).then(c => {
+                        console.log(c);
+                    }).catch(reason => {
                         result = "异常," + reason.toString();
                     });
                     await snooze();

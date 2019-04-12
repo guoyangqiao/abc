@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.ico">
-    <title>出云而日出</title>
+    <title>出云而见日</title>
     <style>
         body {
             font-size: 12px;
@@ -334,16 +334,18 @@
             if (type === 'file') {
                 return <div>
                     <div className="floating">
-                        <input type="file" id="files" onChange={(e) => {
-                            this.uploadFile(e);
-                            let file = e.target.files[0];
-                            let name = file.name;
-                            let partialState = Object.assign({}, this.state, {fileContent: name});
-                            this.uploadUserInput(partialState);
-                            this.setState(partialState);
-                            e.target.value = null;
-                        }
-                        }/>
+                        <input type="file" id="files"
+                               accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                               onChange={(e) => {
+                                   this.uploadFile(e);
+                                   let file = e.target.files[0];
+                                   let name = file.name;
+                                   let partialState = Object.assign({}, this.state, {fileContent: name});
+                                   this.uploadUserInput(partialState);
+                                   this.setState(partialState);
+                                   e.target.value = null;
+                               }
+                               }/>
                     </div>
                     <div className="floating">{(() => {
                         let fnmae = this.state.fileContent;
